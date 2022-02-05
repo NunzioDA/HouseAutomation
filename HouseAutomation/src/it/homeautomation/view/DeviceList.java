@@ -26,17 +26,18 @@ public class DeviceList extends HAPanel
 	private GridBagConstraints constraints = new GridBagConstraints();
 	private JScrollPane myScrollPane;
 	
+	private static int MARGIN_BETWEEN_CARDS = 30;
+	
 	public DeviceList()
 	{		
 		setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(0, 20, 0, 20);
-//        constraints.ipadx = 20;
-//        constraints.ipady = 20;
+        constraints.insets = new Insets(0, 0, 0, 0);
         constraints.weightx = 1;
         constraints.weighty = 1f;
-        constraints.fill=GridBagConstraints.VERTICAL;
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.VERTICAL;
         
         reloadColors();        
 	}
@@ -48,13 +49,18 @@ public class DeviceList extends HAPanel
 	
 	private void addComponent(Device m)
 	{		
-		constraints.gridx ++;
+		if(constraints.gridx != 0)
+			constraints.insets.left = MARGIN_BETWEEN_CARDS;
+		else constraints.insets.left = 0;
+		
 		add(new DeviceCard(myScrollPane).getListCardRendererComponent(m), constraints);
+		
+		constraints.gridx ++;
 	}
 	
 	public void refreshList(Collection<Device> coll)
 	{
-		constraints.gridx = 0;
+		constraints.gridx = 0;		
 		removeAll();
 		coll.stream().forEach(this::addComponent);
 	}
@@ -68,7 +74,11 @@ public class DeviceList extends HAPanel
 	@Override
 	public void setSize(Dimension d)
 	{
-		int newWidth = getComponentCount() * (getComponent(0).getPreferredSize().width + 40);
+		int newWidth = getComponentCount() * (getComponent(0).getPreferredSize().width + MARGIN_BETWEEN_CARDS);
+		
+		if(d.width < newWidth)
+			newWidth = d.width;
+		
 		super.setSize(new Dimension(newWidth, DeviceCard.dimensions.height));
 	}
 

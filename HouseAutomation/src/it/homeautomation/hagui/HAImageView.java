@@ -9,23 +9,42 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class HAImageView extends JPanel implements HAThemeListener{
+public class HAImageView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private BufferedImage image = null;
-	private Color background = null;
 	private int margin = 0;
     
-    public void loadImage(String path, Color backGround)
+	public HAImageView()
+	{
+		setOpaque(false);
+	}
+	
+	public HAImageView(URL url, int margin)
+	{
+		setOpaque(false);
+		setMargin(margin);
+		loadImage(url);
+	}
+	
+	@Override
+	public void setBackground(Color bg)
+	{
+		setOpaque(true);
+		super.setBackground(bg);
+	}
+	
+	 public void loadImage(URL url, int margin)
+	 {
+		 setMargin(margin);
+		 loadImage(url);
+	 }
+	
+    public void loadImage(URL url)
     {
-    	this.background = backGround;
     	
-    	reloadColors();
-    	
-        try {
-        	URL url = HAImageView.class.getResource(path);
-        	
+        try {        	
         	if(url != null)
             	image = ImageIO.read(url);
         	
@@ -43,14 +62,16 @@ public class HAImageView extends JPanel implements HAThemeListener{
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    	
+    	if(isOpaque())
+        	super.paintComponent(g);
         
         if(image != null) 
         {
 
         	float imageRatio = (float)image.getWidth() / (float)image.getHeight();        	
         	int imageWidth = (int)(imageRatio * (float)(getHeight() - margin));
-        	int imageHeight = getHeight();
+        	int imageHeight = getHeight() - margin;
         	
         	if(imageWidth > (getWidth() - margin))
         	{
@@ -66,11 +87,5 @@ public class HAImageView extends JPanel implements HAThemeListener{
         }
     }
 
-	@Override
-	public void reloadColors()
-	{
-		if(background != null)
-			setBackground(background);
-	}
 
 }

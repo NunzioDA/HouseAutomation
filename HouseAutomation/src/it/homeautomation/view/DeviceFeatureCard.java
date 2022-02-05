@@ -1,12 +1,15 @@
 package it.homeautomation.view;
 
 import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.net.URL;
 
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATools;
 import it.homeautomation.model.features.DeviceFeature;
@@ -21,14 +24,31 @@ public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<Devic
 	public Component getListCellRendererComponent(JList<? extends CardStatus> list, CardStatus value, int index,
 			boolean isSelected, boolean cellHasFocus)
 	{
-		setLayout(new GridLayout());
-
+		setLayout(new GridBagLayout());
+		removeAll();
 		checkBox.setSelected(value.isChecked());		
 		checkBox.setText(value.getFeature().toString());
-		
+
 		reloadColors();
 		
-		add(checkBox);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		add(checkBox,constraints);
+		
+		URL url = HATools.getIconPath(value.getFeature().getIconID());
+		
+		if(url != null)
+		{
+			constraints.gridx = 1;
+			constraints.weightx = 0.1;
+			constraints.fill = GridBagConstraints.BOTH;
+			add(new HAImageView(url, 2),constraints);
+		}
 		
 		return this;
 	}
@@ -36,8 +56,8 @@ public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<Devic
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());
-		checkBox.setBackground(HATools.getDarkBackgroundColor());
+		setBackground(HATools.getDarkBackgroundColor());
+		checkBox.setOpaque(false);
 		checkBox.setForeground(HATools.getForegroundColor());
 
 	}

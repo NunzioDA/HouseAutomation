@@ -75,7 +75,12 @@ public class RoomList extends HAPanel
 	public void setSize(Dimension d)
 	{
 		// TODO Auto-generated method stub
-		super.setSize(new Dimension(maxWidth, d.height));
+		int width = d.width;
+		
+		if(d.width > maxWidth)
+			width = maxWidth;
+			
+		super.setSize(new Dimension(width, d.height));
 	}
 
 

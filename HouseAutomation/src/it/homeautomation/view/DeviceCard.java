@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.Optional;
 
 import javax.swing.JPanel;
@@ -49,12 +50,21 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	private JPanel stateVisualizer = new JPanel();
 	private GridBagConstraints stateConstraint = new GridBagConstraints();
 	
+	public DeviceCard(JScrollPane myScrollPane)
+	{
+		this.myScrollPane = myScrollPane;
+		init();
+		reloadColors();
+	}
+	
 	@Override
 	public Component getListCardRendererComponent(Device device)
 	{
 		
 		deviceName.setText(device.getName());
 		
+		
+		// visualizing features status
 		device.getFeatures().stream().forEach(f -> {
 				HAImageView panel = stateObjectToPanel(f.getSateRappresentation());
 				
@@ -62,18 +72,13 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 				{	
 			
 					String iconID = f.getIconID();
-					String imagePath;
 					
 					if(iconID != null)
 					{
-						imagePath = HATools.getIconPath(iconID);
-						Color backGround = HATools.getDarkBackgroundColor();
-						
-						if(f.getSateRappresentation() instanceof Color)
-							backGround = panel.getBackground();
 							
-						panel.loadImage(imagePath, backGround);
-						panel.setMargin(25);
+						URL url = HATools.getIconPath(iconID);
+						
+						panel.loadImage(url, 10);
 					}
 					
 					
@@ -81,6 +86,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 				}
 			});
 		
+		// visualizing main icon
 		Optional<DeviceFeature> firstCategoryOpt = device
 				.getFeatures()
 				.stream()
@@ -91,12 +97,12 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		{
 			DeviceCategory firstCategory = (DeviceCategory)firstCategoryOpt.get();
 			String iconID = firstCategory.getIconID();
-			String imagePath;
+			URL imagePath;
 			
 			if(iconID != null)
 			{
 				imagePath = HATools.getIconPath(iconID);
-				image.loadImage(imagePath, HATools.getDarkBackgroundColor());
+				image.loadImage(imagePath);
 			}
 			
 		}
@@ -105,7 +111,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	}
 	
 
-	private static HAImageView stateObjectToPanel(Object object)
+	private HAImageView stateObjectToPanel(Object object)
 	{
 		HAImageView result = null;		
 		
@@ -116,11 +122,10 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			
 			if(!(object instanceof Color))
 			{
-				result.setBackground(HATools.getDarkBackgroundColor());
 				String value =  object.toString();
 			
-				HATextCenter text = new HATextCenter(value);
-				
+				HATextCenter text = new HATextCenter(value, 20);
+				text.setBackground(stateVisualizer.getBackground());
 				result.add(text);
 			}
 			else result.setBackground((Color)object);
@@ -129,14 +134,6 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		}
 		
 		return result;
-	}
-
-	
-	public DeviceCard(JScrollPane myScrollPane)
-	{
-		this.myScrollPane = myScrollPane;
-		init();
-		reloadColors();
 	}
 	
 	public void initMouseListener()
@@ -186,7 +183,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	private void initStateVisualizer()
 	{
 		stateVisualizer.setLayout(new GridBagLayout());
-		stateVisualizer.setBackground(HATools.getDarkBackgroundColor());
+		
 		stateConstraint.gridx = 0;
 		stateConstraint.gridy = 0;
 		stateConstraint.anchor = GridBagConstraints.NORTHWEST;
@@ -207,7 +204,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.insets = new Insets(20, 20, 10, 20);
+		constraints.insets = new Insets(20, 10, 10, 10);
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1;
@@ -222,6 +219,8 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		constraints.gridy ++;
 		add(deviceName, constraints);
 	
+		constraints.insets.left = 0;
+		constraints.insets.right = 0;
 		constraints.insets.bottom = 20;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weighty = 0.5f;
@@ -235,7 +234,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	{
 		//setting shadow
 		setBorder(new BevelBorder(SoftBevelBorder.RAISED, HATools.getBackgroundColor(), HATools.getShadowColor()));
-		
+		stateVisualizer.setBackground(HATools.getBackgroundColor());
 		setBackground(HATools.getDarkBackgroundColor());
 		deviceName.reloadColors();
 	}

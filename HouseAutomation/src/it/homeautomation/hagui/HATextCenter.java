@@ -1,6 +1,7 @@
 package it.homeautomation.hagui;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
@@ -14,12 +15,27 @@ public class HATextCenter extends JPanel implements HAThemeListener
 	private static final long serialVersionUID = 1L;
 	private static int TEXT_MARGIN = 3;
 	private String text;
+	private int maxHeight = Integer.MAX_VALUE;
+	private boolean textBackOpaque = false;
+	
+	public HATextCenter(String text, int maxHeight)
+	{
+		this(text);
+		this.maxHeight = maxHeight;
+	}
+	
+	@Override
+	public void setBackground(Color bg)
+	{
+		textBackOpaque = true;
+		super.setBackground(bg);
+	}
 	
 	public HATextCenter(String text)
-	{
-		this.text = text;		
+	{	
 		setOpaque(false);
 		reloadColors();
+		setText(text);
 	}
 	
 	public void setText(String text)
@@ -49,23 +65,25 @@ public class HATextCenter extends JPanel implements HAThemeListener
 			
 			// getting text height
 			textheight = getStringHeight(g2, text);
-		}while(textWidth < targetWidth && textheight < getHeight() - TEXT_MARGIN);
+		}while(textWidth < targetWidth && (textheight < getHeight() - TEXT_MARGIN && textheight < maxHeight));
 		
 		int textStartX = (int)(getWidth() - textWidth)/2;
 		
-		
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-		        0.95f));		
-		g2.setColor(getBackground());
-		
-		int yRect = (getHeight() / 2) - (textheight/2) - TEXT_MARGIN;
-		int widthRect = getWidth();
-		int heightRect = textheight + (TEXT_MARGIN * 2);
-		
-		g2.fillRect(0, yRect, widthRect , heightRect);
-		
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-		        1f));
+		if(textBackOpaque)
+		{
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+			        0.8f));		
+			g2.setColor(getBackground());
+			
+			int yRect = (getHeight() / 2) - (textheight/2) - TEXT_MARGIN;
+			int widthRect = getWidth();
+			int heightRect = textheight + (TEXT_MARGIN * 2);
+			
+			g2.fillRect(0, yRect, widthRect , heightRect);
+			
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+			        1f));
+		}
 		
 		g2.setColor(getForeground());
 		
@@ -83,7 +101,6 @@ public class HATextCenter extends JPanel implements HAThemeListener
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getDarkBackgroundColor());
 		setForeground(HATools.getForegroundColor());
 	}
    

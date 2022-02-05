@@ -10,6 +10,13 @@ import it.homeautomation.model.features.SingleValueFeature;
 
 public class Dimmable extends SingleValueFeature<Integer>{
 	
+	private static int DEFAULT = 100;
+	
+	public Dimmable()
+	{
+		setValue(DEFAULT);
+	}
+	
 	@Override
 	public List<Command<?>> getCommands()
 	{
@@ -40,7 +47,7 @@ public class Dimmable extends SingleValueFeature<Integer>{
 	@Override
 	public String getSateRappresentation()
 	{		
-		String value = (getValue() != null)? getValue().toString() : "none";
+		String value = (getValue() != null)? getValue().toString() + "%" : "none";
 		
 		return value;
 	}

@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 
 import javax.swing.SwingConstants;
@@ -44,9 +45,9 @@ public class HATools
 	
 	private static Font normalFont = null, thinFont = null, lightFont = null;
 	
-	public static String getIconPath(String iconID)
+	public static URL getIconPath(String iconID)
 	{
-		return HATools.DEFAULT_ICONS_PATH + iconID + HATools.DEFAULT_ICONS_EXTENSION;
+		return HATools.class.getResource(HATools.DEFAULT_ICONS_PATH + iconID + HATools.DEFAULT_ICONS_EXTENSION);
 	}
 	
 	public static void setTheme(Color background, Color foreground, Color primary, Color primaryForeground)
@@ -118,16 +119,21 @@ public class HATools
 	
 	public static String capitalize(String str)
 	{
-		StringBuffer strBf = new StringBuffer(str);
-		strBf.setCharAt(0, Character.toUpperCase(str.charAt(0)));
-		str = strBf.toString();
+		String result = "";
 		
-		int spaceIndex = str.indexOf(" ");
-		spaceIndex = (spaceIndex == -1)? str.length() : spaceIndex;
-		String result = str.substring(0, spaceIndex);
-		
-		if(spaceIndex != str.length())
-			result += " "+capitalize(str.substring(spaceIndex + 1));
+		if(str != null && !str.isEmpty())
+		{
+			StringBuffer strBf = new StringBuffer(str);
+			strBf.setCharAt(0, Character.toUpperCase(str.charAt(0)));
+			str = strBf.toString();
+			
+			int spaceIndex = str.indexOf(" ");
+			spaceIndex = (spaceIndex == -1)? str.length() : spaceIndex;
+			result = str.substring(0, spaceIndex);
+			
+			if(spaceIndex != str.length())
+				result += " "+capitalize(str.substring(spaceIndex + 1));
+		}
 		
 		return result;
 	}

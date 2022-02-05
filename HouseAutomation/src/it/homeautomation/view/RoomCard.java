@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
@@ -31,14 +30,33 @@ import it.homeautomation.view.interfaces.ListCardRenderer;
 public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<String, List<Device>>>
 {
 	private static final long serialVersionUID = 1L;
-	private HALabel roomName = new HALabel("", SwingConstants.LEFT); 
+	private HALabel roomName = HATools.newTitle("", HATools.MIDDLE_TITLE); 
 	
 	private DeviceList deviceList = new DeviceList();
-	private JScrollPane scrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private JScrollPane deviceScrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 	private boolean listenToMouseWheel = false;
 	
 	private static final int FACTOR = 30;
+	
+	
+	public RoomCard()
+	{		
+		init();		
+		reloadColors();       
+	}
+	
+
+	@Override
+	public Component getListCardRendererComponent(Map.Entry<String, List<Device>> value)
+	{
+		roomName.setText(value.getKey());
+		if(deviceList.getComponentCount() != value.getValue().size()) 
+		{
+			deviceList.refreshList(value.getValue());
+		}
+		return this;
+	}	
 	
 	/**
 	 * This method initialize the mouse listeners 
@@ -46,7 +64,7 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	 */
 	public void initMouseWheelListeners()
 	{
-        scrollPane.addMouseListener(new MouseAdapter() {
+        deviceScrollPane.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseExited(MouseEvent e)
@@ -62,18 +80,17 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 			
 		});
         
-        scrollPane.addMouseWheelListener(new MouseWheelListener() {
+        deviceScrollPane.addMouseWheelListener(new MouseWheelListener() {
 			
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e)
 			{
 				if(listenToMouseWheel)
 				{
+					int amount = e.getWheelRotation() * FACTOR;
+					int value = deviceScrollPane.getHorizontalScrollBar().getValue();
 					
-					int amount = e.getWheelRotation() * FACTOR;				
-					int value = scrollPane.getHorizontalScrollBar().getValue();
-					
-					scrollPane.getHorizontalScrollBar().setValue(value + amount);
+					deviceScrollPane.getHorizontalScrollBar().setValue(value + amount);
 				}
 			}
 		});
@@ -81,8 +98,8 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	
 	public void init()
 	{
-		deviceList.setMyScrollPane(scrollPane);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		deviceList.setMyScrollPane(deviceScrollPane);
+		deviceScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
 		setLayout(new GridBagLayout());
 
@@ -92,26 +109,18 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
         constraints.weightx = 1;
         constraints.weighty = 0.1f;
         constraints.fill=GridBagConstraints.HORIZONTAL;
+        
         add(roomName, constraints);
+        
         constraints.insets = new Insets(10, 0, 0, 0);
-       // constraints.fill = GridBagConstraints.VERTICAL;
-        constraints.fill=GridBagConstraints.BOTH;
         constraints.gridy = 1;
         constraints.weighty = 1f;
-        constraints.ipady = 20;
+        constraints.ipady = 40;
+        constraints.fill=GridBagConstraints.BOTH;
         constraints.anchor = GridBagConstraints.WEST;
+        add(deviceScrollPane, constraints);        
 
-        add(scrollPane, constraints);
-        
-        
         initMouseWheelListeners();
-	}
-	
-	public RoomCard()
-	{		
-		init();		
-		
-		reloadColors();       
 	}
 	
 	@Override
@@ -119,19 +128,9 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	{
 		setBackground(HATools.getBackgroundColor());
 		deviceList.reloadColors();
-		scrollPane.getViewport().setBackground(HATools.getBackgroundColor());
+		deviceScrollPane.getViewport().setBackground(HATools.getBackgroundColor());
 	}
 
-	@Override
-	public Component getListCardRendererComponent(Map.Entry<String, List<Device>> value)
-	{
-		roomName.setText(value.getKey());
-		if(deviceList.getComponentCount() != value.getValue().size()) 
-		{
-			deviceList.refreshList(value.getValue());
-		}
-		return this;
-	}	
 
 
 }
