@@ -45,4 +45,10 @@ public class Dimmable extends SingleValueFeature<Integer>{
 		return value;
 	}
 
+	@Override
+	public String getIconID()
+	{
+		return "dimmable";
+	}
+
 }

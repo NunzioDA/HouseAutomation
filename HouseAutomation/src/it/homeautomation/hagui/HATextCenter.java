@@ -1,5 +1,6 @@
 package it.homeautomation.hagui;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
@@ -16,8 +17,8 @@ public class HATextCenter extends JPanel implements HAThemeListener
 	
 	public HATextCenter(String text)
 	{
-		this.text = text;
-		
+		this.text = text;		
+		setOpaque(false);
 		reloadColors();
 	}
 	
@@ -30,13 +31,10 @@ public class HATextCenter extends JPanel implements HAThemeListener
 	@Override
 	public void paint(Graphics g)
 	{
-		// Printing background
+		super.paint(g);
+				
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setColor(getBackground());
-		g2.fillRect(0, 0, getWidth(), getHeight());
 		
-		
-		g2.setColor(getForeground());
 		float textWidth;
 		float fontSize = 0;
 		
@@ -52,9 +50,25 @@ public class HATextCenter extends JPanel implements HAThemeListener
 			// getting text height
 			textheight = getStringHeight(g2, text);
 		}while(textWidth < targetWidth && textheight < getHeight() - TEXT_MARGIN);
-
 		
 		int textStartX = (int)(getWidth() - textWidth)/2;
+		
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+		        0.95f));		
+		g2.setColor(getBackground());
+		
+		int yRect = (getHeight() / 2) - (textheight/2) - TEXT_MARGIN;
+		int widthRect = getWidth();
+		int heightRect = textheight + (TEXT_MARGIN * 2);
+		
+		g2.fillRect(0, yRect, widthRect , heightRect);
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+		        1f));
+		
+		g2.setColor(getForeground());
+		
 		
 		g2.drawString(text, textStartX ,(getHeight() / 2) + (textheight/2));
 	}
@@ -65,11 +79,12 @@ public class HATextCenter extends JPanel implements HAThemeListener
 		GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
 		return (int) gv.getPixelBounds(null, 0f,0f).getHeight();
 	}
-    
+
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HATools.getDarkBackgroundColor());
 		setForeground(HATools.getForegroundColor());
 	}
+   
 }

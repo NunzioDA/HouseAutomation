@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Optional;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,8 +23,11 @@ import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATextCenter;
+import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HATools;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.features.DeviceCategory;
+import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
 /**
@@ -45,6 +49,96 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	private JPanel stateVisualizer = new JPanel();
 	private GridBagConstraints stateConstraint = new GridBagConstraints();
 	
+	@Override
+	public Component getListCardRendererComponent(Device device)
+	{
+		
+		deviceName.setText(device.getName());
+		
+		device.getFeatures().stream().forEach(f -> {
+				HAImageView panel = stateObjectToPanel(f.getSateRappresentation());
+				
+				if(panel != null) 
+				{	
+			
+					String iconID = f.getIconID();
+					String imagePath;
+					
+					if(iconID != null)
+					{
+						imagePath = HATools.getIconPath(iconID);
+						Color backGround = HATools.getDarkBackgroundColor();
+						
+						if(f.getSateRappresentation() instanceof Color)
+							backGround = panel.getBackground();
+							
+						panel.loadImage(imagePath, backGround);
+						panel.setMargin(25);
+					}
+					
+					
+					addToStateVisualizer(panel);
+				}
+			});
+		
+		Optional<DeviceFeature> firstCategoryOpt = device
+				.getFeatures()
+				.stream()
+				.filter(f -> (f instanceof DeviceCategory))
+				.findFirst();
+		
+		if(!firstCategoryOpt.isEmpty())
+		{
+			DeviceCategory firstCategory = (DeviceCategory)firstCategoryOpt.get();
+			String iconID = firstCategory.getIconID();
+			String imagePath;
+			
+			if(iconID != null)
+			{
+				imagePath = HATools.getIconPath(iconID);
+				image.loadImage(imagePath, HATools.getDarkBackgroundColor());
+			}
+			
+		}
+
+		return this;
+	}
+	
+
+	private static HAImageView stateObjectToPanel(Object object)
+	{
+		HAImageView result = null;		
+		
+		if(object != null)
+		{
+			result = new HAImageView();
+			result.setLayout(new GridLayout());
+			
+			if(!(object instanceof Color))
+			{
+				result.setBackground(HATools.getDarkBackgroundColor());
+				String value =  object.toString();
+			
+				HATextCenter text = new HATextCenter(value);
+				
+				result.add(text);
+			}
+			else result.setBackground((Color)object);
+			
+			result.setPreferredSize(new Dimension(40,40));
+		}
+		
+		return result;
+	}
+
+	
+	public DeviceCard(JScrollPane myScrollPane)
+	{
+		this.myScrollPane = myScrollPane;
+		init();
+		reloadColors();
+	}
+	
 	public void initMouseListener()
 	{
 		addMouseListener(new MouseAdapter() {
@@ -53,12 +147,20 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			public void mouseExited(MouseEvent e)
 			{
 				reloadColors();
+				
+				for(Component c : getComponents())
+					if(c instanceof HAThemeListener)
+						((HAThemeListener) c).reloadColors();
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
 				setBackground(HATools.getLightBackgroundColor());
+				
+				for(Component c : getComponents())
+					if(c instanceof HAThemeListener)
+						c.setBackground(HATools.getLightBackgroundColor());
 				
 				for(MouseListener m : myScrollPane.getMouseListeners())
 					m.mouseEntered(e);
@@ -127,57 +229,6 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		add(stateVisualizer, constraints);
 		setPreferredSize(dimensions);
 	}
-	
-
-	
-	public DeviceCard(JScrollPane myScrollPane)
-	{
-		this.myScrollPane = myScrollPane;
-		init();
-		reloadColors();
-	}
-
-	private static JPanel stateObjectToPanel(Object object)
-	{
-		JPanel result = null;		
-		
-		if(object != null)
-		{
-			result = new JPanel();
-			result.setLayout(new GridLayout());
-			
-			if(!(object instanceof Color))
-			{
-				result.setBackground(HATools.getLightBackgroundColor());
-				String value =  object.toString();
-			
-				HATextCenter text = new HATextCenter(value);
-				
-				result.add(text);
-			}
-			else result.setBackground((Color)object);
-			
-			result.setPreferredSize(new Dimension(40,40));
-		}
-		
-		return result;
-	}
-
-	@Override
-	public Component getListCardRendererComponent(Device device)
-	{
-		
-		deviceName.setText(device.getName());
-		
-		device.getFeatures().stream().forEach(f -> {
-				JPanel panel = stateObjectToPanel(f.getSateRappresentation());
-				if(panel != null)
-					addToStateVisualizer(panel);
-			});
-
-		return this;
-	}
-
 
 	@Override
 	public void reloadColors()

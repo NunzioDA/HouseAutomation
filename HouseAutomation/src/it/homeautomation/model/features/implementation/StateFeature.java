@@ -71,5 +71,11 @@ public class StateFeature extends SingleValueFeature<StateFeature.State>
 		return getValue().toString();
 	}
 
+	@Override
+	public String getIconID()
+	{
+		return null;
+	}
+
 
 }

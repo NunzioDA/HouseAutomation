@@ -39,4 +39,10 @@ public class Light implements DeviceCategory
 	{
 		return null;
 	}
+
+	@Override
+	public String getIconID()
+	{
+		return "light";
+	}
 }

@@ -59,4 +59,10 @@ public class ColorBased extends SingleValueFeature<Color> implements DeviceCateg
 		return result;
 	}
 
+	@Override
+	public String getIconID()
+	{
+		return "colorbased";
+	}
+
 }

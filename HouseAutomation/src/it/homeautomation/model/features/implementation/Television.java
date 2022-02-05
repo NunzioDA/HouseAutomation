@@ -43,4 +43,10 @@ public class Television extends SingleValueFeature<Integer> implements DeviceCat
 		return "CH-\n" + value;
 	}
 
+	@Override
+	public String getIconID()
+	{
+		return "tv";
+	}
+
 }

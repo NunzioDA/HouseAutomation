@@ -19,6 +19,9 @@ public class HATools
 	public static final float MIDDLE_TITLE = 30;
 	public static final float LAST_TITLE = 18;
 	
+	public static final String DEFAULT_ICONS_PATH = "/icons/";
+	public static final String DEFAULT_ICONS_EXTENSION = ".png";
+	
 	private static final String THIN_FONT_NAME = "thin.ttf";
 	private static final String REGULAR_FONT_NAME = "regular.ttf";
 	private static final String LIGHT_FONT_NAME = "light.ttf";
@@ -41,7 +44,11 @@ public class HATools
 	
 	private static Font normalFont = null, thinFont = null, lightFont = null;
 	
-
+	public static String getIconPath(String iconID)
+	{
+		return HATools.DEFAULT_ICONS_PATH + iconID + HATools.DEFAULT_ICONS_EXTENSION;
+	}
+	
 	public static void setTheme(Color background, Color foreground, Color primary, Color primaryForeground)
 	{
 		BACKGROUND_COLOR = background;
