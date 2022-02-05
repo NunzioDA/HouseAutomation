@@ -1,38 +1,57 @@
 package it.homeautomation.hagui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class HAFrameControlPanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private JFrame frame;
+	private HAFrame frame;
 	
 	
 	HACPButton buttonClose;
+	HACPButton resizeButton;
 	HACPButton buttonHide;
 	
+	List<HACPButton> buttonsList = new ArrayList<>();
 	
 	public HAFrameControlPanel(final HAFrame frame)
 	{		
 		setLayout(null);
 		
 		this.frame = frame;
+		setBackground(HATools.getBackgroundColor());
+		refreshButtons();
+	}
+	
+	public void refreshButtons()
+	{
+		removeAll();
+		buttonsList.clear();
 		
-		buttonHide = new HACPButton("_",HACPButton.HIDE);			
-		add(buttonHide);
-		
-		buttonClose = new HACPButton("x",HACPButton.CLOSE);		
-		add(buttonClose);
+		buttonHide = new HACPButton("_", HACPButton.Type.HIDE);			
+		buttonsList.add(buttonHide);		
 
+		if(frame.isResizable())
+		{
+			resizeButton = new HACPButton("", HACPButton.Type.RESIZE);
+			buttonsList.add(resizeButton);
+		}
+		
+		buttonClose = new HACPButton("x", HACPButton.Type.CLOSE);		
+		buttonsList.add(buttonClose);
+
+		
+		buttonsList.stream().forEach(this::add);
+		update();
 	}
 	
 	@Override
@@ -48,119 +67,80 @@ public class HAFrameControlPanel extends JPanel{
 		super.setLocation(x, y);
 		update();
 	}
-	
-	public void setFrameTheme(Color background, Color foreground)
-	{
-		this.buttonHide.setButtonColor(background);
-		buttonHide.setBackground(background);
-		buttonHide.setForeground(foreground);
-		
-	}
+
 	
 	public void update()
 	{
-		buttonHide.setSize(getWidth()/2, getHeight());
-		buttonHide.setLocation(0, 0);
-		
-		buttonClose.setSize(getWidth()/2, getHeight());
-		buttonClose.setLocation(getWidth()/2, 0);
+		int i = 0;
+
+		for(HACPButton button : buttonsList)
+		{
+			int width = getWidth()/buttonsList.size();
+			button.setSize(width, getHeight());
+			button.setLocation(width * i, 0);
+			i++;
+		}
 	}
 	
-	private class HACPButton extends JButton
+	private class HACPButton extends HAButton
 	{
 		private static final long serialVersionUID = 1L;
 
-		public static final int CLOSE=0,HIDE=1;
+		public enum Type
+		{
+			CLOSE,
+			HIDE,
+			RESIZE
+		}
 		
-		private Color background;
-		private int type;
+		private Type type;
 	
-		public HACPButton(String text, int type)
+		public HACPButton(String text, Type type)
 		{
 			super(text);
 			this.type = type;
 			
 			//setting background and foreground color based on type
-			if(type==CLOSE)
+			if(type == Type.CLOSE)
 			{
-				setForeground(Color.WHITE);
-				background = new Color(229, 4, 4);
-								
+				setCustomColors(new Color(229, 4, 4), Color.white);								
 			}
-			else {
-				background = new Color(0xEDEEEC);
-				setForeground(Color.BLACK);
-			}
+			else setCustomColors(HATools.getBackgroundColor(), HATools.getForegroundColor());
 			
-			//Init panel aspect
-			setBorder(null);
-			setFocusPainted(false);
-			setBackground(background);
 			
 			addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					// TODO Auto-generated method stub				
-					if(HACPButton.this.type == HACPButton.CLOSE) 
+					if(HACPButton.this.type == Type.CLOSE) 
 						HAFrameControlPanel.this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-					else HAFrameControlPanel.this.frame.setState(JFrame.ICONIFIED);
-				}
-			});
-			
-			//mouse listener to change button color on mouse events
-			addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
 					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
+					else if(HACPButton.this.type == Type.HIDE) 
+						HAFrameControlPanel.this.frame.setState(JFrame.ICONIFIED);
 					
-
+					else {
+						if(!HAFrameControlPanel.this.frame.isMaximized())
+							HAFrameControlPanel.this.frame.maximize();
+						else HAFrameControlPanel.this.frame.revertMaximize();
+					}
 				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					HACPButton.this.setBackground(getButtonColor());
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-
-					Color mouseEnteredColor = HATools.changeColorBrightness(getButtonColor(), 25);
-					HACPButton.this.setBackground(mouseEnteredColor);
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
+			});			
 			
 		}
 		
-		public void setForeground(Color foreground)
+		@Override
+		public void paint(Graphics g)
 		{
-			super.setForeground(foreground);
-		}
-		
-		public Color getButtonColor()
-		{
-			return background;
-		}
-
-		public void setButtonColor(Color background)
-		{
-			this.background = background;
+			super.paint(g);
+			
+			if(type == Type.RESIZE)
+			{
+				int width = 10;
+				int height = 10;
+				g.setColor(getForeground());
+				g.drawRect(getWidth()/2 - (width / 2), getHeight()/2 - (height/2), width, height);
+			}
 		}
 	}
 }

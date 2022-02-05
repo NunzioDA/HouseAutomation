@@ -54,7 +54,9 @@ public class WelcomeFrame extends HAFrame
 	}
 	
 	private void init()
-	{		
+	{	
+		setResizable(false);
+		
 		setContentLayout(new GridBagLayout());
 		title.setFont(HATools.getRegularFont().deriveFont(TITLE_SIZE));
 		GridBagConstraints constrains = new GridBagConstraints();

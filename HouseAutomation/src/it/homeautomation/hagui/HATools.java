@@ -140,18 +140,23 @@ public class HATools
 		
 	public static Color changeColorBrightness(Color color, int brightening)
 	{
-		int newRed = color.getRed() + brightening;
-		int newGreen = color.getGreen() + brightening;
-		int newBlue = color.getBlue() + brightening;
+		Color darken = null;
 		
-		int red, green, blue;
-
-		red   = (newRed > 255)?  255 : (newRed < 0)? 0 : newRed;
-		green = (newGreen > 255)?  255 : (newGreen < 0)? 0 : newGreen;
-		blue  = (newBlue > 255)?  255 : (newBlue < 0)? 0 : newBlue;
+		if(color != null)
+		{
+			int newRed = color.getRed() + brightening;
+			int newGreen = color.getGreen() + brightening;
+			int newBlue = color.getBlue() + brightening;
+			
+			int red, green, blue;
 	
+			red   = (newRed > 255)?  255 : (newRed < 0)? 0 : newRed;
+			green = (newGreen > 255)?  255 : (newGreen < 0)? 0 : newGreen;
+			blue  = (newBlue > 255)?  255 : (newBlue < 0)? 0 : newBlue;
 		
-		Color darken = new Color(red, green, blue);
+			darken = new Color(red, green, blue);
+		}
+		
 		return darken;
 	}
 	

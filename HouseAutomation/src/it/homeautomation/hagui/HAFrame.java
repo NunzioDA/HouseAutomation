@@ -2,12 +2,15 @@ package it.homeautomation.hagui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,7 +36,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 	private static final int TITLE_BAR_HEIGHT = 40;
 	private static final float TITLE_FONT_SIZE = 15f;
 	private static final int TITLE_LEFT_MARGIN = 15;
-	private static final int FRAME_CONTROLLER_PANEL_WIDTH = 120;
+	private static final int FRAME_CONTROLLER_PANEL_WIDTH = 135;
 	
 	private HALabel titleLabel;
 	private JPanel content = new JPanel();
@@ -41,6 +44,8 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 	
 	private boolean listeningToMouseMovement = false;
 	private Point mouseStartPosition;
+	
+	private Dimension saveWhenMaximized = null;
 	
 	public HAFrame(String title, int width, int height)
 	{	
@@ -60,6 +65,39 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		initFrameDragListener();
 		
 		HATools.initFrame(this, width, height);
+	}
+	
+	@Override
+	public void setResizable(boolean resizable)
+	{
+		super.setResizable(resizable);
+		haFrameControlPanel.refreshButtons();
+	}
+	
+	public boolean isMaximized()
+	{
+		return saveWhenMaximized != null;
+	}
+	
+	public void maximize()
+	{
+		if(!isMaximized())
+		{
+			saveWhenMaximized = getSize();
+			Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+			Dimension size = new Dimension(rec.width, rec.height);
+			setSize(size);
+			setLocation(0, 0);
+		}
+	}
+	
+	public void revertMaximize()
+	{
+		if(isMaximized())
+		{
+			setSize(saveWhenMaximized);
+			saveWhenMaximized = null;
+		}
 	}
 	
 	@Override
@@ -111,7 +149,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		resizeContent();
 		
 		titleLabel.setLocation(TITLE_LEFT_MARGIN,0);		
-		titleLabel.setSize(getSize().width - FRAME_CONTROLLER_PANEL_WIDTH,TITLE_BAR_HEIGHT);
+		titleLabel.setSize(getSize().width - FRAME_CONTROLLER_PANEL_WIDTH, TITLE_BAR_HEIGHT);
 		titleLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		
 		haFrameControlPanel.setSize(FRAME_CONTROLLER_PANEL_WIDTH, TITLE_BAR_HEIGHT-5);
@@ -136,7 +174,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		Color background = HATools.getBackgroundColor();
 		Color foreground = HATools.getForegroundColor();
 		this.getContentPane().setBackground(background);
-		this.haFrameControlPanel.setFrameTheme(background, foreground);
+//		this.haFrameControlPanel.setFrameTheme(background, foreground);
 		content.setBackground(background);
 		titleLabel.setForeground(foreground);
 		
@@ -151,7 +189,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 	 */
 	private void initFrameDragListener()
 	{
-		titleLabel.addMouseListener(new MouseListener() {
+		titleLabel.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -167,31 +205,31 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 				mouseStartPosition = new Point(mouseDifferenceX, mouseDifferenceY);
 			}
 			
-			@Override
-			public void mouseExited(MouseEvent arg0) {}			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {}
 		});
 		
-		titleLabel.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent arg0) {}			
+		titleLabel.addMouseMotionListener(new MouseMotionAdapter() {		
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				
 				if(listeningToMouseMovement)
 				{
+					//if maximized
+					if(isMaximized())
+					{
+						mouseStartPosition.x = (mouseStartPosition.x * saveWhenMaximized.width)/getSize().width;
+						
+						revertMaximize();
+					}
+
+					
 					//getting mouse location
 					int mousePositionX = MouseInfo.getPointerInfo().getLocation().x;
 					int mousePositionY = MouseInfo.getPointerInfo().getLocation().y;
 										
 					//setting new frame location following the mouse
 					setLocation(mousePositionX - mouseStartPosition.x, mousePositionY- mouseStartPosition.y);
-					haFrameControlPanel.updateUI();
+					//haFrameControlPanel.updateUI();
 				}
 			}
 		});
