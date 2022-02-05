@@ -69,7 +69,6 @@ public class CommandsUtility
 		else
 		{
 			Color selectedColor = (Color)inputValue;
-			System.out.println(command.getDeviceFeature());
 			((SingleValueCommand<?, Color>)command).setValue(selectedColor);
 		}
 		
@@ -120,7 +119,6 @@ public class CommandsUtility
 		
 		for(Device device : devicesAffected)
 		{
-			System.out.println(device);
 			DeviceFeature feature = selectedCommand.getDeviceFeature();
 			
 			Optional<Command<?>> commandOp = device

@@ -92,25 +92,35 @@ public class SelectCommandPanel extends HAPanel
 			// MANAGE SINGLE VALUE COMMANDS	
 			
 			Object inputValue = inputArea.getInput();
-			List<Object> valuesList = new ArrayList<>();
-			valuesList.add(inputValue);
 			
-			String description = getCommandsGroupDescription(inputValue);
-			
-			if(devicesAffected.isEmpty())
-				error.setText(CommandsUtility
-						.refreshCommands(controller, deviceFilter, categoryFilter, 
-								roomFilter, valuesList, confirmedCommands, selectedCommand));
-			
-			else 
-				error.setText(CommandsUtility
-						.computeDevices(devicesAffected, valuesList, confirmedCommands, selectedCommand));
-			
+			if(inputValue instanceof Color &&
+			!inputArea.isColorSelected())
+			{
+				error.setText("Select a color.");
+			}
 			
 			if(error.getText().isEmpty())
-				listeners
-				.stream()
-				.forEach(a-> a.commandListCreated(description,confirmedCommands, valuesList));
+			{
+				List<Object> valuesList = new ArrayList<>();
+				valuesList.add(inputValue);
+				
+				String description = getCommandsGroupDescription(inputValue);
+				
+				if(devicesAffected.isEmpty())
+					error.setText(CommandsUtility
+							.refreshCommands(controller, deviceFilter, categoryFilter, 
+									roomFilter, valuesList, confirmedCommands, selectedCommand));
+				
+				else 
+					error.setText(CommandsUtility
+							.computeDevices(devicesAffected, valuesList, confirmedCommands, selectedCommand));
+				
+				
+				if(error.getText().isEmpty())
+					listeners
+					.stream()
+					.forEach(a-> a.commandListCreated(description,confirmedCommands, valuesList));
+			}			
 		}
 	}
 	
