@@ -182,6 +182,7 @@ public class HANavigationDrawer extends HAPanel
 	{
 		super.setSize(d);
 		resizeButtonsPanel();
+		houseNameLabel.setSize(d.width, 100);
 	}
 
 	@Override

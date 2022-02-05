@@ -28,16 +28,28 @@ public class MainFrame extends HAFrame
 	private HANavigationDrawer navigationDrawer;
 
 	
+	public MainFrame(String title, HouseAutomationController houseController, int width, int height)
+	{		
+		super(title, width, height);
+		this.houseController = houseController;
+		initComponents(houseController.getHouseName());
+		setMinimumSize(new Dimension(500, 500));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
 	private void initContentPanel()
 	{
 		this.contentPanel = new JPanel();		
 		contentPanel.setLayout(new GridLayout(1, 1));
 	}
 	
-	private void initComponents(String houseName, int width, int height)
+	private void initComponents(String houseName)
 	{
 		setContentLayout(null);
 		initContentPanel();
+		
+		int width = getWidth();
+		int height = getHeight();
 		
 		navigationDrawer = new HANavigationDrawer(houseName, width / SIDE_TOOL_PANEL_RATIO, height, this);
 		navigationDrawer.setContentPanel(contentPanel);
@@ -51,14 +63,7 @@ public class MainFrame extends HAFrame
 		add(contentPanel);
 	}
 	
-	public MainFrame(String title, HouseAutomationController houseController, int width, int height)
-	{		
-		super(title, width, height);
-		this.houseController = houseController;
-		initComponents(houseController.getHouseName(), width, height);
-		setMinimumSize(new Dimension(500, 500));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+
 
 	public MainFrame(int width, int height)
 	{
