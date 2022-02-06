@@ -1,8 +1,10 @@
 package it.homeautomation.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
@@ -50,6 +52,19 @@ public class HouseMaps
 			List<Y> newListInitialization = new ArrayList<>();
 			newListInitialization.add(value);
 			map.put(key, newListInitialization);
+		}
+	}
+	
+	public static <K, T> void removeFromMapList(Map<K, List<T>>map, T value)
+	{
+		Set<K> set = new HashSet<>(map.keySet());
+		
+		for(K key : set)
+		{
+			map.get(key).remove(value);
+			
+			if(map.get(key).size() == 0)
+				map.remove(key);
 		}
 	}
 	

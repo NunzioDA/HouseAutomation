@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
@@ -50,9 +51,14 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	private JPanel stateVisualizer = new JPanel();
 	private GridBagConstraints stateConstraint = new GridBagConstraints();
 	
-	public DeviceCard(JScrollPane myScrollPane)
+	private Device myDevice;
+	private HouseAutomationController controller;
+	
+	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller)
 	{
 		this.myScrollPane = myScrollPane;
+		this.controller = controller;
+		
 		init();
 		reloadColors();
 	}
@@ -60,7 +66,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	@Override
 	public Component getListCardRendererComponent(Device device)
 	{
-		
+		this.myDevice = device;
 		deviceName.setText(device.getName());
 		
 		
@@ -139,6 +145,12 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	public void initMouseListener()
 	{
 		addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				new DeviceManagementFrame(myDevice, controller);
+			}
 			
 			@Override
 			public void mouseExited(MouseEvent e)

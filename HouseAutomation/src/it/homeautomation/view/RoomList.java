@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
+import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATools;
@@ -21,14 +22,11 @@ public class RoomList extends HAPanel
 	
 	private GridBagConstraints constraints = new GridBagConstraints();
 	private int maxWidth = Integer.MAX_VALUE;
-	
-	public void notifyEmptyList()
-	{
-		add(new HALabel("No devices have been added...", SwingConstants.CENTER), constraints);
-	}
-	
-	public RoomList()
+	private HouseAutomationController controller;
+
+	public RoomList(HouseAutomationController controller)
 	{		
+		this.controller = controller;
 		setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -38,15 +36,22 @@ public class RoomList extends HAPanel
         constraints.fill = GridBagConstraints.BOTH;
         
         reloadColors();
+	}	
+	
+	public void notifyEmptyList()
+	{
+		add(new HALabel("No devices have been added...", SwingConstants.CENTER), constraints);
 	}
+	
 	
 	private void addComponent(Map.Entry<String, List<Device>> m)
 	{			
 		constraints.gridy ++;
-		RoomCard r = (RoomCard) new RoomCard()
+		RoomCard r = (RoomCard) new RoomCard(controller)
 				.getListCardRendererComponent(m);
 		add(r, constraints);
 	}
+	
 	
 	public void refreshList(Collection<Map.Entry<String, List<Device>>> coll)
 	{

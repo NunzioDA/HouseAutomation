@@ -33,7 +33,15 @@ public class Routine
 	
 	public void update(HouseAutomationController controller)
 	{
-		commands.forEach(r -> r.update(controller));
+		List<RoutineEntry> deletable = new ArrayList<>();
+		
+		commands.forEach(r ->
+		{ 
+			if(r.update(controller))
+				deletable.add(r); 
+		});
+		
+		commands.removeAll(deletable);
 	}
 	
 	public void execute()
@@ -76,6 +84,8 @@ public class Routine
 	 * 
 	 * A RoutineEntry is a pair String, command list.
 	 * It allows to get a description of the command list.
+	 * The command list contains a group of commands of the same
+	 * category.
 	 * 
 	 * @author Nunzio D'Amore
 	 *
@@ -86,13 +96,16 @@ public class Routine
 		String description;
 		List<Command<?>> commandsList;
 		
+		Command<?> selectedCommand;
+		
 		String device;
 		String category;
 		String room;
-		List<Object> valuesList = new ArrayList<>();
+		List<Object> valuesList;
 		
  		
- 		public RoutineEntry(String description, List<Command<?>> commands, String device, String category, String room, List<Object> values)
+ 		public RoutineEntry(String description, List<Command<?>> commands, String device, 
+ 				String category, String room, List<Object> values)
 		{
  			this.commandsList = commands;
  			this.device = device;
@@ -100,11 +113,25 @@ public class Routine
  			this.description = description;
  			this.category = category;
  			this.room = room;
+ 			
+ 			if(commandsList != null && commandsList.size() > 0)
+ 				selectedCommand = commandsList.get(0);
 		}
 
- 		public void update(HouseAutomationController controller)
+ 		public boolean update(HouseAutomationController controller)
  		{
- 			CommandsUtility.refreshCommands(controller, device, category, room, valuesList, commandsList, commandsList.get(0));
+ 			boolean deletable = false;
+ 			
+ 			if(category.equals(CommandsUtility.ALL_CATEGORIES) // Selected a device
+ 					&& room.equals(CommandsUtility.ALL_ROOMS) 
+ 					&& !device.equals(CommandsUtility.ALL_DEVICES))
+ 			{
+ 				deletable = !controller.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
+ 			} 			
+ 			else CommandsUtility.refreshCommands(controller, device, category, room, 
+ 						valuesList, commandsList, selectedCommand);
+ 			
+ 			return deletable;
  		}
  		
 		public void execute()

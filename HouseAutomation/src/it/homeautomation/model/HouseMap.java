@@ -44,6 +44,11 @@ public class HouseMap{
 							.getId() == id) );
 	}
 	
+	/**
+	 * Generate a random id not used in the room map.
+	 * 
+	 * @return unique id
+	 */
 	public int getUniqueId()
 	{
 		Random random = new Random();
@@ -76,6 +81,13 @@ public class HouseMap{
 		}
 		
 		return result;		
+	}
+	
+	public void deleteDevice(Device device)
+	{
+		HouseMaps.removeFromMapList(roomsMap, device);
+		HouseMaps.removeFromMapList(categoriesMap, device);
+		
 	}
 	
 	public List<Device> getDevicesList()

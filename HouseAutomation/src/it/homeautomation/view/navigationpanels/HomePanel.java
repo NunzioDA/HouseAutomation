@@ -18,13 +18,15 @@ public class HomePanel extends HANavigationDrawerPanel
 	private HouseAutomationController controller;
 	
 	private HALabel title = new HALabel("Home", SwingConstants.LEFT);
-	private RoomList listR = new RoomList();
-	private JScrollPane scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private RoomList listR;
+	private JScrollPane scrollPane;
 	
 	public HomePanel(HouseAutomationController controller)
 	{
 		super("Home");
 		this.controller = controller;			
+		listR = new RoomList(controller);
+		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();
         

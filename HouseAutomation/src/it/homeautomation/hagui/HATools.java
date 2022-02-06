@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -80,20 +80,12 @@ public class HATools
 	
 	private static void setResizeListener(HAFrame frame)
 	{
-		frame.addComponentListener(new ComponentListener() {			
+		frame.addComponentListener(new ComponentAdapter() {
 			@Override
-			public void componentShown(ComponentEvent e) {}
-			
-			@Override
-			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
+			public void componentResized(ComponentEvent e) 
+			{
 				frame.resizeView();
-			}			
-			@Override
-			public void componentMoved(ComponentEvent e) {}
-			
-			@Override
-			public void componentHidden(ComponentEvent e) {}
+			}
 		});
 	}
 	

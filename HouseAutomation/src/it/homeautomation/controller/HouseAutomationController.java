@@ -49,6 +49,12 @@ public class HouseAutomationController
 		housemap.getRoutines().stream().forEach(r -> r.update(this));
 	}
 	
+	public void deleteDevice(Device device)
+	{
+		housemap.deleteDevice(device);
+		housemap.getRoutines().stream().forEach(r -> r.update(this));
+	}
+	
 	public List<Device> getRoomDevicesByCategory(String room, String category)
 	{
 		return housemap.getRoomInCategoriesMap(room).get(category);
@@ -99,6 +105,11 @@ public class HouseAutomationController
 	public boolean addRoutine(Routine currentRoutine)
 	{		
 		return housemap.addRoutine(currentRoutine);		
+	}
+
+	public boolean isFeatureStillAvailable(DeviceFeature feature)
+	{
+		return housemap.getDevicesList().stream().anyMatch(d -> d.getFeatures().contains(feature));
 	}
 
 }

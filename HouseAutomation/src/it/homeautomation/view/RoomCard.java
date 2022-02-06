@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
+import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATools;
@@ -32,18 +33,20 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	private static final long serialVersionUID = 1L;
 	private HALabel roomName = HATools.newTitle("", HATools.MIDDLE_TITLE); 
 	
-	private DeviceList deviceList = new DeviceList();
-	private JScrollPane deviceScrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private DeviceList deviceList;
+	private JScrollPane deviceScrollPane;
 
 	private boolean listenToMouseWheel = false;
 	
 	private static final int FACTOR = 30;
-	
-	
-	public RoomCard()
-	{		
+
+	public RoomCard(HouseAutomationController controller)
+	{
+		this.deviceList = new DeviceList(controller);
+		deviceScrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		init();		
-		reloadColors();       
+		reloadColors();
 	}
 	
 

@@ -11,11 +11,20 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * This panel contains the buttons
+ * which allow the user to close, 
+ * hide, maximize the frame
+ * 
+ * @author Nunzio D'Amore
+ *
+ */
+
 public class HAFrameControlPanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private HAFrame frame;
-	
+	private HAFrame frame;	
 	
 	HACPButton buttonClose;
 	HACPButton resizeButton;
@@ -82,6 +91,15 @@ public class HAFrameControlPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * 
+	 * Frame control panel button.
+	 * It sets automatically the color and the action 
+	 * to perform on the frame based on the type.
+	 * 
+	 * @author Nunzio D'Amore
+	 *
+	 */
 	private class HACPButton extends HAButton
 	{
 		private static final long serialVersionUID = 1L;
@@ -108,22 +126,32 @@ public class HAFrameControlPanel extends JPanel{
 			else setCustomColors(HATools.getBackgroundColor(), HATools.getForegroundColor());
 			
 			
-			addActionListener(new ActionListener() {
+			addActionListener(new ActionListener() 
+			{
 				
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					// TODO Auto-generated method stub				
-					if(HACPButton.this.type == Type.CLOSE) 
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					// Performing action based on button type
+					
+					switch(HACPButton.this.type)
+					{
+					case CLOSE:
 						HAFrameControlPanel.this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+					break;
 					
-					else if(HACPButton.this.type == Type.HIDE) 
+					case HIDE:
 						HAFrameControlPanel.this.frame.setState(JFrame.ICONIFIED);
+					break;
 					
-					else {
+					case RESIZE:
 						if(!HAFrameControlPanel.this.frame.isMaximized())
 							HAFrameControlPanel.this.frame.maximize();
 						else HAFrameControlPanel.this.frame.revertMaximize();
+					break;
+					
 					}
+					
 				}
 			});			
 			
@@ -133,7 +161,8 @@ public class HAFrameControlPanel extends JPanel{
 		public void paint(Graphics g)
 		{
 			super.paint(g);
-			
+
+			// printing the square icon if it is the resize button
 			if(type == Type.RESIZE)
 			{
 				int width = 10;

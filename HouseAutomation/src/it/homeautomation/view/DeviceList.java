@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import javax.swing.JScrollPane;
 
+import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATools;
 import it.homeautomation.model.Device;
@@ -28,8 +29,11 @@ public class DeviceList extends HAPanel
 	
 	private static int MARGIN_BETWEEN_CARDS = 30;
 	
-	public DeviceList()
+	private HouseAutomationController controller;
+	
+	public DeviceList(HouseAutomationController controller)
 	{		
+		this.controller = controller;
 		setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -53,7 +57,7 @@ public class DeviceList extends HAPanel
 			constraints.insets.left = MARGIN_BETWEEN_CARDS;
 		else constraints.insets.left = 0;
 		
-		add(new DeviceCard(myScrollPane).getListCardRendererComponent(m), constraints);
+		add(new DeviceCard(myScrollPane, controller).getListCardRendererComponent(m), constraints);
 		
 		constraints.gridx ++;
 	}
@@ -74,10 +78,15 @@ public class DeviceList extends HAPanel
 	@Override
 	public void setSize(Dimension d)
 	{
-		int newWidth = getComponentCount() * (getComponent(0).getPreferredSize().width + MARGIN_BETWEEN_CARDS);
+		int newWidth = 0;
 		
-		if(d.width < newWidth)
-			newWidth = d.width;
+		if(getComponentCount() > 0)
+		{
+			newWidth = getComponentCount() * (getComponent(0).getPreferredSize().width + MARGIN_BETWEEN_CARDS);
+			
+			if(d.width < newWidth)
+				newWidth = d.width;
+		}
 		
 		super.setSize(new Dimension(newWidth, DeviceCard.dimensions.height));
 	}
