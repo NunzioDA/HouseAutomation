@@ -281,7 +281,7 @@ public class CreateCommandPanel extends HAPanel
 					
 					if(device instanceof DeviceGroup)
 					{
-						deviceModel.addAll(((DeviceGroup)device).getChilden());
+						deviceModel.addAll(((DeviceGroup)device).getChildren());
 					}
 				}
 				

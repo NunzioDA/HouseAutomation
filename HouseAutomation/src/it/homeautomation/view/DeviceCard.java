@@ -1,12 +1,9 @@
 package it.homeautomation.view;
 
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,7 +21,6 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
@@ -49,8 +45,8 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	
 	private JScrollPane myScrollPane;
 	
-	private JPanel stateVisualizer = new JPanel();
-	private GridBagConstraints stateConstraint = new GridBagConstraints();
+	private JPanel stateVisualizer;
+	
 	
 	private Device myDevice;
 	private HouseAutomationController controller;
@@ -61,40 +57,18 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		this.myScrollPane = myScrollPane;
 		this.controller = controller;
 		this.listener = listener;
-		
-		init();
-		reloadColors();
 	}
 	
 	@Override
 	public Component getListCardRendererComponent(Device device)
 	{
 		this.myDevice = device;
-		deviceName.setText(device.getName());
+		deviceName.setText(device.getName());		
 		
+		stateVisualizer = new DeviceStateVisualizer(device);
 		
-		// visualizing features status
-		device.getFeatures().stream().forEach(f -> {
-				HAImageView panel = stateObjectToPanel(f.getSateRappresentation());
-				
-				if(panel != null) 
-				{	
-			
-					String iconID = f.getIconID();
-					
-					if(iconID != null)
-					{
-							
-						URL url = HAUtilities.getIconPath(iconID);
-						
-						panel.loadImage(url, 10);
-					}
-					
-					
-					addToStateVisualizer(panel);
-				}
-			});
-		
+		init();
+		reloadColors();
 		// visualizing main icon
 		Optional<DeviceFeature> firstCategoryOpt = device
 				.getFeatures()
@@ -118,33 +92,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 
 		return this;
 	}
-	
 
-	private HAImageView stateObjectToPanel(Object object)
-	{
-		HAImageView result = null;		
-		
-		if(object != null)
-		{
-			result = new HAImageView();
-			result.setLayout(new GridLayout());
-			
-			if(!(object instanceof Color))
-			{
-				String value =  object.toString();
-			
-				HATextCenter text = new HATextCenter(value, 20);
-				text.setBackground(stateVisualizer.getBackground());
-				result.add(text);
-			}
-			else result.setBackground((Color)object);
-			
-			result.setPreferredSize(new Dimension(40,40));
-		}
-		
-		return result;
-	}
-	
 	public void initMouseListener()
 	{
 		addMouseListener(new MouseAdapter() {
@@ -181,38 +129,9 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		});
 	}
 	
-	private void addToStateVisualizer(JPanel panel)
-	{
-		stateVisualizer.add(panel, stateConstraint);
-		
-		if(stateConstraint.gridx < 3)
-		{
-			stateConstraint.gridx ++;
-		}
-		else {
-			stateConstraint.gridx = 0;
-			stateConstraint.gridy ++;
-		}
-	}	
-	
-	private void initStateVisualizer()
-	{
-		stateVisualizer.setLayout(new GridBagLayout());
-		
-		stateConstraint.gridx = 0;
-		stateConstraint.gridy = 0;
-		stateConstraint.anchor = GridBagConstraints.NORTHWEST;
-		stateConstraint.weightx = 1;
-		stateConstraint.weighty = 1;
-		stateConstraint.insets = new Insets(5, 5, 5, 5);
-		stateConstraint.fill = GridBagConstraints.BOTH;
-		
-	}
-	
 	private void init()
 	{
 		initMouseListener();
-		initStateVisualizer();
 		image.setPreferredSize(new Dimension(dimensions.width/3, dimensions.height/3));
 		
 		setLayout(new GridBagLayout());
@@ -249,7 +168,8 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	{
 		//setting shadow
 		setBorder(new BevelBorder(SoftBevelBorder.RAISED, HAUtilities.getBackgroundColor(), HAUtilities.getShadowColor()));
-		stateVisualizer.setBackground(HAUtilities.getBackgroundColor());
+		if(stateVisualizer != null)
+			stateVisualizer.setBackground(HAUtilities.getBackgroundColor());
 		setBackground(HAUtilities.getDarkBackgroundColor());
 		deviceName.reloadColors();
 	}

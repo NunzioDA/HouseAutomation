@@ -58,7 +58,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	public void updateContent()
 	{
 		listR.refreshList(controller.getRoomsEntrySet());
-		updateUI();
+		listR.updateUI();
 	}
 
 	@Override

@@ -114,7 +114,7 @@ public class HouseMap{
 		if(device instanceof DeviceGroup)
 		{
 			((DeviceGroup)device)
-			.getChilden()
+			.getChildren()
 			.stream()
 			.forEach(d -> HouseMaps.removeFromMapList(categoriesMap, d));
 		}
@@ -163,7 +163,7 @@ public class HouseMap{
 			HouseMaps.splitDeviceIntoCategoryMap(returnMap, device);
 			
 			if(device instanceof DeviceGroup)
-				for(Device child : ((DeviceGroup)device).getChilden() )
+				for(Device child : ((DeviceGroup)device).getChildren() )
 					HouseMaps.splitDeviceIntoCategoryMap(returnMap, child);
 		}
 		

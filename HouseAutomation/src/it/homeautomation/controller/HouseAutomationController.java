@@ -63,12 +63,32 @@ public class HouseAutomationController
 	public void deleteDevice(Device device)
 	{
 		housemap.deleteDevice(device);
+		
+		List<DeviceGroup> group = getAllDeviceGroup();
+		group.stream().forEach(d -> d.removeChild(device));
+		
 		housemap.getRoutines().stream().forEach(r -> r.update(this));
 	}
 	
 	public List<Device> getRoomDevicesByCategory(String room, String category)
 	{
-		return housemap.getRoomInCategoriesMap(room).get(category);
+		List<Device> devices = housemap.getRoomInCategoriesMap(room).get(category);
+		
+		List<Device> categoryDevices = getDevicesByCategory(category);
+		
+		getDevicesByRoom(room)
+		.stream()
+		.filter(d -> (d instanceof DeviceGroup))
+		.forEach(dg -> devices.addAll(
+				((DeviceGroup)dg)
+				.getChildren()
+				.stream()
+				.filter(categoryDevices::contains)
+				.toList()
+				)
+		);
+		
+		return devices;
 	}
 	
 	public List<DeviceGroup> getAllDeviceGroup()
@@ -79,6 +99,7 @@ public class HouseAutomationController
 				.map(d -> (DeviceGroup)d)
 				.toList();
 	}
+	
 	
 	public Set<Map.Entry<String, List<Device>>> getRoomsEntrySet()
 	{

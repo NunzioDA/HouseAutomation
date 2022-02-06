@@ -41,7 +41,7 @@ public class Device {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends DeviceFeature> Optional<T> isFeaturePresent(Class<T> featureClass)
+	public <T extends DeviceFeature> Optional<T> isFeaturePresent(Class<T> featureClass)
 	{
 		return (Optional<T>) features
 		.stream()

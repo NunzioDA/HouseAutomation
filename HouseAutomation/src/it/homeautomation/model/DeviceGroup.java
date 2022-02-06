@@ -18,8 +18,13 @@ public class DeviceGroup extends Device
 		children.add(device);
 	}
 	
-	public List<Device> getChilden()
+	public List<Device> getChildren()
 	{
 		return Collections.unmodifiableList(children);
+	}
+	
+	public boolean removeChild(Device device)
+	{
+		return children.remove(device);
 	}
 }
