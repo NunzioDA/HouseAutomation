@@ -7,7 +7,7 @@ import java.util.List;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.commandmanagement.CreateCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
@@ -60,8 +60,8 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	{
 		if(createCommand != null)
 			createCommand.reloadColors();
-		getContent().setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getBackgroundColor());
+		getContent().setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 	}
 
 	@Override

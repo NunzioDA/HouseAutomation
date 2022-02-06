@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceFactory;
 import it.homeautomation.model.HouseMap;
@@ -43,8 +43,8 @@ public class HouseAutomationController
 	{
 		int uniqueID = housemap.getUniqueId();
 		
-		Device device = DeviceFactory.createDevice(HATools.capitalize(name), uniqueID, features);		
-		housemap.addDevice(HATools.capitalize(room), device);
+		Device device = DeviceFactory.createDevice(HAUtilities.capitalize(name), uniqueID, features);		
+		housemap.addDevice(HAUtilities.capitalize(room), device);
 		
 		housemap.getRoutines().stream().forEach(r -> r.update(this));
 	}

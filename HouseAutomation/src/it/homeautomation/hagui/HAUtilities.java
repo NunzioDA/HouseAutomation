@@ -14,7 +14,7 @@ import java.util.Arrays;
 import javax.swing.SwingConstants;
 
 
-public class HATools
+public class HAUtilities
 {
 	public static final float MAIN_TITLE = 50;
 	public static final float MIDDLE_TITLE = 30;
@@ -47,7 +47,7 @@ public class HATools
 	
 	public static URL getIconPath(String iconID)
 	{
-		return HATools.class.getResource(HATools.DEFAULT_ICONS_PATH + iconID + HATools.DEFAULT_ICONS_EXTENSION);
+		return HAUtilities.class.getResource(HAUtilities.DEFAULT_ICONS_PATH + iconID + HAUtilities.DEFAULT_ICONS_EXTENSION);
 	}
 	
 	public static void setTheme(Color background, Color foreground, Color primary, Color primaryForeground)
@@ -57,6 +57,7 @@ public class HATools
 		PRIMARY_FOREGROUND_COLOR = primaryForeground;
 		PRIMARY_COLOR = primary;
 	}
+	
 	
 	public static void resetTheme()
 	{
@@ -209,7 +210,7 @@ public class HATools
 		HALabel label = new HALabel(capitalize(description), orientation);
 		
 		
-		Font font = HATools.getRegularFont();
+		Font font = HAUtilities.getRegularFont();
 		
 		if(fontSize == MIDDLE_TITLE || fontSize == LAST_TITLE)
 			font = getLightFont();

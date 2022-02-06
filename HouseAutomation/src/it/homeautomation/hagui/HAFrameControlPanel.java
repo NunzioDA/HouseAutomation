@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  *
  */
 
-public class HAFrameControlPanel extends JPanel{
+public class HAFrameControlPanel extends JPanel implements HAThemeListener{
 	
 	private static final long serialVersionUID = 1L;
 	private HAFrame frame;	
@@ -36,8 +36,9 @@ public class HAFrameControlPanel extends JPanel{
 	{		
 		setLayout(null);
 		
+		
 		this.frame = frame;
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		refreshButtons();
 	}
 	
@@ -60,6 +61,7 @@ public class HAFrameControlPanel extends JPanel{
 
 		
 		buttonsList.stream().forEach(this::add);
+		reloadColors();
 		update();
 	}
 	
@@ -123,7 +125,7 @@ public class HAFrameControlPanel extends JPanel{
 			{
 				setCustomColors(new Color(229, 4, 4), Color.white);								
 			}
-			else setCustomColors(HATools.getBackgroundColor(), HATools.getForegroundColor());
+			else setCustomColors(HAUtilities.getBackgroundColor(), HAUtilities.getForegroundColor());
 			
 			
 			addActionListener(new ActionListener() 
@@ -158,6 +160,16 @@ public class HAFrameControlPanel extends JPanel{
 		}
 		
 		@Override
+		public void reloadColors()
+		{
+			if(type == Type.CLOSE)
+			{
+				setCustomColors(new Color(229, 4, 4), Color.white);								
+			}
+			else setCustomColors(HAUtilities.getBackgroundColor(), HAUtilities.getForegroundColor());
+		}
+		
+		@Override
 		public void paint(Graphics g)
 		{
 			super.paint(g);
@@ -171,5 +183,11 @@ public class HAFrameControlPanel extends JPanel{
 				g.drawRect(getWidth()/2 - (width / 2), getHeight()/2 - (height/2), width, height);
 			}
 		}
+	}
+
+	@Override
+	public void reloadColors()
+	{
+		buttonsList.stream().forEach(HACPButton::reloadColors);		
 	}
 }

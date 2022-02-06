@@ -17,7 +17,7 @@ public abstract class HANavigationDrawerPanel extends HAPanel
 	
 	public HANavigationDrawerPanel(String titleT)
 	{
-		title = HATools.newTitle(titleT, HATools.MAIN_TITLE, SwingConstants.LEFT);
+		title = HAUtilities.newTitle(titleT, HAUtilities.MAIN_TITLE, SwingConstants.LEFT);
 		
 		setLayout(null);
 		
@@ -33,13 +33,13 @@ public abstract class HANavigationDrawerPanel extends HAPanel
 		{
 			int width = getWidth() - MARGIN * 2;
 			
-			title.setSize(new Dimension(width, (int) HATools.MAIN_TITLE));
+			title.setSize(new Dimension(width, (int) HAUtilities.MAIN_TITLE));
 			title.setLocation(MARGIN, TOP_MARGIN);
 			
-			int contentHeight = (int) (getHeight() - MARGIN - TOP_MARGIN - HATools.MAIN_TITLE);
+			int contentHeight = (int) (getHeight() - MARGIN - TOP_MARGIN - HAUtilities.MAIN_TITLE);
 			
 			content.setSize(new Dimension(width, contentHeight));
-			content.setLocation(MARGIN, (int) (MARGIN + TOP_MARGIN + HATools.MAIN_TITLE));
+			content.setLocation(MARGIN, (int) (MARGIN + TOP_MARGIN + HAUtilities.MAIN_TITLE));
 		}
 		
 		super.repaint();

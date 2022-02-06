@@ -23,7 +23,7 @@ import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HATextField;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.model.command.Command;
@@ -139,7 +139,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	
 	private void initRoutinePanel() 
 	{
-		HALabel label = HATools.newDescription("Insert routine name:");
+		HALabel label = HAUtilities.newDescription("Insert routine name:");
 		//Routine panel init
 		GridLayout gl = new GridLayout(1,3);
 		gl.setHgap(20);
@@ -210,7 +210,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		constraints.weighty = 0f;
 		constraints.insets.bottom = 5;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
-		getContent().add(HATools.newDescription("Commands"), constraints);	
+		getContent().add(HAUtilities.newDescription("Commands"), constraints);	
 		
 		constraints.gridy ++;
 		constraints.weighty = 0.5f;
@@ -232,10 +232,10 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 			createCommand.reloadColors();
 		
 		routineName.reloadColors();
-		getContent().setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getBackgroundColor());
+		getContent().setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		routinePanel.setBackground(getBackground());
-		commandsManagementPanel.setBackground(HATools.getBackgroundColor());
+		commandsManagementPanel.setBackground(HAUtilities.getBackgroundColor());
 	}
 
 	@Override

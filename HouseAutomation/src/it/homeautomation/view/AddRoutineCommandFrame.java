@@ -7,7 +7,7 @@ import java.util.List;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAFrame;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.commandmanagement.CreateCommandPanel;
@@ -64,7 +64,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 	{
 		if(createCommand != null)
 			createCommand.reloadColors();
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 	}
 
 	@Override

@@ -18,8 +18,8 @@ public class HAList <E> extends JList<E> implements HAThemeListener
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getDarkBackgroundColor());
-		setForeground(HATools.getForegroundColor());
+		setBackground(HAUtilities.getDarkBackgroundColor());
+		setForeground(HAUtilities.getForegroundColor());
 		
 //		setBorder(BorderFactory.createCompoundBorder(
 //		        this.getBorder(), 

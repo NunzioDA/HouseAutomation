@@ -11,7 +11,7 @@ import javax.swing.ListCellRenderer;
 
 import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.features.DeviceFeature;
 
 public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<DeviceFeatureCard.CardStatus>
@@ -40,7 +40,7 @@ public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<Devic
 		constraints.anchor = GridBagConstraints.WEST;
 		add(checkBox,constraints);
 		
-		URL url = HATools.getIconPath(value.getFeature().getIconID());
+		URL url = HAUtilities.getIconPath(value.getFeature().getIconID());
 		
 		if(url != null)
 		{
@@ -56,9 +56,9 @@ public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<Devic
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getDarkBackgroundColor());
+		setBackground(HAUtilities.getDarkBackgroundColor());
 		checkBox.setOpaque(false);
-		checkBox.setForeground(HATools.getForegroundColor());
+		checkBox.setForeground(HAUtilities.getForegroundColor());
 
 	}
 	

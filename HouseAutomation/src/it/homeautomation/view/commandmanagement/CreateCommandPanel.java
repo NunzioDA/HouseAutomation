@@ -17,7 +17,7 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.command.Command;
@@ -29,8 +29,8 @@ public class CreateCommandPanel extends HAPanel
 	private static final long serialVersionUID = 1L;
 	private static final String PROTOTYPE_TEXT = "wwwwwwwwww";
 	
-	private HALabel subtitleDevice = HATools.newTitle("Select Device, a room or a category", HATools.MIDDLE_TITLE);
-	private HALabel tutorial = HATools.newTitle("Selecting a room will filter devices and categories.", HATools.LAST_TITLE);
+	private HALabel subtitleDevice = HAUtilities.newTitle("Select Device, a room or a category", HAUtilities.MIDDLE_TITLE);
+	private HALabel tutorial = HAUtilities.newTitle("Selecting a room will filter devices and categories.", HAUtilities.LAST_TITLE);
 	
 	
 	private DefaultComboBoxModel<String> roomsModel = new DefaultComboBoxModel<>();
@@ -331,13 +331,13 @@ public class CreateCommandPanel extends HAPanel
 		constraints.insets = new Insets(20,0,0,20);
 		constraints.gridy ++;
 		constraints.gridwidth = 1;
-		add(HATools.newDescription("Select room"), constraints);
+		add(HAUtilities.newDescription("Select room"), constraints);
 		
 		constraints.gridx ++;
-		add(HATools.newDescription("Select device"), constraints);
+		add(HAUtilities.newDescription("Select device"), constraints);
 		
 		constraints.gridx ++;
-		add(HATools.newDescription("Select category"), constraints);
+		add(HAUtilities.newDescription("Select category"), constraints);
 		
 		
 		constraints.gridx = 0;		
@@ -360,7 +360,7 @@ public class CreateCommandPanel extends HAPanel
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 	}
 
 

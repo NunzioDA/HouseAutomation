@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.view.RoomList;
 
 public class HomePanel extends HANavigationDrawerPanel
@@ -37,7 +37,7 @@ public class HomePanel extends HANavigationDrawerPanel
 	private void init()
 	{
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		title.setFont(HATools.getRegularFont().deriveFont(50f));
+		title.setFont(HAUtilities.getRegularFont().deriveFont(50f));
         
 		getContent().setLayout(new GridLayout());
         getContent().add(scrollPane); 
@@ -61,9 +61,9 @@ public class HomePanel extends HANavigationDrawerPanel
 	@Override
 	public void reloadColors()
 	{
-		getContent().setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getBackgroundColor());
-		scrollPane.getViewport().setBackground(HATools.getBackgroundColor());
+		getContent().setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
+		scrollPane.getViewport().setBackground(HAUtilities.getBackgroundColor());
 	}
 }
  

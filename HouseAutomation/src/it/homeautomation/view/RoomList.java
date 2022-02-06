@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 
 public class RoomList extends HAPanel
@@ -68,7 +68,7 @@ public class RoomList extends HAPanel
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());		
+		setBackground(HAUtilities.getBackgroundColor());		
 	}
 	
 	public void setMaxWidth(int maxWidth)

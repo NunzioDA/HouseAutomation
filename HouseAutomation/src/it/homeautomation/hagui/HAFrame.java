@@ -55,17 +55,17 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		haFrameControlPanel= new HAFrameControlPanel(this);
 		
 		titleLabel = new HALabel(title, SwingConstants.LEFT);
-		titleLabel.setFont(HATools.getRegularFont().deriveFont(TITLE_FONT_SIZE));
+		titleLabel.setFont(HAUtilities.getRegularFont().deriveFont(TITLE_FONT_SIZE));
 		
 		super.add(titleLabel);
 		super.add(haFrameControlPanel);
 		super.add(content);
 	
-		
+
 		updateTheme();
 		initFrameDragListener();
 		
-		HATools.initFrame(this, width, height);
+		HAUtilities.initFrame(this, width, height);
 	}
 	
 	@Override
@@ -176,10 +176,10 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 	 */
 	public void updateTheme()
 	{		
-		Color background = HATools.getBackgroundColor();
-		Color foreground = HATools.getForegroundColor();
+		Color background = HAUtilities.getBackgroundColor();
+		Color foreground = HAUtilities.getForegroundColor();
 		this.getContentPane().setBackground(background);
-		
+		haFrameControlPanel.reloadColors();
 		content.setBackground(background);
 		titleLabel.setForeground(foreground);
 		

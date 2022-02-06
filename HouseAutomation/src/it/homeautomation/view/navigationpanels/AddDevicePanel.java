@@ -24,7 +24,7 @@ import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HATextField;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.DeviceFeatureCard;
@@ -185,7 +185,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		constraints.insets.bottom = 0;
 		// adding field description device name
-		getContent().add(HATools.newDescription("Device name"), constraints);
+		getContent().add(HAUtilities.newDescription("Device name"), constraints);
 		
 		constraints.insets.bottom = 50;
 		constraints.gridy ++;		
@@ -198,7 +198,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		// adding field description feature list
 		constraints.insets.bottom = 0;
-		getContent().add(HATools.newDescription("Select device features"), constraints);
+		getContent().add(HAUtilities.newDescription("Select device features"), constraints);
 		
 		constraints.weighty = 1f;
 		constraints.insets.bottom = 50;
@@ -229,7 +229,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
 		// adding field description room name
-		getContent().add(HATools.newDescription("New room name"), constraints);
+		getContent().add(HAUtilities.newDescription("New room name"), constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.bottom = 50;
@@ -241,7 +241,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
 		constraints.insets.bottom = 0;
 		// adding field description feature list
-		getContent().add(HATools.newDescription("Select existing room"), constraints);
+		getContent().add(HAUtilities.newDescription("Select existing room"), constraints);
 		
 		constraints.weighty = 1f;
 		constraints.insets.bottom = 50;
@@ -261,8 +261,8 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	@Override
 	public void reloadColors()
 	{
-		getContent().setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getBackgroundColor());
+		getContent().setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		featuresListPane.reloadColors();
 		roomsListPane.reloadColors();
 		features.reloadColors();

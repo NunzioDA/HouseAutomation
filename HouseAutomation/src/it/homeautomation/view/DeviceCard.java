@@ -26,7 +26,7 @@ import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAThemeListener;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
@@ -82,7 +82,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 					if(iconID != null)
 					{
 							
-						URL url = HATools.getIconPath(iconID);
+						URL url = HAUtilities.getIconPath(iconID);
 						
 						panel.loadImage(url, 10);
 					}
@@ -107,7 +107,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			
 			if(iconID != null)
 			{
-				imagePath = HATools.getIconPath(iconID);
+				imagePath = HAUtilities.getIconPath(iconID);
 				image.loadImage(imagePath);
 			}
 			
@@ -165,11 +165,11 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				setBackground(HATools.getLightBackgroundColor());
+				setBackground(HAUtilities.getLightBackgroundColor());
 				
 				for(Component c : getComponents())
 					if(c instanceof HAThemeListener)
-						c.setBackground(HATools.getLightBackgroundColor());
+						c.setBackground(HAUtilities.getLightBackgroundColor());
 				
 				for(MouseListener m : myScrollPane.getMouseListeners())
 					m.mouseEntered(e);
@@ -245,9 +245,9 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	public void reloadColors()
 	{
 		//setting shadow
-		setBorder(new BevelBorder(SoftBevelBorder.RAISED, HATools.getBackgroundColor(), HATools.getShadowColor()));
-		stateVisualizer.setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getDarkBackgroundColor());
+		setBorder(new BevelBorder(SoftBevelBorder.RAISED, HAUtilities.getBackgroundColor(), HAUtilities.getShadowColor()));
+		stateVisualizer.setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getDarkBackgroundColor());
 		deviceName.reloadColors();
 	}
 }

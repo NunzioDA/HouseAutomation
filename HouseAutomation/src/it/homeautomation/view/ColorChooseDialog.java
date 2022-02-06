@@ -13,7 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import it.homeautomation.hagui.HAButton;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.view.interfaces.ColorSelectionListener;
 
 public class ColorChooseDialog extends JDialog
@@ -28,8 +28,8 @@ public class ColorChooseDialog extends JDialog
 		super(frame, "Choose Color");
 		frame.setEnabled(false);
 		setSize(600,500);
-		setBackground(HATools.getBackgroundColor());
-		colorChooser.setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
+		colorChooser.setBackground(HAUtilities.getBackgroundColor());
 		
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

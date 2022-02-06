@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAButton;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 
 public class DeviceManagementFrame extends JFrame
@@ -46,7 +46,7 @@ public class DeviceManagementFrame extends JFrame
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.BOTH;
 		
-		add(HATools.newTitle(device.getName(), HATools.MAIN_TITLE), constraints);
+		add(HAUtilities.newTitle(device.getName(), HAUtilities.MAIN_TITLE), constraints);
 		
 		constraints.gridy ++;
 		add(deleteDevice, constraints);		
@@ -61,7 +61,7 @@ public class DeviceManagementFrame extends JFrame
 		setUndecorated(true);
 		
 		setLayout(new GridBagLayout());
-		getContentPane().setBackground(HATools.getBackgroundColor());		
+		getContentPane().setBackground(HAUtilities.getBackgroundColor());		
 	}
 	
 	private void initDeleteButton()

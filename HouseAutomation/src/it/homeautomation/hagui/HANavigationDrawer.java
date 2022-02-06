@@ -80,7 +80,7 @@ public class HANavigationDrawer extends HAPanel
 	private void alignButtonTextLeft(HAButton button)
 	{
 		button.setHorizontalAlignment(SwingConstants.LEFT);
-		String textMargin = HATools.spaceMarginString(10) + button.getText();
+		String textMargin = HAUtilities.spaceMarginString(10) + button.getText();
 		button.setText(textMargin);
 	}	
 	
@@ -188,14 +188,14 @@ public class HANavigationDrawer extends HAPanel
 	@Override
 	public void reloadColors()
 	{
-		Color nameLabelColor = HATools
-				.changeColorBrightness(HATools
+		Color nameLabelColor = HAUtilities
+				.changeColorBrightness(HAUtilities
 											.getDarkBackgroundColor(),-10);
 		
-		setBackground(HATools.getDarkBackgroundColor());
+		setBackground(HAUtilities.getDarkBackgroundColor());
 		houseNameLabel.setBackground(nameLabelColor);
-		houseNameLabel.setForeground(HATools.getForegroundColor());		
-		navigationButtonsPanel.setBackground(HATools.getBackgroundColor());
+		houseNameLabel.setForeground(HAUtilities.getForegroundColor());		
+		navigationButtonsPanel.setBackground(HAUtilities.getBackgroundColor());
 		
 		buttonsPanels.values().stream().forEach(HANavigationDrawerPanel::reloadColors);
 	}

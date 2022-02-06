@@ -19,7 +19,7 @@ public class HAButton extends JButton implements HAThemeListener
 		reloadColors();
 		setBorder(null);
 		setFocusPainted(false);
-		setFont(HATools.getThinFont().deriveFont(BUTTON_FONT_SIZE));
+		setFont(HAUtilities.getThinFont().deriveFont(BUTTON_FONT_SIZE));
 		initMouseReactionListener();
 	}
 	
@@ -49,7 +49,7 @@ public class HAButton extends JButton implements HAThemeListener
 				// TODO Auto-generated method stub
 				if(isEnabled()) {
 					
-					Color mouseEnteredColor = HATools.changeColorBrightness(normalColor, BUTTON_COLOR_BRIGHTENING);
+					Color mouseEnteredColor = HAUtilities.changeColorBrightness(normalColor, BUTTON_COLOR_BRIGHTENING);
 					HAButton.this.setBackground(mouseEnteredColor);
 				}
 			}
@@ -63,7 +63,7 @@ public class HAButton extends JButton implements HAThemeListener
 		// setting disabled color
 		if(!b)
 		{
-			Color disabledColor = HATools.changeColorBrightness(normalColor, -BUTTON_COLOR_BRIGHTENING);
+			Color disabledColor = HAUtilities.changeColorBrightness(normalColor, -BUTTON_COLOR_BRIGHTENING);
 			setBackground(disabledColor);
 		}
 		else resetButtonColor();
@@ -88,8 +88,8 @@ public class HAButton extends JButton implements HAThemeListener
 	@Override
 	public void reloadColors()
 	{
-		normalColor = HATools.getPrimaryColor();
-		foreground = HATools.getPrimaryForegroundColor();
+		normalColor = HAUtilities.getPrimaryColor();
+		foreground = HAUtilities.getPrimaryForegroundColor();
 		
 		
 		setBackground(normalColor);

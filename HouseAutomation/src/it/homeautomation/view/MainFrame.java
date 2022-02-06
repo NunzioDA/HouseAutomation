@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAFrame;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.view.navigationpanels.AddDevicePanel;
 import it.homeautomation.view.navigationpanels.ExecuteCommandPanel;
 import it.homeautomation.view.navigationpanels.ManageRoutinePanel;
@@ -91,7 +91,7 @@ public class MainFrame extends HAFrame
 	public void reloadColors()
 	{
 		if(contentPanel != null)
-			contentPanel.setBackground(HATools.getBackgroundColor());
+			contentPanel.setBackground(HAUtilities.getBackgroundColor());
 	}
 
 	

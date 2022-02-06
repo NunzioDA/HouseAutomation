@@ -18,7 +18,6 @@ public class HATextField extends JTextField implements HAThemeListener
 		reloadColors();
 		
 		setEmptyBorder();
-		
 		addFocusListener(new FocusListener() {
 			
 			@Override
@@ -30,7 +29,7 @@ public class HATextField extends JTextField implements HAThemeListener
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				setBorder(new MatteBorder(0, 0, 2, 0, HATools.getForegroundColor()));
+				setBorder(new MatteBorder(0, 0, 2, 0, HAUtilities.getForegroundColor()));
 			}
 		});
 	}
@@ -44,7 +43,7 @@ public class HATextField extends JTextField implements HAThemeListener
 	public void reloadColors()
 	{
 		
-		setBackground(HATools.getDarkBackgroundColor());
-		setForeground(HATools.getForegroundColor());		
+		setBackground(HAUtilities.getDarkBackgroundColor());
+		setForeground(HAUtilities.getForegroundColor());		
 	}
 }

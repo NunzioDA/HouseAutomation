@@ -23,7 +23,7 @@ import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAScrollPane;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.interfaces.CommandCreationListener;
@@ -198,10 +198,10 @@ public class SelectCommandPanel extends HAPanel
 		constraints.weighty = 0.1f;
 		constraints.weightx = 1f;
 		constraints.insets = new Insets(0,0,5,0);
-		add(HATools.newDescription("Select commands"), constraints);
+		add(HAUtilities.newDescription("Select commands"), constraints);
 		
 		constraints.gridx ++;		
-		add(HATools.newDescription("Insert value"), constraints);
+		add(HAUtilities.newDescription("Insert value"), constraints);
 		
 		constraints.weighty = 1f;
 		constraints.gridx = 0;
@@ -248,13 +248,13 @@ public class SelectCommandPanel extends HAPanel
 	public void reloadColors()
 	{
 		if(inputAndConfirmPanel != null)
-			inputAndConfirmPanel.setBackground(HATools.getBackgroundColor());
+			inputAndConfirmPanel.setBackground(HAUtilities.getBackgroundColor());
 		
 		
 		inputArea.reloadColors();
 		
 		commandsList.reloadColors();
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 	}
 
 }

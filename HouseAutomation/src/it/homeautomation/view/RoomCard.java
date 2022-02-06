@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -31,7 +31,7 @@ import it.homeautomation.view.interfaces.ListCardRenderer;
 public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<String, List<Device>>>
 {
 	private static final long serialVersionUID = 1L;
-	private HALabel roomName = HATools.newTitle("", HATools.MIDDLE_TITLE); 
+	private HALabel roomName = HAUtilities.newTitle("", HAUtilities.MIDDLE_TITLE); 
 	
 	private DeviceList deviceList;
 	private JScrollPane deviceScrollPane;
@@ -129,9 +129,9 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		deviceList.reloadColors();
-		deviceScrollPane.getViewport().setBackground(HATools.getBackgroundColor());
+		deviceScrollPane.getViewport().setBackground(HAUtilities.getBackgroundColor());
 	}
 
 

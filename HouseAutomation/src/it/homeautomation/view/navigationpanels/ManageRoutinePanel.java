@@ -18,7 +18,7 @@ import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAScrollPane;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.view.AddRoutineCommandFrame;
@@ -216,7 +216,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.weighty = 0.3f;
 		constraints.weightx = 1f;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		getContent().add(HATools.newDescription("Routines"), constraints);
+		getContent().add(HAUtilities.newDescription("Routines"), constraints);
 		
 		constraints.gridy ++;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -237,7 +237,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.insets.top = 0;
 		constraints.insets.left = 30;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
-		getContent().add(HATools.newDescription("Selected Routine"), constraints);
+		getContent().add(HAUtilities.newDescription("Selected Routine"), constraints);
 		
 		constraints.gridy ++;
 		constraints.fill = GridBagConstraints.BOTH;		
@@ -261,7 +261,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.weighty = 0.3f;
 		constraints.insets.top = 20;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		getContent().add(HATools.newDescription("Execution Log"), constraints);
+		getContent().add(HAUtilities.newDescription("Execution Log"), constraints);
 		
 		constraints.gridy ++;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -275,8 +275,8 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	@Override
 	public void reloadColors()
 	{
-		getContent().setBackground(HATools.getBackgroundColor());
-		setBackground(HATools.getBackgroundColor());
+		getContent().setBackground(HAUtilities.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		leftButtonsContainer.setBackground(getBackground());
 		rightButtonsContainer.setBackground(getBackground());
 	}

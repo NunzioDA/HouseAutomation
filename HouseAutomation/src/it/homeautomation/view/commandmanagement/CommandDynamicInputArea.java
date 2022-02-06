@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATextField;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.view.ColorChooseDialog;
 import it.homeautomation.view.interfaces.ColorSelectionListener;
 
@@ -112,9 +112,9 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 	@Override
 	public void reloadColors()
 	{
-		chooseColorPanel.setBackground(HATools.getBackgroundColor());
+		chooseColorPanel.setBackground(HAUtilities.getBackgroundColor());
 		startColorChooser.reloadColors();
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 	}
 	
 	@Override

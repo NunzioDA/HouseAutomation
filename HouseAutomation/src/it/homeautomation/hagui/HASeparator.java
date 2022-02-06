@@ -18,7 +18,7 @@ public class HASeparator extends JSeparator
 	public HASeparator(int orientation, int thickness)
 	{
 		super(orientation);
-		Color color = HATools.changeColorBrightness(HATools.getDarkBackgroundColor(), -20);
+		Color color = HAUtilities.changeColorBrightness(HAUtilities.getDarkBackgroundColor(), -20);
 		setBorder(BorderFactory.createLineBorder(color, thickness));
 	}
 }

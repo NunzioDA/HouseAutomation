@@ -60,7 +60,7 @@ public class HATextCenter extends JPanel implements HAThemeListener
 		int textheight;
 		do {			
 			fontSize += 0.5;
-			g2.setFont(HATools.getThinFont().deriveFont(fontSize));		
+			g2.setFont(HAUtilities.getThinFont().deriveFont(fontSize));		
 			textWidth = g2.getFontMetrics().stringWidth(text);	
 			
 			// getting text height
@@ -101,7 +101,7 @@ public class HATextCenter extends JPanel implements HAThemeListener
 	@Override
 	public void reloadColors()
 	{
-		setForeground(HATools.getForegroundColor());
+		setForeground(HAUtilities.getForegroundColor());
 	}
    
 }

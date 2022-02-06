@@ -15,7 +15,7 @@ import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HATextField;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 
 public class WelcomeFrame extends HAFrame
 {
@@ -29,7 +29,7 @@ public class WelcomeFrame extends HAFrame
 	private HALabel title = new HALabel(titleText, SwingConstants.LEFT);
 	private HALabel error = new HALabel("", SwingConstants.LEFT);
 	private HALabel description = new HALabel(descriptionText, SwingConstants.RIGHT);
-	private HALabel houseNameDesc = HATools.newDescription("House Name:");
+	private HALabel houseNameDesc = HAUtilities.newDescription("House Name:");
 	private HATextField houseName = new HATextField(30);	
 	private HAButton confirm = new HAButton("Confirm");
 	private HouseAutomationController controller;
@@ -44,7 +44,7 @@ public class WelcomeFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				if(!houseName.getText().isEmpty()) {
-					controller.startMainFrame(HATools.capitalize(houseName.getText()));
+					controller.startMainFrame(HAUtilities.capitalize(houseName.getText()));
 					WelcomeFrame.this.setVisible(false); 
 					WelcomeFrame.this.dispose();
 				}
@@ -58,7 +58,7 @@ public class WelcomeFrame extends HAFrame
 		setResizable(false);
 		
 		setContentLayout(new GridBagLayout());
-		title.setFont(HATools.getRegularFont().deriveFont(TITLE_SIZE));
+		title.setFont(HAUtilities.getRegularFont().deriveFont(TITLE_SIZE));
 		GridBagConstraints constrains = new GridBagConstraints();
 		error.setForeground(Color.red);
 		

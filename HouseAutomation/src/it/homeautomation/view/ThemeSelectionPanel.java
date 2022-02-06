@@ -1,6 +1,5 @@
 package it.homeautomation.view;
 
-
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,7 +10,7 @@ import java.awt.event.ActionListener;
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
-import it.homeautomation.hagui.HATools;
+import it.homeautomation.hagui.HAUtilities;
 
 public class ThemeSelectionPanel extends HAPanel
 {
@@ -41,14 +40,14 @@ public class ThemeSelectionPanel extends HAPanel
 			{				
 				reloadColors();
 				
-				if(!HATools.getBackgroundColor().equals(newBackgroundColor)) {
+				if(!HAUtilities.getBackgroundColor().equals(newBackgroundColor)) {
 					text.setText(selectDark);
-					HATools.setTheme(newBackgroundColor, newForegroundColor, newPrimaryColor, newPrimaryForegroundColor);
+					HAUtilities.setTheme(newBackgroundColor, newForegroundColor, newPrimaryColor, newPrimaryForegroundColor);
 				}
 				else 
 				{
 					text.setText(selectLight);
-					HATools.resetTheme();
+					HAUtilities.resetTheme();
 				}
 				
 				frame.updateTheme();
@@ -78,7 +77,7 @@ public class ThemeSelectionPanel extends HAPanel
 	@Override
 	public void reloadColors()
 	{
-		setBackground(HATools.getBackgroundColor());
+		setBackground(HAUtilities.getBackgroundColor());
 		text.reloadColors();
 		switchTheme.reloadColors();
 		switchTheme.reloadColors();		
