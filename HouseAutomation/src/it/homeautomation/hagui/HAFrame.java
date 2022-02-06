@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+
 /**
  * 
  * <p>HAFrame is the default frame class, providing a global theme by initializing the frame.
@@ -84,10 +85,14 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		if(!isMaximized())
 		{
 			saveWhenMaximized = getSize();
+			
 			Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 			Dimension size = new Dimension(rec.width, rec.height);
+			
+			Point center = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+			
 			setSize(size);
-			setLocation(0, 0);
+			setLocation(center.x - (size.width / 2), center.y - (size.height / 2));
 		}
 	}
 	
@@ -174,7 +179,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		Color background = HATools.getBackgroundColor();
 		Color foreground = HATools.getForegroundColor();
 		this.getContentPane().setBackground(background);
-//		this.haFrameControlPanel.setFrameTheme(background, foreground);
+		
 		content.setBackground(background);
 		titleLabel.setForeground(foreground);
 		
