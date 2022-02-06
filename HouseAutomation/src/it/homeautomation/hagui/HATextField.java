@@ -29,7 +29,7 @@ public class HATextField extends JTextField implements HAThemeListener
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				setBorder(new MatteBorder(0, 0, 2, 0, HAUtilities.getForegroundColor()));
+				setBorder(new MatteBorder(0, 0, 2, 0, HAUtilities.getSecondaryColor()));
 			}
 		});
 	}

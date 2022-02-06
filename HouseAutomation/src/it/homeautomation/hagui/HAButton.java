@@ -1,26 +1,45 @@
 package it.homeautomation.hagui;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+import javax.swing.plaf.metal.MetalButtonUI;
 
 public class HAButton extends JButton implements HAThemeListener
 {
 	private static final long serialVersionUID = 1L;
 	private static final float BUTTON_FONT_SIZE = 15f;
 	private static final int BUTTON_COLOR_BRIGHTENING = 15;
-	private Color normalColor, foreground;
+	private Color normalColor, disabled, disabledForeground = null;
 	
 	public HAButton(String text)
 	{
 		super(text);
 		reloadColors();
-		setBorder(null);
-		setFocusPainted(false);
+		disabled = HAUtilities.changeColorBrightness(normalColor, -BUTTON_COLOR_BRIGHTENING);
+		disabledForeground = null;
+
 		setFont(HAUtilities.getThinFont().deriveFont(BUTTON_FONT_SIZE));
 		initMouseReactionListener();
+		
+		setUI(new MetalButtonUI() {
+		    protected Color getDisabledTextColor() {
+		        Color foreground;
+		        
+		        if(disabledForeground != null)
+				{
+		        	foreground = disabledForeground;						
+				}
+		        else foreground = HAUtilities.getForegroundColor().darker();
+		        
+		        return foreground;
+		    }
+		});
+		
+		setBorder(null);
+		setFocusPainted(false);
 	}
 	
 	private void resetButtonColor()
@@ -30,13 +49,7 @@ public class HAButton extends JButton implements HAThemeListener
 	
 	private void initMouseReactionListener()
 	{
-		addMouseListener(new MouseListener() {			
-			@Override
-			public void mouseReleased(MouseEvent e) {}			
-			@Override
-			public void mousePressed(MouseEvent e) {}			
-			@Override
-			public void mouseClicked(MouseEvent e) {}
+		addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -63,8 +76,7 @@ public class HAButton extends JButton implements HAThemeListener
 		// setting disabled color
 		if(!b)
 		{
-			Color disabledColor = HAUtilities.changeColorBrightness(normalColor, -BUTTON_COLOR_BRIGHTENING);
-			setBackground(disabledColor);
+			setBackground(disabled);
 		}
 		else resetButtonColor();
 		
@@ -74,9 +86,15 @@ public class HAButton extends JButton implements HAThemeListener
 	public void setCustomColors(Color background, Color foreground)
 	{
 		this.normalColor = background;
-		this.foreground = foreground;
 		setBackground(normalColor);
 		setForeground(foreground);
+		disabled = HAUtilities.changeColorBrightness(normalColor, -BUTTON_COLOR_BRIGHTENING);
+	}
+	
+	public void setDisabledColor(Color background, Color foreground)
+	{
+		disabled = background;
+		disabledForeground = foreground;
 	}
 	
 	@Override
@@ -85,14 +103,10 @@ public class HAButton extends JButton implements HAThemeListener
 		return getText().hashCode();
 	}
 
+	
 	@Override
 	public void reloadColors()
 	{
-		normalColor = HAUtilities.getPrimaryColor();
-		foreground = HAUtilities.getPrimaryForegroundColor();
-		
-		
-		setBackground(normalColor);
-		setForeground(foreground);
+		 setCustomColors(HAUtilities.getPrimaryColor(), HAUtilities.getPrimaryForegroundColor());
 	}
 }

@@ -33,15 +33,17 @@ public class HAUtilities
 	
 	private static final Color SHADOW_COLOR = new Color(0x202020);
 	
-	private static final Color BACKGROUND_COLOR_DEFAULT = new Color(0x404040);
+	private static final Color BACKGROUND_COLOR_DEFAULT = new Color(0x424242);
 	private static final Color FOREGROUND_COLOR_DEFAULT = new Color(0xeeeeee);
-	private static final Color PRIMARY_COLOR_DEFAULT = new Color(0x353535);
-	private static final Color PRIMARY_FOREGROUND_COLOR_DEFAULT = new Color(0xeeeeee);
+	private static final Color PRIMARY_COLOR_DEFAULT = new Color(0x742896/*0x353535*/);
+	private static final Color PRIMARY_FOREGROUND_COLOR_DEFAULT = new Color(0xefefef);
+	private static final Color SECONDARY_COLOR_DEFAULT = new Color(0x742896);
 	
 	private static Color BACKGROUND_COLOR = null;
 	private static Color FOREGROUND_COLOR = null;
 	private static Color PRIMARY_COLOR = null;
 	private static Color PRIMARY_FOREGROUND_COLOR = null;
+	private static Color SECONDARY_COLOR = null;
 	
 	private static Font normalFont = null, thinFont = null, lightFont = null;
 	
@@ -50,12 +52,13 @@ public class HAUtilities
 		return HAUtilities.class.getResource(HAUtilities.DEFAULT_ICONS_PATH + iconID + HAUtilities.DEFAULT_ICONS_EXTENSION);
 	}
 	
-	public static void setTheme(Color background, Color foreground, Color primary, Color primaryForeground)
+	public static void setTheme(Color background, Color foreground, Color primary, Color primaryForeground, Color secondary)
 	{
 		BACKGROUND_COLOR = background;
 		FOREGROUND_COLOR = foreground;
 		PRIMARY_FOREGROUND_COLOR = primaryForeground;
 		PRIMARY_COLOR = primary;
+		SECONDARY_COLOR = secondary;
 	}
 	
 	
@@ -65,6 +68,7 @@ public class HAUtilities
 		FOREGROUND_COLOR = null;
 		PRIMARY_FOREGROUND_COLOR = null;
 		PRIMARY_COLOR = null;
+		SECONDARY_COLOR = null;
 	}
 	
 	public static void initFrame(HAFrame frame, int width, int height)
@@ -131,15 +135,15 @@ public class HAUtilities
 		return result;
 	}
 		
-	public static Color changeColorBrightness(Color color, int brightening)
+	public static Color changeColorBrightness(Color color, int offset)
 	{
 		Color darken = null;
 		
 		if(color != null)
 		{
-			int newRed = color.getRed() + brightening;
-			int newGreen = color.getGreen() + brightening;
-			int newBlue = color.getBlue() + brightening;
+			int newRed = color.getRed() + offset;
+			int newGreen = color.getGreen() + offset;
+			int newBlue = color.getBlue() + offset;
 			
 			int red, green, blue;
 	
@@ -190,15 +194,7 @@ public class HAUtilities
 		return SHADOW_COLOR;
 	}
 	
-	public static Color getForegroundColor()
-	{
-		Color result = FOREGROUND_COLOR;
-		
-		if(result == null)
-			result = FOREGROUND_COLOR_DEFAULT;
-		
-		return result;
-	}
+
 	
 	public static HALabel newTitle(String description, float fontSize)
 	{
@@ -222,6 +218,26 @@ public class HAUtilities
 	public static HALabel newDescription(String description)
 	{
 		return new HALabel(capitalize(description), SwingConstants.LEFT); 
+	}
+	
+	public static Color getForegroundColor()
+	{
+		Color result = FOREGROUND_COLOR;
+		
+		if(result == null)
+			result = FOREGROUND_COLOR_DEFAULT;
+		
+		return result;
+	}
+	
+	public static Color getSecondaryColor()
+	{
+		Color result = SECONDARY_COLOR;
+		
+		if(result == null)
+			result = SECONDARY_COLOR_DEFAULT;
+		
+		return result;
 	}
 	
 	public static Color getBackgroundColor()

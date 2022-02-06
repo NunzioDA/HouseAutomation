@@ -23,8 +23,8 @@ public class ThemeSelectionPanel extends HAPanel
 	private HAButton switchTheme = new HAButton("Switch Theme");
 	
 	private Color newBackgroundColor = new Color(0xeeeeee);
-	private Color newForegroundColor = new Color(0x353535);
-	private Color newPrimaryColor = new Color(0x289eff);
+	private Color newForegroundColor = new Color(0x333333);
+	private Color newPrimaryColor = new Color(0x009688);
 	private Color newPrimaryForegroundColor = new Color(0xeeeeee);
 	
 	private void init()
@@ -42,7 +42,7 @@ public class ThemeSelectionPanel extends HAPanel
 				
 				if(!HAUtilities.getBackgroundColor().equals(newBackgroundColor)) {
 					text.setText(selectDark);
-					HAUtilities.setTheme(newBackgroundColor, newForegroundColor, newPrimaryColor, newPrimaryForegroundColor);
+					HAUtilities.setTheme(newBackgroundColor, newForegroundColor, newPrimaryColor, newPrimaryForegroundColor, newPrimaryColor);
 				}
 				else 
 				{

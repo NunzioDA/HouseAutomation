@@ -10,9 +10,11 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.Device;
 import it.homeautomation.view.RoomList;
+import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
-public class HomePanel extends HANavigationDrawerPanel
+public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedListener
 {
 	private static final long serialVersionUID = 1L;
 	private HouseAutomationController controller;
@@ -25,7 +27,7 @@ public class HomePanel extends HANavigationDrawerPanel
 	{
 		super("Home");
 		this.controller = controller;			
-		listR = new RoomList(controller);
+		listR = new RoomList(controller, this);
 		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();
@@ -56,6 +58,7 @@ public class HomePanel extends HANavigationDrawerPanel
 	public void updateContent()
 	{
 		listR.refreshList(controller.getRoomsEntrySet());
+		updateUI();
 	}
 
 	@Override
@@ -64,6 +67,12 @@ public class HomePanel extends HANavigationDrawerPanel
 		getContent().setBackground(HAUtilities.getBackgroundColor());
 		setBackground(HAUtilities.getBackgroundColor());
 		scrollPane.getViewport().setBackground(HAUtilities.getBackgroundColor());
+	}
+
+	@Override
+	public void deviceDeleted(Device device)
+	{
+		updateContent();
 	}
 }
  

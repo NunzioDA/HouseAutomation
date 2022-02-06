@@ -97,7 +97,9 @@ public class HANavigationDrawer extends HAPanel
 			throw new NullPointerException("The name can not be empty.");
 		
 		
-		HAButton button = new HAButton(name);		
+		HAButton button = new HAButton(name);
+		button.setCustomColors(getBackground(), HAUtilities.getForegroundColor());
+		button.setDisabledColor(HAUtilities.getPrimaryColor(), HAUtilities.getPrimaryForegroundColor());
 		alignButtonTextLeft(button);
 		buttonsPanels.put(button, panel);
 		

@@ -30,6 +30,7 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
 /**
@@ -53,11 +54,13 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	
 	private Device myDevice;
 	private HouseAutomationController controller;
+	private DeviceDeletedListener listener;
 	
-	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller)
+	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller, DeviceDeletedListener listener)
 	{
 		this.myScrollPane = myScrollPane;
 		this.controller = controller;
+		this.listener = listener;
 		
 		init();
 		reloadColors();
@@ -149,7 +152,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				new DeviceManagementFrame(myDevice, controller);
+				new DeviceManagementFrame(myDevice, controller, listener);
 			}
 			
 			@Override
