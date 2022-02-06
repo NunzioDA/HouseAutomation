@@ -26,6 +26,7 @@ public class CommandsUtility
 		String error = "";
 		//SingleValueCommand have only 1 value
 		Class<?> commandValueClass = command.getValuesTypes().get(0);
+		Object inputParsed = null;
 		
 		if(isAlphanumeric(commandValueClass))
 		{
@@ -37,40 +38,39 @@ public class CommandsUtility
 				if(commandValueClass.equals(Float.class))
 				{
 					try {
-						float floatInput = Float.parseFloat(userInput);
-						((SingleValueCommand<?, Float>)command).setValue(floatInput);
+						inputParsed = Float.parseFloat(userInput);
 					}
 					catch(NumberFormatException ex)
 					{
 						error = "Insert a number with a decimal point";
-					}											
+					}										
 					
 				}
 				else if(commandValueClass.equals(Integer.class))
 				{
 					try {
-						int integerValue = Integer.parseInt(userInput);
-						
-						((SingleValueCommand<?, Integer>)command).setValue(integerValue);
+						inputParsed = Integer.parseInt(userInput);						
 					}
 					catch(NumberFormatException ex)
 					{
 						error = "Insert an integer number";
-					}		
-					
+					}					
 				}
 				else if(commandValueClass.equals(String.class))
 				{
-					((SingleValueCommand<?, String>)command).setValue(userInput);
+					inputParsed = userInput;
 				}
 			}
 			else error = "Insert a value";
 		}
-		else
+		else if(commandValueClass.equals(Color.class) || commandValueClass.isEnum())
 		{
-			Color selectedColor = (Color)inputValue;
-			((SingleValueCommand<?, Color>)command).setValue(selectedColor);
+			inputParsed = inputValue;
 		}
+		
+		if(inputParsed != null)
+			((SingleValueCommand<?, Object>)command).setValue(inputParsed);
+			
 		
 		return error;
 	}	

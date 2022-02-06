@@ -1,8 +1,10 @@
 package it.homeautomation.model.features.implementation;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import it.homeautomation.model.command.Command;
+import it.homeautomation.model.command.implementation.ChangeChannel;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.SingleValueFeature;
 
@@ -26,7 +28,11 @@ public class Television extends SingleValueFeature<Integer> implements DeviceCat
 	@Override
 	public List<Command<?>> getCommands()
 	{
-		return null;
+		List<Command<?>> commands = new ArrayList<>();
+		ChangeChannel ch = new ChangeChannel();
+		ch.setFeature(this);
+		commands.add(ch);
+		return commands;
 	}
 
 	@Override

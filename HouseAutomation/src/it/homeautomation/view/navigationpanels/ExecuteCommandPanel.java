@@ -73,7 +73,6 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	@Override
 	public void commandListCreated(String description, List<Command<?>> commands, List<Object> valuesList)
 	{
-		System.out.println(commands);
 		commands.stream().forEach(Command::execute);
 	}
 

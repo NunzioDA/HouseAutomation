@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import it.homeautomation.hagui.HAButton;
+import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATextField;
 import it.homeautomation.hagui.HAUtilities;
@@ -29,6 +31,8 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 	private JPanel colorVisualizer = new JPanel();
 	private HAButton startColorChooser = new HAButton("Select a color");
 	
+	private DefaultComboBoxModel<Object> modelEnum = new DefaultComboBoxModel<>();
+	private HAComboBox<Object> enumVisualizer = new HAComboBox<>(modelEnum);
 	private boolean colorSelected = false;
 	
 	public CommandDynamicInputArea(JPanel inputAndConfirmPanel)
@@ -65,17 +69,25 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 	{
 		Object result = null;
 		
+		// check if is alphaNumVAlue is present
 		boolean isAlphaNum = Stream.of(getComponents()).anyMatch(alphaNumValues::equals);
+		boolean isColor = Stream.of(getComponents()).anyMatch(chooseColorPanel::equals);
+		boolean isEnum = Stream.of(getComponents()).anyMatch(enumVisualizer::equals);
 		
 		if(isAlphaNum)
 		{			
 			result = alphaNumValues.getText();			
 		}
-		else {
-			boolean isColor = Stream.of(getComponents()).anyMatch(chooseColorPanel::equals);
+		else if(isColor)
+		{
+			result = colorVisualizer.getBackground();
+		}
+		else if(isEnum)
+		{
+			int index = enumVisualizer.getSelectedIndex();
 			
-			if(isColor)
-				result = colorVisualizer.getBackground();
+			if(index >= 0)
+				result = modelEnum.getElementAt(index);
 		}
 		
 		return result;
@@ -102,6 +114,12 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 			else if(classV.equals(Color.class))
 			{
 				add(chooseColorPanel);
+			}
+			else if(classV.isEnum())
+			{				
+				modelEnum.removeAllElements();
+				Stream.of(classV.getEnumConstants()).forEach(modelEnum::addElement);
+				add(enumVisualizer);
 			}
 			else removeAll();
 		}else removeAll();
