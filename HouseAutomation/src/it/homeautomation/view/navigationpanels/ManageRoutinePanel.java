@@ -2,12 +2,14 @@ package it.homeautomation.view.navigationpanels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -19,6 +21,7 @@ import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HATools;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
+import it.homeautomation.view.AddRoutineCommandFrame;
 
 public class ManageRoutinePanel extends HANavigationDrawerPanel
 {
@@ -33,8 +36,12 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	private HAScrollPane routineCommandsScroll = new HAScrollPane(commandsDescriptionList, HAScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, HAScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	private HouseAutomationController controller;
-	private HAButton execute = new HAButton("Execute");	
+	private HAButton execute = new HAButton("Execute");
+	private HAButton deleteRoutine = new HAButton("Delete Routine");
+	private HAButton addCommand = new HAButton("Add Command");
 	private HAButton removeCommand = new HAButton("Remove Command");
+	private JPanel leftButtonsContainer = new JPanel();
+	private JPanel rightButtonsContainer = new JPanel();
 	
 	private DefaultListModel<String> commandsLogModel = new DefaultListModel<>();
 	private HAList<String> commandsLog = new HAList<>(commandsLogModel);
@@ -151,11 +158,55 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		});
 	}
 	
+	private void initAddCommandButton()
+	{
+		addCommand.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Routine selectedRoutine = getSelectedRoutine();
+				
+				if(selectedRoutine != null)
+				{
+					new AddRoutineCommandFrame(selectedRoutine, ManageRoutinePanel.this, controller, 500, 500);
+				}
+			}
+		});
+	}
+	
+	private void initDeleteRoutineButton()
+	{
+		deleteRoutine.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Routine selectedRoutine = getSelectedRoutine();
+				
+				if(selectedRoutine != null)
+				{
+					controller.deleteRoutine(selectedRoutine);
+					updateContent();
+				}
+			}
+		});
+	}
+	
+	private void initButtonContainer(JPanel panel)
+	{
+		GridLayout gl = new GridLayout(1, 2);
+		gl.setHgap(10);
+		panel.setLayout(gl);
+	}
+	
 	private void init()
 	{
 		initRemoveButton();
 		initRoutineListListener();
 		initExecuteButton();
+		initAddCommandButton();
+		initDeleteRoutineButton();
 		
 		getContent().setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -174,7 +225,10 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		
 		constraints.gridy ++;
 		constraints.insets = new Insets(20, 0, 0, 0);
-		getContent().add(execute, constraints);
+		initButtonContainer(leftButtonsContainer);
+		leftButtonsContainer.add(execute);
+		leftButtonsContainer.add(deleteRoutine);		
+		getContent().add(leftButtonsContainer, constraints);
 		
 		
 		constraints.gridx = 1;
@@ -192,7 +246,12 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		
 		constraints.gridy ++;
 		constraints.insets.top = 20;
-		getContent().add(removeCommand, constraints);
+		
+		initButtonContainer(rightButtonsContainer);
+		rightButtonsContainer.add(removeCommand);
+		rightButtonsContainer.add(addCommand);		
+		
+		getContent().add(rightButtonsContainer, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy ++;
@@ -218,11 +277,13 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	{
 		getContent().setBackground(HATools.getBackgroundColor());
 		setBackground(HATools.getBackgroundColor());
+		leftButtonsContainer.setBackground(getBackground());
+		rightButtonsContainer.setBackground(getBackground());
 	}
 
 	@Override
 	public void updateContent()
-	{
+	{		
 		routinesModel.removeAllElements();
 		routinesModel.addAll(controller.getRoutines());
 		commandsDescription.removeAllElements();

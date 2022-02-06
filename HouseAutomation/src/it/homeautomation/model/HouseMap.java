@@ -179,4 +179,9 @@ public class HouseMap{
 	{
 		return "House @" + name + ":\nrooms map -> "+roomsMap+"\ncategories map -> "+categoriesMap;
 	}
+
+	public void deleteRoutine(Routine selectedRoutine)
+	{
+		routines.remove(selectedRoutine);
+	}
 }

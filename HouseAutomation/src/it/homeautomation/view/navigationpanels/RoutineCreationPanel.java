@@ -63,6 +63,12 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		init();
 	}
 	
+	private void resetPanel()
+	{
+		commandsDescription.removeAllElements();
+		currentRoutine = controller.getRoutineInstance();
+	}
+	
 	private void initCreateRoutineButton()
 	{
 		createRoutineButton.addActionListener(new ActionListener() {
@@ -82,8 +88,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 						
 						if(success)
 						{
-							commandsDescription.removeAllElements();
-							currentRoutine = controller.getRoutineInstance();
+							resetPanel();
 						}
 						else error.setText(EXISTING_ROUTINE);
 					}

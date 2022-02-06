@@ -112,4 +112,9 @@ public class HouseAutomationController
 		return housemap.getDevicesList().stream().anyMatch(d -> d.getFeatures().contains(feature));
 	}
 
+	public void deleteRoutine(Routine selectedRoutine)
+	{
+		housemap.deleteRoutine(selectedRoutine);		
+	}
+
 }
