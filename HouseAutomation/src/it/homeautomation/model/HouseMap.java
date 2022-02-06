@@ -62,6 +62,11 @@ public class HouseMap{
 	}
 	
 	
+	private boolean isDevicePresent(Device device)
+	{
+		return isIdPresent(device.getId());
+	}
+	
 	/**
 	 * 
 	 * @throws NullPointerException if {@code room} or {@code newDevice} is {@code null}
@@ -73,7 +78,7 @@ public class HouseMap{
 		
 		boolean result = false;
 		
-		if(!isIdPresent(newDevice.getId()))
+		if(!isDevicePresent(newDevice))
 		{
 			HouseMaps.addToMapList(roomsMap, room, newDevice);
 			HouseMaps.splitDeviceIntoCategoryMap(categoriesMap, newDevice);
@@ -83,11 +88,36 @@ public class HouseMap{
 		return result;		
 	}
 	
+	public boolean addNewDeviceGroupChild(DeviceGroup group, Device child)
+	{
+		boolean returnV = isDevicePresent(group);
+		
+		if(returnV)
+		{
+			returnV =  !isDevicePresent(child);
+			
+			if(returnV)
+			{
+				group.add(child);
+				HouseMaps.splitDeviceIntoCategoryMap(categoriesMap, child);
+			}
+		}
+		
+		return returnV;
+	}
+	
 	public void deleteDevice(Device device)
 	{
 		HouseMaps.removeFromMapList(roomsMap, device);
 		HouseMaps.removeFromMapList(categoriesMap, device);
 		
+		if(device instanceof DeviceGroup)
+		{
+			((DeviceGroup)device)
+			.getChilden()
+			.stream()
+			.forEach(d -> HouseMaps.removeFromMapList(categoriesMap, d));
+		}
 	}
 	
 	public List<Device> getDevicesList()
@@ -131,6 +161,10 @@ public class HouseMap{
 		for(Device device : devicesInRoom)
 		{
 			HouseMaps.splitDeviceIntoCategoryMap(returnMap, device);
+			
+			if(device instanceof DeviceGroup)
+				for(Device child : ((DeviceGroup)device).getChilden() )
+					HouseMaps.splitDeviceIntoCategoryMap(returnMap, child);
 		}
 		
 		return returnMap;

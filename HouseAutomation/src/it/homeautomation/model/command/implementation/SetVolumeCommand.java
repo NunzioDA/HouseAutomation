@@ -5,6 +5,6 @@ public class SetVolumeCommand extends PercentageCommand
 	@Override
 	public String toString()
 	{
-		return "Set Volume" + super.toString();
+		return "Set Volume " + super.toString();
 	}
 }

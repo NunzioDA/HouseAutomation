@@ -20,7 +20,9 @@ import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.model.features.SingleValueFeature;
 import it.homeautomation.model.features.implementation.StateFeature;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
@@ -40,6 +42,17 @@ public class DeviceManagementFrame extends HAFrame
 		this.controller = controller;
 		this.device = device;
 		this.listener = listener;
+		
+		if(device instanceof DeviceGroup)
+		{
+			for(Device d : ((DeviceGroup)device).getChilden())
+			{
+				for(DeviceFeature f : d.getFeatures())
+					if(f instanceof SingleValueFeature<?>)
+						System.out.println(((SingleValueFeature<?>)f).getValue());
+			}
+		}
+		
 		init();		
 	}
 	

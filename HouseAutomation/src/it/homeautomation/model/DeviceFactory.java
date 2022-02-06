@@ -16,16 +16,22 @@ import it.homeautomation.model.features.DeviceFeature;
 
 public class DeviceFactory
 {		
-	public static Device createDevice(String name, int id, List<DeviceFeature> features)
+	public static Device createDevice(String name, int id, List<DeviceFeature> features, boolean isAGroup)
 	{
 		Objects.requireNonNull(features,"");
 		
-		Device newDevice = new Device(name,id);	
+		Device newDevice;
+		
+		if(isAGroup)
+			newDevice= new DeviceGroup(name,id);	
+		else 
+			newDevice= new Device(name,id);	
 		
 		newDevice.addFeature(AvailableFeature.getDefaultFeature().getClone());
 		features.forEach(newDevice::addFeature);
 		
 		return newDevice;
 	}
+	
 	
 }

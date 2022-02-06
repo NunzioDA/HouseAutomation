@@ -8,6 +8,7 @@ import java.util.Set;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceFactory;
+import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.HouseMap;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.features.DeviceFeature;
@@ -39,14 +40,24 @@ public class HouseAutomationController
 		return housemap.getName();
 	}
 	
-	public void addDevice(String name, String room, List<DeviceFeature> features)
+	
+	public void addDevice(String name, String room, List<DeviceFeature> features, boolean isAGroup)
 	{
 		int uniqueID = housemap.getUniqueId();
 		
-		Device device = DeviceFactory.createDevice(HAUtilities.capitalize(name), uniqueID, features);		
+		Device device = DeviceFactory.createDevice(HAUtilities.capitalize(name), uniqueID, features, isAGroup);		
 		housemap.addDevice(HAUtilities.capitalize(room), device);
 		
 		housemap.getRoutines().stream().forEach(r -> r.update(this));
+	}
+	
+	public void addNewDeviceToGroup(DeviceGroup deviceGroup, String name, List<DeviceFeature> features)
+	{
+		int uniqueID = housemap.getUniqueId();
+		String deviceName = HAUtilities.capitalize(name) + " in " + deviceGroup.getName();
+		Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
+		
+		housemap.addNewDeviceGroupChild(deviceGroup, child);
 	}
 	
 	public void deleteDevice(Device device)
@@ -58,6 +69,15 @@ public class HouseAutomationController
 	public List<Device> getRoomDevicesByCategory(String room, String category)
 	{
 		return housemap.getRoomInCategoriesMap(room).get(category);
+	}
+	
+	public List<DeviceGroup> getAllDeviceGroup()
+	{
+		return getAllDevices()
+				.stream()
+				.filter(d -> (d instanceof DeviceGroup))
+				.map(d -> (DeviceGroup)d)
+				.toList();
 	}
 	
 	public Set<Map.Entry<String, List<Device>>> getRoomsEntrySet()

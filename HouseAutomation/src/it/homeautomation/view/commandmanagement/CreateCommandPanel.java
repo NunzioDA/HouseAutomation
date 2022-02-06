@@ -20,6 +20,7 @@ import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.implementation.StateFeature;
@@ -274,7 +275,17 @@ public class CreateCommandPanel extends HAPanel
 			deviceModel.addElement(CommandsUtility.ALL_DEVICES);
 			if(roomsBox.getSelectedItem().equals(CommandsUtility.ALL_ROOMS))
 			{
-				deviceModel.addAll(controller.getAllDevices());
+				for(Device device : controller.getAllDevices())
+				{
+					deviceModel.addElement(device);
+					
+					if(device instanceof DeviceGroup)
+					{
+						deviceModel.addAll(((DeviceGroup)device).getChilden());
+					}
+				}
+				
+				
 			}
 			else
 				deviceModel.addAll(controller
