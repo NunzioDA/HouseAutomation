@@ -1,10 +1,10 @@
 package it.homeautomation.model.command.implementation;
 
-public class DimmableCommand extends PercentageCommand{
-
+public class SetVolumeCommand extends PercentageCommand
+{
 	@Override
 	public String toString()
 	{
-		return "Change brightness" + super.toString();
+		return "Set Volume" + super.toString();
 	}
 }

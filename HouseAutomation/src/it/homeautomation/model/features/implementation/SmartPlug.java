@@ -4,13 +4,12 @@ import java.util.List;
 
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceCategory;
-import it.homeautomation.model.features.DeviceFeature;
 
 public class SmartPlug implements DeviceCategory
 {
 
 	@Override
-	public DeviceFeature getClone()
+	public SmartPlug getClone()
 	{
 		return new SmartPlug();
 	}
