@@ -7,23 +7,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-import it.homeautomation.controller.CommandsUtility;
+import it.homeautomation.controller.CommandsGroupUtility;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.model.features.DeviceCategory;
-import it.homeautomation.model.features.implementation.StateFeature;
 
 public class FilterCommandPanel extends HAPanel
 {
@@ -47,8 +43,6 @@ public class FilterCommandPanel extends HAPanel
 	private HouseAutomationController controller;
 	private SelectCommandPanel selectCommand;
 
-	private Device singleDevice = null;
-	
 	public FilterCommandPanel(HouseAutomationController controller, SelectCommandPanel selectCommand)
 	{
 		this.controller = controller;
@@ -91,120 +85,21 @@ public class FilterCommandPanel extends HAPanel
 		Object roomSelected = roomsBox.getSelectedItem();
 		Object deviceS = devicesBox.getSelectedItem();
 		Object categorySelected = categoryBox.getSelectedItem();
-		
 		if(roomSelected != null && deviceS != null && categorySelected != null)
 		{
-			String roomS = roomsBox.getSelectedItem().toString();
-			String categoryS = categoryBox.getSelectedItem().toString();
-			boolean error = false;
+			List<Command<?>> commands = new ArrayList<>();
 			
-			List<Command<?>> commands = new ArrayList<>();	
+			String description = controller.getCommandsFilterTool().filterCommands(roomSelected, deviceS, categorySelected, commands);
 			
-			String description = "";
-			
-			
-			if(roomS.equals(CommandsUtility.ALL_ROOMS) && CommandsUtility.ALL_DEVICES.equals(deviceS)  
-					&& categoryS.equals(CommandsUtility.ALL_CATEGORIES))
+			if(description != null)
 			{
-				// ALL DEVICES SELECTED				
-				description = allDeviceSelected();
-			}
-			else if(roomS.equals(CommandsUtility.ALL_ROOMS) && !categoryS.equals(CommandsUtility.ALL_CATEGORIES))
-			{
-				// SELECTED A CATEGORY
-				description = selectedACategory(categoryS, commands);				
-			}
-			else if(devicesBox.isEnabled() && !CommandsUtility.ALL_DEVICES.equals(deviceS))
-			{
-				// SELECTED A DEVICE
-				description = selectedADevice(commands);
-			}
-			else if(!roomS.equals(CommandsUtility.ALL_ROOMS) && 
-					!categoryS.equals(CommandsUtility.ALL_CATEGORIES))
-			{
-				// SELECTED A CATEGORY IN A ROOM				
-				description = selectedACategoryInRoom(categoryS, roomS, commands);	
-			}
-			else if(!roomS.equals(CommandsUtility.ALL_ROOMS) && 
-					categoryS.equals(CommandsUtility.ALL_CATEGORIES))
-			{
-				// SELECTED ALL DEVICE IN A ROOM
-				description = selectedAllDevicesInRoom(roomS);	
-			}
-			else error = true;
-			
-			if(!error) 
-			{
-				commands.addAll(AvailableFeature
-						.getDefaultFeature()
-						.getCommands());
-				
-				if(singleDevice == null)
-					selectCommand.refreshCommands(description, commands, categoryS, roomS);
-				else selectCommand.refreshCommands(description, singleDevice, commands);
+				selectCommand.refreshCommands(description, commands, 
+						categorySelected.toString(), roomSelected.toString(), deviceS);
 			}
 		}
 	}
 	
-	private String selectedAllDevicesInRoom(String room)
-	{
-		return "All devices in " + room;
-	}
 	
-	private String selectedACategoryInRoom(String categoryS, String room, List<Command<?>> commands)
-	{
-		String description = categoryS + " devices in " + room;
-
-		selectedACategory(categoryS, commands);
-		
-		return description;
-	}
-	
-	private String selectedADevice(List<Command<?>> commands)
-	{
-		int index = devicesBox.getSelectedIndex();
-		singleDevice = (Device)deviceModel.getElementAt(index);
-						
-		singleDevice.getFeatures().forEach(f->{ 
-			if(f.getCommands() != null && !(f instanceof StateFeature))
-				commands.addAll(f.getCommands());
-		});
-		
-		return singleDevice.getName();
-	}
-	
-	private String allDeviceSelected()
-	{
-		return "All devices";
-	}
-	
-	private String selectedACategory(String categoryS, List<Command<?>> commands)
-	{
-		List<Device> devices = controller.getDevicesByCategory(categoryS);
-		String description = "";
-		
-		if(!devices.isEmpty())
-		{
-			Optional<DeviceCategory> op = AvailableFeature.getCategoryByName(categoryS);
-			
-			if(!op.isEmpty())
-			{
-				List<Command<?>> filter = devices
-						.get(0)
-						.castToFeature(op
-								.get()
-								.getClass())
-						.getCommands();
-				
-				if(filter != null)
-					commands.addAll(filter);
-				
-				description = op.get().getCategoryName() + " Category";
-			}					
-		}
-		
-		return description;
-	}
 
 	private void initDeviceBoxListener()
 	{
@@ -225,7 +120,7 @@ public class FilterCommandPanel extends HAPanel
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				if(!e.getItem().equals(CommandsUtility.ALL_CATEGORIES))
+				if(!e.getItem().equals(CommandsGroupUtility.ALL_CATEGORIES))
 				{
 					devicesBox.setEnabled(false);
 					devicesBox.setSelectedIndex(0);
@@ -255,8 +150,8 @@ public class FilterCommandPanel extends HAPanel
 		{
 			categoryBox.setEnabled(true);
 			categoryModel.removeAllElements();
-			categoryModel.addElement(CommandsUtility.ALL_CATEGORIES);
-			if(roomsBox.getSelectedItem().equals(CommandsUtility.ALL_ROOMS))
+			categoryModel.addElement(CommandsGroupUtility.ALL_CATEGORIES);
+			if(roomsBox.getSelectedItem().equals(CommandsGroupUtility.ALL_ROOMS))
 			{
 				categoryModel.addAll(controller.getAllCategories());
 			}
@@ -275,8 +170,8 @@ public class FilterCommandPanel extends HAPanel
 		{
 			devicesBox.setEnabled(true);
 			deviceModel.removeAllElements();
-			deviceModel.addElement(CommandsUtility.ALL_DEVICES);
-			if(roomsBox.getSelectedItem().equals(CommandsUtility.ALL_ROOMS))
+			deviceModel.addElement(CommandsGroupUtility.ALL_DEVICES);
+			if(roomsBox.getSelectedItem().equals(CommandsGroupUtility.ALL_ROOMS))
 			{
 				for(Device device : controller.getAllDevices())
 				{
@@ -308,10 +203,9 @@ public class FilterCommandPanel extends HAPanel
 			roomsBox.setEnabled(true);
 			
 			roomsModel.removeAllElements();
-			roomsModel.addElement(CommandsUtility.ALL_ROOMS);
+			roomsModel.addElement(CommandsGroupUtility.ALL_ROOMS);
 			roomsModel.addAll(controller.getRoomsList());
-			roomsBox.setSelectedItem(CommandsUtility.ALL_ROOMS);
-			singleDevice = null;
+			roomsBox.setSelectedItem(CommandsGroupUtility.ALL_ROOMS);
 			filterDevices();
 			filterCategory();
 		}

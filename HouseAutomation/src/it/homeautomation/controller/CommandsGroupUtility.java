@@ -1,6 +1,7 @@
 package it.homeautomation.controller;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,19 +10,46 @@ import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.SingleValueCommand;
 import it.homeautomation.model.features.DeviceFeature;
 
-public class CommandsUtility
+/**
+ * CommandsGroupUtility performs a refresh of a commands group based
+ * on the given filter.
+ * 
+ * A commands group is defined as a set of commands of the same type
+ * and value performing the action on a set of devices.
+ * Of course all the devices in the set, MUST have the feature the command
+ * is based on.
+ * For this purpose the class filter the devices based on the filters and
+ * the given command.
+ * 
+ * This class is useful for :
+ * -updating routines when a device is deleted or 
+ * added
+ * -creating commands.
+ * 
+ * @author Nunzio D'Amore
+ *
+ */
+
+public class CommandsGroupUtility
 {
 	public static final String ALL_DEVICES = "All devices";
 	public static final String ALL_CATEGORIES = "All categories";
 	public static final String ALL_ROOMS = "All rooms";
 	
-	private static boolean isAlphanumeric(Class<?> commandValueClass)
+	public HouseAutomationController controller;
+	
+	public CommandsGroupUtility(HouseAutomationController controller)
+	{
+		this.controller = controller;
+	}
+	
+	private boolean isAlphanumeric(Class<?> commandValueClass)
 	{
 		return (commandValueClass.equals(Float.class)|| commandValueClass.equals(Integer.class)|| commandValueClass.equals(String.class));
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static String manageSingleValueCommands(Command<?> command, Object inputValue)
+	private String manageSingleValueCommands(Command<?> command, Object inputValue)
 	{
 		String error = "";
 		//SingleValueCommand have only 1 value
@@ -75,34 +103,40 @@ public class CommandsUtility
 		return error;
 	}	
 	
-	public static String refreshCommands(HouseAutomationController controller, String device, String category, 
+	public String refreshCommands(Object device, String category, 
 			String room, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
 	{
 		List<Device> devicesAffected = null;
 		String error = "";
 		
-		if(category.equals(ALL_CATEGORIES) // ROOM
-				&& !room.equals(ALL_ROOMS))
+		if(device instanceof String)
 		{
-			devicesAffected = controller.getDevicesByRoom(room);
-		}			
-		else if(!category.equals(ALL_CATEGORIES) // CATEGORY
-				&& room.equals(ALL_ROOMS))
-		{
-			devicesAffected = controller.getDevicesByCategory(category);
+			if(category.equals(ALL_CATEGORIES) // ROOM
+					&& !room.equals(ALL_ROOMS))
+			{
+				devicesAffected = controller.getDevicesByRoom(room);
+			}			
+			else if(!category.equals(ALL_CATEGORIES) // CATEGORY
+					&& room.equals(ALL_ROOMS))
+			{
+				devicesAffected = controller.getDevicesByCategory(category);
+			}
+			else if(!category.equals(ALL_CATEGORIES) // CATEGORY IN A ROOM
+					&& !room.equals(ALL_ROOMS))
+			{				
+				devicesAffected = controller.getRoomDevicesByCategory(room, category);
+			}
+			else if(category.equals(ALL_CATEGORIES) // ALL DEVICES
+					&& room.equals(ALL_ROOMS) 
+					&& device.equals(ALL_DEVICES))
+			{
+				devicesAffected = controller.getAllDevices();
+			}
 		}
-		else if(!category.equals(ALL_CATEGORIES) // CATEGORY IN A ROOM
-				&& !room.equals(ALL_ROOMS))
-		{				
-			devicesAffected = controller.getRoomDevicesByCategory(room, category);
+		else {
+			devicesAffected = new ArrayList<>();
+			devicesAffected.add((Device)device);
 		}
-		else if(category.equals(ALL_CATEGORIES) // ALL DEVICES
-				&& room.equals(ALL_ROOMS) 
-				&& device.equals(ALL_DEVICES))
-		{
-			devicesAffected = controller.getAllDevices();
-		}
-
 		
 		if(devicesAffected != null) 
 		{
@@ -112,7 +146,7 @@ public class CommandsUtility
 		return error;
 	}
 	
-	public static String computeDevices(List<Device> devicesAffected, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
+	private String computeDevices(List<Device> devicesAffected, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
 	{
 		String error = "";
 		commandsList.clear();

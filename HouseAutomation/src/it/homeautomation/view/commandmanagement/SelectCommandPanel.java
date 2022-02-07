@@ -16,7 +16,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import it.homeautomation.controller.CommandsUtility;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HALabel;
@@ -24,7 +23,6 @@ import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.Device;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
@@ -43,7 +41,8 @@ public class SelectCommandPanel extends HAPanel
 	private static final long serialVersionUID = 1L;
 	
 	private HouseAutomationController controller;
-	private String deviceFilter, categoryFilter, roomFilter;
+	private String categoryFilter, roomFilter;
+	private Object deviceFilter;
 	
 	private DefaultListModel<Command<?>> model = new DefaultListModel<>();
 	private HAList<Command<?>> commandsList = new HAList<>(model);
@@ -57,7 +56,6 @@ public class SelectCommandPanel extends HAPanel
 	
 	private List<CommandCreationListener> listeners = new ArrayList<>();
 	private String filteredCommandDescription;
-	private List<Device> devicesAffected;
 
 	public SelectCommandPanel(HouseAutomationController controller)
 	{
@@ -129,14 +127,10 @@ public class SelectCommandPanel extends HAPanel
 				
 				String description = getCommandsGroupDescription(inputValue);
 				
-				if(devicesAffected.isEmpty())
-					error.setText(CommandsUtility
-							.refreshCommands(controller, deviceFilter, categoryFilter, 
-									roomFilter, valuesList, confirmedCommands, selectedCommand));
-				
-				else 
-					error.setText(CommandsUtility
-							.computeDevices(devicesAffected, valuesList, confirmedCommands, selectedCommand));
+
+				error.setText(controller.getCommandsGroupUtility()
+						.refreshCommands(deviceFilter, categoryFilter, 
+								roomFilter, valuesList, confirmedCommands, selectedCommand));
 				
 				
 				if(error.getText().isEmpty()) 
@@ -257,22 +251,13 @@ public class SelectCommandPanel extends HAPanel
 	{	
 		commandsList.removeAll();
 	}
+
 	
-	public void refreshCommands(String groupDescription, Device device, List<Command<?>> commands)
-	{	
-		refreshCommands(groupDescription, commands, "", "");
-		this.deviceFilter = "";
-		
-		if(device != null)
-			this.devicesAffected.add(device);
-	}
-	
-	public void refreshCommands(String groupDescription, List<Command<?>> commands, String category, String room)
+	public void refreshCommands(String groupDescription, List<Command<?>> commands, String category, String room, Object device)
 	{
-		this.deviceFilter = CommandsUtility.ALL_DEVICES;
+		this.deviceFilter = device;
 		this.categoryFilter = category;
 		this.roomFilter = room;
-		this.devicesAffected = new ArrayList<>();
 		this.filteredCommandDescription = groupDescription;
 		this.model.removeAllElements();
 		this.model.addAll(commands);

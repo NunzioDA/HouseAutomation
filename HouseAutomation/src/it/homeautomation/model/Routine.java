@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.homeautomation.controller.CommandsUtility;
+import it.homeautomation.controller.CommandsGroupUtility;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.model.command.Command;
 
@@ -122,13 +122,13 @@ public class Routine
  		{
  			boolean deletable = false;
  			
- 			if(category.equals(CommandsUtility.ALL_CATEGORIES) // Selected a device
- 					&& room.equals(CommandsUtility.ALL_ROOMS) 
- 					&& !device.equals(CommandsUtility.ALL_DEVICES))
+ 			if(category.equals(CommandsGroupUtility.ALL_CATEGORIES) // Selected a device
+ 					&& room.equals(CommandsGroupUtility.ALL_ROOMS) 
+ 					&& !device.equals(CommandsGroupUtility.ALL_DEVICES))
  			{
  				deletable = !controller.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
- 			else CommandsUtility.refreshCommands(controller, device, category, room, 
+ 			else controller.getCommandsGroupUtility().refreshCommands(device, category, room, 
  						valuesList, commandsList, selectedCommand);
  			
  			return deletable;

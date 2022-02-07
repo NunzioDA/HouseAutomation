@@ -17,7 +17,16 @@ import it.homeautomation.view.WelcomeFrame;
 
 public class HouseAutomationController
 {
-	private HouseMap housemap;
+	private HouseMap housemap;	
+	private CommandsFilterTool commandsFilterTool;
+	private CommandsGroupUtility commandsGroupUtility;
+	
+	public HouseAutomationController()
+	{
+		startWelcomeFrame();
+		commandsFilterTool = new CommandsFilterTool(this);
+		commandsGroupUtility = new CommandsGroupUtility(this);
+	}
 	
 	public void startMainFrame(String houseName)
 	{
@@ -29,17 +38,20 @@ public class HouseAutomationController
 	{
 		new WelcomeFrame("Welcome", 500, 500, this);
 	}
-	
-	public HouseAutomationController()
-	{
-		startWelcomeFrame();
-	}
-	
 	public String getHouseName()
 	{
 		return housemap.getName();
 	}
 	
+	public CommandsGroupUtility getCommandsGroupUtility()
+	{
+		return commandsGroupUtility;
+	}
+	
+	public CommandsFilterTool getCommandsFilterTool()
+	{
+		return commandsFilterTool;
+	}
 	
 	public void addDevice(String name, String room, List<DeviceFeature> features, boolean isAGroup)
 	{
