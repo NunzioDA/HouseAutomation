@@ -2,15 +2,21 @@ package it.homeautomation.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -24,6 +30,7 @@ import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
@@ -163,6 +170,41 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		setPreferredSize(dimensions);
 	}
 
+	@Override
+	public void paint(Graphics g)
+	{
+		super.paint(g);
+		System.out.print("mah");
+		if(myDevice instanceof DeviceGroup)
+		{
+			URL url = HAUtilities.getIconPath("gruop");			
+			System.out.print("url");
+			if(url != null)
+			{
+				BufferedImage image;
+				try {
+					image = ImageIO.read(url);
+					
+					int xStartPosition = getWidth() - 50;
+					int yStartPosition = 50;
+					int height = 50;
+					
+					int ratio = image.getWidth() / image.getHeight();
+					int width = ratio * height;
+					
+					g.drawImage(image, xStartPosition, yStartPosition, width, height, this);
+					
+					System.out.print("dsad");
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.print(e);
+				}
+				
+				
+			}
+		}
+	}
+	
 	@Override
 	public void reloadColors()
 	{

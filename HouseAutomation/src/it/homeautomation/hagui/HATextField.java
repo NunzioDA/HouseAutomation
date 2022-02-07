@@ -42,7 +42,7 @@ public class HATextField extends JTextField implements HAThemeListener
 	@Override
 	public void reloadColors()
 	{
-		
+		setCaretColor(HAUtilities.getForegroundColor());
 		setBackground(HAUtilities.getDarkBackgroundColor());
 		setForeground(HAUtilities.getForegroundColor());		
 	}

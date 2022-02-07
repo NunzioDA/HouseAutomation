@@ -29,8 +29,7 @@ public class DeviceFeatureCard extends HAPanel implements ListCellRenderer<Devic
 		checkBox.setSelected(value.isChecked());		
 		checkBox.setText(value.getFeature().toString());
 
-		reloadColors();
-		
+		reloadColors();		
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.weightx = 1;

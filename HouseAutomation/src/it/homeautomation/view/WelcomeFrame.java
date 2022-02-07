@@ -94,7 +94,8 @@ public class WelcomeFrame extends HAFrame
 		
 		constrains.gridy ++;
 		constrains.gridwidth = 2;
-		constrains.fill = GridBagConstraints.HORIZONTAL;
+		constrains.ipady = 10;
+		constrains.fill = GridBagConstraints.BOTH;
 		constrains.insets = new Insets(0, 20, 20, 20);
 		addComponent(houseName, constrains);
 		

@@ -37,9 +37,9 @@ import it.homeautomation.view.FeatureList;
 public class AddDevicePanel extends HANavigationDrawerPanel
 {
 	private static final long serialVersionUID = 1L;
-	private static final String DEVICE_NAME_MISSING = "Device name missing.";
-	private static final String ROOM_MISSING = "Missing room or device group.";
-	private static final String DEVICE_FEATURE_MISSING = "No feature selected";
+	private static final String DEVICE_NAME_MISSING = "<html>Device name missing.</html>";
+	private static final String ROOM_MISSING = "<html>Select a room or device group.</html>";
+	private static final String DEVICE_FEATURE_MISSING = "<html>No feature selected</html>";
 	
 	private HouseAutomationController houseController;
 	
@@ -68,7 +68,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	{
 		super("Add new device");
 		this.houseController = houseController;
-		getContent().setLayout(new GridBagLayout());		
+		getContent().setLayout(new GridBagLayout());
 		init();
 	}
 	
@@ -152,7 +152,11 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 			public void insertUpdate(DocumentEvent e)
 			{
 				roomsList.setEnabled(false);
+				roomsList.clearSelection();
+				
 				deviceGroupList.setEnabled(false);
+				deviceGroupList.clearSelection();
+				
 				isAGroup.setEnabled(true);
 			}
 			
@@ -209,7 +213,8 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	{	
 		deviceNameField = new HATextField(50);	
 		error = new HALabel("", SwingConstants.RIGHT);
-		error.setForeground(Color.red);		
+		error.setForeground(Color.red);
+		
 		roomsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		initRoomField();		
@@ -264,17 +269,16 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		constraints.gridx ++;
 		constraints.weightx = 0.1f;
-		constraints.fill = GridBagConstraints.VERTICAL;
-		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.CENTER;
 		getContent().add(error, constraints);		
 		
+
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weighty = 0.1f;
 		constraints.weightx = 1f;
 		constraints.insets.bottom = 0;
-		
-//		constraints.insets.right = 0;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
 		// adding field description room name
@@ -300,12 +304,14 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		roomsList.setLayoutOrientation(JList.VERTICAL);		
 		getContent().add(roomsListPane, constraints);
-		
 
-		
-		
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		constraints.gridx ++;		
+		constraints.weighty = 0.1f;
+		constraints.fill = GridBagConstraints.BOTH;
+		getContent().add(isAGroup, constraints);
+		constraints.gridy ++;
+		
 		constraints.insets.right = 0;
 		constraints.insets.bottom = 0;
 		constraints.weighty = 0.1f;
@@ -319,10 +325,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		deviceGroupList.setLayoutOrientation(JList.VERTICAL);	
 		getContent().add(deviceGroupListPane, constraints);
 		
-		constraints.gridy ++;
-		constraints.weighty = 0.1f;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		getContent().add(isAGroup, constraints);
+
 		
 		reloadColors();
 	}

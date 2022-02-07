@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import it.homeautomation.controller.HouseAutomationController;
@@ -188,7 +189,10 @@ public class DeviceManagementFrame extends HAFrame
 	public void reloadColors()
 	{
 		if(featuresVisualizer != null)
-			featuresVisualizer.setBackground(HAUtilities.getPrimaryColor());
+		{
+			featuresVisualizer.setBackground(HAUtilities.getBackgroundColor());
+			featuresVisualizer.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getPrimaryColor()));
+		}
 		
 		if(childDeviceVisualizer != null)
 			childDeviceVisualizer.setBackground(HAUtilities.getBackgroundColor());
