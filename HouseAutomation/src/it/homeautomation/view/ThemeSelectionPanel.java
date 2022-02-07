@@ -22,10 +22,10 @@ public class ThemeSelectionPanel extends HAPanel
 	private HALabel text = new HALabel(selectLight, HEIGHT);
 	private HAButton switchTheme = new HAButton("Switch Theme");
 	
-	private Color newBackgroundColor = new Color(0xeeeeee);
-	private Color newForegroundColor = new Color(0x333333);
+	private Color newBackgroundColor = new Color(0xcccccc);
+	private Color newForegroundColor = new Color(0x505050);
 	private Color newPrimaryColor = new Color(0x009688);
-	private Color newPrimaryForegroundColor = new Color(0xeeeeee);
+	private Color newPrimaryForegroundColor = new Color(0xefefef);
 	
 	private void init()
 	{

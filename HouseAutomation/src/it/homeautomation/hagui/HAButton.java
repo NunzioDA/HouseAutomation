@@ -32,7 +32,7 @@ public class HAButton extends JButton implements HAThemeListener
 				{
 		        	foreground = disabledForeground;						
 				}
-		        else foreground = HAUtilities.getForegroundColor().darker();
+		        else foreground = HAUtilities.getPrimaryForegroundColor().darker();
 		        
 		        return foreground;
 		    }

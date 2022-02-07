@@ -51,7 +51,10 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 	private void initColorChooserPanel()
 	{
 		colorVisualizer.setBackground(Color.black);
-		chooseColorPanel.setLayout(new GridLayout(1,2));
+		GridLayout gl = new GridLayout(1,2);
+		gl.setHgap(15);
+		
+		chooseColorPanel.setLayout(gl);
 		chooseColorPanel.add(colorVisualizer);
 		chooseColorPanel.add(startColorChooser);
 		startColorChooser.addActionListener(new ActionListener() {

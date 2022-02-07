@@ -3,7 +3,6 @@ package it.homeautomation.view.navigationpanels;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAButton;
@@ -34,14 +34,14 @@ import it.homeautomation.view.interfaces.CommandCreationListener;
 public class RoutineCreationPanel extends HANavigationDrawerPanel implements CommandCreationListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final String MISSING_NAME = "Routine name required...";
-	private static final String MISSING_COMMANDS = "No commands have been added...";
-	private static final String EXISTING_ROUTINE = "A Routine with this name already exists...";
+	private static final String MISSING_NAME = "<html>Routine name required...</html>";
+	private static final String MISSING_COMMANDS = "<html>No commands have been added...</html>";
+	private static final String EXISTING_ROUTINE = "<html>A Routine with this name already exists...</html>";
 	
 	private HouseAutomationController controller;
 	private FilterCommandPanel filterCommandsPanel;
 	private SelectCommandPanel selectCommandPanel;
-	private HATextField routineName = new HATextField(20);
+	private HATextField routineName = new HATextField(200);
 	private JPanel routinePanel = new JPanel();
 	private JPanel commandsManagementPanel = new JPanel();
 	
@@ -67,6 +67,8 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	{
 		commandsDescription.removeAllElements();
 		currentRoutine = controller.getRoutineInstance();
+		routineName.setText("");
+		error.setText("");
 	}
 	
 	private void initCreateRoutineButton()
@@ -139,31 +141,63 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	
 	private void initRoutinePanel() 
 	{
-		HALabel label = HAUtilities.newDescription("Insert routine name:");
 		//Routine panel init
-		GridLayout gl = new GridLayout(1,3);
-		gl.setHgap(20);
+		GridBagLayout gl = new GridBagLayout();
+		GridBagConstraints constraints = new GridBagConstraints();
 		routinePanel.setLayout(gl);
-		routinePanel.add(label);
-		routinePanel.add(routineName);
-		routinePanel.add(createRoutineButton);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1f;		
+		constraints.weighty = 0f;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.NORTH;		
+		constraints.ipady = 15;
+		routinePanel.add(routineName, constraints);
+		
+		constraints.gridy ++;
+		constraints.ipady = 0;
+		constraints.weighty = 1f;
+		routinePanel.add(error, constraints);
+		
+		constraints.gridy ++;		
+		constraints.ipady = 40;
+		constraints.weighty = 0;
+		constraints.fill = GridBagConstraints.BOTH;		
+		routinePanel.add(createRoutineButton, constraints);
 	}
 	
 	private void initCommandsManagementPanel() 
 	{
-		GridLayout gl = new GridLayout(1,3);
-		gl.setHgap(25);
+		GridBagLayout gl = new GridBagLayout();
+		GridBagConstraints constraints = new GridBagConstraints();
+
 		commandsManagementPanel.setLayout(gl);
-		commandsDescriptionList.setVisibleRowCount(3);
-		commandsManagementPanel.add(commandsDescScroll);
-		commandsManagementPanel.add(removeCommand);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1f;		
+		constraints.weighty = 1f;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.NORTH;
+		constraints.insets = new Insets(0, 0, 20, 0);
+		commandsManagementPanel.add(commandsDescScroll, constraints);
+		
+		constraints.gridy ++;
+		constraints.weighty = 0f;
+		constraints.ipady = 40;
+		constraints.insets.bottom = 0;
+		commandsManagementPanel.add(removeCommand, constraints);
 	}
 	
-	private  void initComponents()
+	private void initComponents()
 	{
 		selectCommandPanel = new SelectCommandPanel(controller);
 		filterCommandsPanel = new FilterCommandPanel(controller, selectCommandPanel);
 		selectCommandPanel.addCommandListener(this);
+		
+		Color background = HAUtilities.getDarkBackgroundColor();
+		removeCommand.setCustomColors(background, HAUtilities.getForegroundColor());
+		removeCommand.setBorder(new MatteBorder(2,2,2,2, HAUtilities.getPrimaryColor()));
 		
 		initRoutineListManagement();
 		initCreateRoutineButton();
@@ -182,43 +216,54 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.weightx = 1f;		
-		constraints.weighty = 0.3f;
-		constraints.insets = new Insets(0, 0, 20, 0);
-		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.fill = GridBagConstraints.BOTH;		
-		getContent().add(routinePanel, constraints);
-		
-		constraints.gridy ++;
-		constraints.weighty = 0f;
-		constraints.insets.bottom = 0;
-		constraints.fill = GridBagConstraints.HORIZONTAL;		
-		getContent().add(error, constraints);		
-		
-		constraints.gridy ++;
-		constraints.weighty = 0.7f;
-		constraints.insets.top = 20;
-		constraints.insets.bottom = 20;
-		constraints.fill = GridBagConstraints.BOTH;	
+		constraints.weightx = 1f;
+		constraints.insets = new Insets(20, 0, 0, 0);
+		constraints.anchor = GridBagConstraints.SOUTHWEST;		
+		constraints.weighty = 0.1f;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 2;
 		getContent().add(filterCommandsPanel, constraints);
 		
 		constraints.gridy ++;
 		constraints.insets.bottom = 0;
+		constraints.weighty = 1f;
 		getContent().add(selectCommandPanel, constraints); 		
 
 		constraints.gridy ++;
 		constraints.weighty = 0f;
 		constraints.insets.bottom = 5;
-		constraints.fill = GridBagConstraints.HORIZONTAL;		
-		getContent().add(HAUtilities.newDescription("Confirmed commands"), constraints);	
+		constraints.gridwidth = 1;
+		constraints.insets.right = 10;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		HALabel confirmComLab = HAUtilities.newDescription("Confirmed routine commands:");
+		getContent().add(confirmComLab, constraints);	
 		
 		constraints.gridy ++;
-		constraints.weighty = 0.5f;
+		constraints.weighty = 1f;
 		constraints.insets.top = 0;
 		constraints.insets.bottom = 30;
-		constraints.fill = GridBagConstraints.BOTH;
+		constraints.fill = GridBagConstraints.BOTH;		
 		getContent().add(commandsManagementPanel, constraints);
 		
+		constraints.gridx ++;
+		constraints.gridy --;
+		constraints.weighty = 0f;
+		constraints.insets.bottom = 5;
+		constraints.insets.right = 0;
+		constraints.insets.left = 10;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		
+		HALabel insertRoutNamLab = HAUtilities.newDescription("Insert routine name:");
+		// making insertRoutNamLab match the confirmComLab size to 
+		// force gridbaglayout to give the same width
+		insertRoutNamLab.setMinimumSize(confirmComLab.getPreferredSize());
+		getContent().add(insertRoutNamLab, constraints);
+		
+		constraints.gridy ++;
+		constraints.weighty = 1f;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets.bottom = 30;		
+		getContent().add(routinePanel, constraints);
 		
 		updateContent();
 		reloadColors();
@@ -261,6 +306,6 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 			commandsDescription.addElement(description);
 		}
 	}
-
+	
 
 }

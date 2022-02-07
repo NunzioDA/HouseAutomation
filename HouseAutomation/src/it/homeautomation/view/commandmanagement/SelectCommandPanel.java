@@ -44,8 +44,8 @@ public class SelectCommandPanel extends HAPanel
 	private String categoryFilter, roomFilter;
 	private Object deviceFilter;
 	
-	private DefaultListModel<Command<?>> model = new DefaultListModel<>();
-	private HAList<Command<?>> commandsList = new HAList<>(model);
+	private DefaultListModel<Command<?>> commandListModel = new DefaultListModel<>();
+	private HAList<Command<?>> commandsList = new HAList<>(commandListModel);
 	private HAScrollPane commandListScrollPane = new HAScrollPane(commandsList);
 	
 	private JPanel inputAndConfirmPanel = new JPanel();	
@@ -170,7 +170,7 @@ public class SelectCommandPanel extends HAPanel
 				if(index >= 0)
 				{	
 					confirmCommand.setEnabled(true);
-					Command<?> selectedCommand = model.getElementAt(index);
+					Command<?> selectedCommand = commandListModel.getElementAt(index);
 					inputArea.manageInputPanel(selectedCommand.getValuesTypes());
 				}
 
@@ -234,9 +234,9 @@ public class SelectCommandPanel extends HAPanel
 		
 		constraints.insets.right = 0;
 		constraints.gridx ++;
-		// making isAGroup match the text field size so 
-		// that its column does not get tightened
-		inputAndConfirmPanel.setPreferredSize(commandListScrollPane.getPreferredSize());
+		// making commandListScrollPane match the inputAndConfirmPanel size to 
+		// force gridbaglayout to give the same width
+		commandListScrollPane.setPreferredSize(inputAndConfirmPanel.getPreferredSize());
 		add(inputAndConfirmPanel, constraints);
 		
 		reloadColors();
@@ -249,7 +249,7 @@ public class SelectCommandPanel extends HAPanel
 	
 	public void clearCommandsList()
 	{	
-		commandsList.removeAll();
+		commandListModel.removeAllElements();
 	}
 
 	
@@ -259,8 +259,8 @@ public class SelectCommandPanel extends HAPanel
 		this.categoryFilter = category;
 		this.roomFilter = room;
 		this.filteredCommandDescription = groupDescription;
-		this.model.removeAllElements();
-		this.model.addAll(commands);
+		this.commandListModel.removeAllElements();
+		this.commandListModel.addAll(commands);
 		
 		// making isAGroup match the text field size so 
 		// that its column does not get tightened

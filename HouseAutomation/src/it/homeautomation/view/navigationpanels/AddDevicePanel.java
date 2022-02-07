@@ -116,16 +116,11 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		deviceNameField.setText("");
 		error.setText("");	
 
-		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroup();
-		
-		if(deviceGroupModel.getSize() != deviceGroups.size())
-		{
-			deviceGroupModel.removeAllElements();
-			deviceGroupModel.addAll(deviceGroups);
-		}
+		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroup();		
+		deviceGroupModel.removeAllElements();
+		deviceGroupModel.addAll(deviceGroups);
 		
 		featuresListModel.removeAllElements();
-		
 		AvailableFeature
 		.getList()
 		.stream()
@@ -135,11 +130,8 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		List<String> roomsL = houseController.getRoomsList();
 		
-		if(roomListModel.getSize() != roomsL.size())
-		{
-			roomListModel.removeAllElements();
-			roomListModel.addAll(roomsL);
-		}
+		roomListModel.removeAllElements();
+		roomListModel.addAll(roomsL);
 		
 	}
 	
@@ -251,7 +243,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		initComponents();
 		
 		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.insets = new Insets(40,0,20,50);
+		constraints.insets = new Insets(40,0,20,30);
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.insets.top = 0;

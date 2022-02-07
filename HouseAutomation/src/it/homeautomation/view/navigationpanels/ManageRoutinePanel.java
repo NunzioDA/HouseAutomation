@@ -195,7 +195,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	private void initButtonContainer(JPanel panel)
 	{
 		GridLayout gl = new GridLayout(1, 2);
-		gl.setHgap(10);
+		gl.setHgap(15);
 		panel.setLayout(gl);
 	}
 	
@@ -235,7 +235,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.gridy = 0;		
 		constraints.weighty = 0.3f;
 		constraints.insets.top = 0;
-		constraints.insets.left = 30;
+		constraints.insets.left = 15;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
 		getContent().add(HAUtilities.newDescription("Selected Routine"), constraints);
 		

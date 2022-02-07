@@ -28,13 +28,13 @@ public class HAUtilities
 	private static final String LIGHT_FONT_NAME = "light.ttf";
 	
 	private static final int LIGHT_BACKGROUND_COLOR_OFFSET = 10;
-	private static final int DARK_BACKGROUND_COLOR_OFFSET = -10;
+	private static final int DARK_BACKGROUND_COLOR_OFFSET = -15;
 	private static final int SHADOW_COLOR_OFFSET = -20;
 		
 	private static final Color BACKGROUND_COLOR_DEFAULT = new Color(0x353d44);
 	private static final Color FOREGROUND_COLOR_DEFAULT = new Color(0xeeeeee);
 	private static final Color PRIMARY_COLOR_DEFAULT = new Color(0x742896);
-	private static final Color PRIMARY_FOREGROUND_COLOR_DEFAULT = new Color(0xefefef);
+	private static final Color PRIMARY_FOREGROUND_COLOR_DEFAULT = new Color(0xffffff);
 	private static final Color SECONDARY_COLOR_DEFAULT = new Color(0x742896);
 	
 	private static Color BACKGROUND_COLOR = null;
