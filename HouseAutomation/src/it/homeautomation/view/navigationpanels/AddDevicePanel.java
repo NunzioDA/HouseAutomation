@@ -205,6 +205,9 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 				
 				isAGroup.setEnabled(deviceGroupList.getSelectedValue() == null);
 				
+				if(deviceGroupList.getSelectedValue() != null)
+					isAGroup.setSelected(false);
+				
 			}
 		});
 	}
