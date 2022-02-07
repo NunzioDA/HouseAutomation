@@ -147,7 +147,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 				{
 					error.setText(DEVICE_NAME_MISSING);
 				}
-				else if(features.getSelectedValuesList().size() == 0)
+				else if(getSelectedFeatures().size() == 0)
 				{
 					error.setText(DEVICE_FEATURE_MISSING);
 				}

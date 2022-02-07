@@ -18,5 +18,8 @@ public class HAComboBox<E> extends JComboBox<E>
 		setForeground(HAUtilities.getForegroundColor());
         getEditor().getEditorComponent().setBackground(HAUtilities.getBackgroundColor());
 		((JTextField) getEditor().getEditorComponent()).setForeground(HAUtilities.getForegroundColor());
+		((JTextField) getEditor().getEditorComponent()).setEditable(false);
 	}
+	
+	
 }
