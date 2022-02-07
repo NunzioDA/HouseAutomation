@@ -4,10 +4,8 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import it.homeautomation.controller.HouseAutomationController;
-import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
@@ -19,7 +17,6 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	private static final long serialVersionUID = 1L;
 	private HouseAutomationController controller;
 	
-	private HALabel title = new HALabel("Home", SwingConstants.LEFT);
 	private RoomList listR;
 	private JScrollPane scrollPane;
 	
@@ -31,7 +28,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();
-        
+
         updateContent();
         reloadColors();
 	}
@@ -39,7 +36,6 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	private void init()
 	{
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		title.setFont(HAUtilities.getRegularFont().deriveFont(50f));
         
 		getContent().setLayout(new GridLayout());
         getContent().add(scrollPane); 

@@ -2,18 +2,16 @@ package it.homeautomation.hagui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class HAImageView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private BufferedImage image = null;
+	private ImageIcon image = null;
 	private int margin = 0;
     
 	public HAImageView()
@@ -42,16 +40,10 @@ public class HAImageView extends JPanel {
 	 }
 	
     public void loadImage(URL url)
-    {
-    	
-        try {        	
-        	if(url != null)
-            	image = ImageIO.read(url);
-        	
-         } catch (IOException ex) {
-        	 System.out.print(ex);
-         }
-        
+    {    	       	
+    	if(url != null)
+        	image = new ImageIcon(url);
+
         repaint();
     }
     
@@ -69,7 +61,7 @@ public class HAImageView extends JPanel {
         if(image != null) 
         {
 
-        	float imageRatio = (float)image.getWidth() / (float)image.getHeight();        	
+        	float imageRatio = (float)image.getIconWidth() / (float)image.getIconHeight();        	
         	int imageWidth = (int)(imageRatio * (float)(getHeight() - margin));
         	int imageHeight = getHeight() - margin;
         	
@@ -83,7 +75,7 @@ public class HAImageView extends JPanel {
         	int xStartPosition = (getWidth() / 2) - (imageWidth / 2);
         	int yStartPosition = (getHeight() / 2) - (imageHeight / 2);
         	
-        	g.drawImage(image, xStartPosition, yStartPosition, imageWidth, imageHeight, this);
+        	g.drawImage(image.getImage(), xStartPosition, yStartPosition, imageWidth, imageHeight, this);
         }
     }
 

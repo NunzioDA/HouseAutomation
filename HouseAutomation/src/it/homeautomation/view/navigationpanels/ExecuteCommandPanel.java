@@ -59,10 +59,10 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 		getContent().add(HAUtilities.newDescription("Execution Log"), constraints);
 		
 		constraints.gridy ++;
-		constraints.weighty = 1f;
+		constraints.weighty = 0.3f;
 		constraints.insets.top = 0;
 		constraints.insets.bottom = 30;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.fill = GridBagConstraints.BOTH;
 		getContent().add(commandsLog, constraints); 
 		
 		updateContent();

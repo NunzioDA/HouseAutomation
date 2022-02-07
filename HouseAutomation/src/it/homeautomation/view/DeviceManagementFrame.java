@@ -48,7 +48,9 @@ public class DeviceManagementFrame extends HAFrame
 		this.device = device;
 		this.listener = listener;
 		
-		init();		
+		init();
+		
+		setVisible(true);
 	}
 	
 	private void initChildMouseListener(JPanel childPanel, Device d)

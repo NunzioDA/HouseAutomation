@@ -31,10 +31,15 @@ public class MainFrame extends HAFrame
 	public MainFrame(String title, HouseAutomationController houseController, int width, int height)
 	{		
 		super(title, width, height);
-		this.houseController = houseController;
+		this.houseController = houseController;	
+		
 		initComponents(houseController.getHouseName());
 		setMinimumSize(new Dimension(500, 500));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		//Show add panel
+		navigationDrawer.showPanel(1);
 	}
 	
 	private void initContentPanel()
@@ -53,21 +58,15 @@ public class MainFrame extends HAFrame
 		
 		navigationDrawer = new HANavigationDrawer(houseName, width / SIDE_TOOL_PANEL_RATIO, height, this);
 		navigationDrawer.setContentPanel(contentPanel);
+		
+		add(navigationDrawer);
+		add(contentPanel);
+		
 		navigationDrawer.addButton("Home", new HomePanel(houseController));
 		navigationDrawer.addButton("Add new Device", new AddDevicePanel(houseController));
 		navigationDrawer.addButton("Execute command", new ExecuteCommandPanel(houseController));
 		navigationDrawer.addButton("Create new routine", new RoutineCreationPanel(houseController));	
-		navigationDrawer.addButton("Manage routines", new ManageRoutinePanel(houseController));	
-		
-		add(navigationDrawer);
-		add(contentPanel);
-	}
-	
-
-
-	public MainFrame(int width, int height)
-	{
-		super("", width, height);
+		navigationDrawer.addButton("Manage routines", new ManageRoutinePanel(houseController));
 	}
 
 	@Override

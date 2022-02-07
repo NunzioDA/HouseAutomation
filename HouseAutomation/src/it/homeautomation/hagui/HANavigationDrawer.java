@@ -43,6 +43,12 @@ public class HANavigationDrawer extends HAPanel
 		init(houseName, width, height);
 	}
 	
+	public void showPanel(int index)
+	{
+		HAButton button = (HAButton)buttonsPanels.keySet().toArray()[index];
+		commitPanelChange(button);
+	}
+	
 	public void setContentPanel(JPanel contentPanel)
 	{
 		this.contentPanel = contentPanel;
@@ -103,8 +109,8 @@ public class HANavigationDrawer extends HAPanel
 		alignButtonTextLeft(button);
 		buttonsPanels.put(button, panel);
 		
-		if(buttonsPanels.size() == 1)
-			commitPanelChange(button);
+//		if(buttonsPanels.size() == 1)
+//			commitPanelChange(button);
 		
 		addNavigationActionListener(button);
 		updateButtonsPanel();

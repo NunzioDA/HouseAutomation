@@ -34,7 +34,13 @@ public class WelcomeFrame extends HAFrame
 	private HAButton confirm = new HAButton("Confirm");
 	private HouseAutomationController controller;
 	
-
+	public WelcomeFrame(String title, int width, int height, HouseAutomationController controller)
+	{
+		super(title, width, height);
+		init();
+		setVisible(true);
+		this.controller = controller;
+	}
 	
 	private void initConfirmButton()
 	{
@@ -108,12 +114,7 @@ public class WelcomeFrame extends HAFrame
 		initConfirmButton();
 	}
 	
-	public WelcomeFrame(String title, int width, int height, HouseAutomationController controller)
-	{
-		super(title, width, height);
-		init();
-		this.controller = controller;
-	}
+
 
 	@Override
 	public void resizeContent(){}

@@ -6,7 +6,6 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -23,6 +22,7 @@ public class HAUtilities
 	public static final String DEFAULT_ICONS_PATH = "/icons/";
 	public static final String DEFAULT_ICONS_EXTENSION = ".png";
 	
+	private static final String FONT_PATH = "/fonts/";
 	private static final String THIN_FONT_NAME = "thin.ttf";
 	private static final String REGULAR_FONT_NAME = "regular.ttf";
 	private static final String LIGHT_FONT_NAME = "light.ttf";
@@ -70,15 +70,13 @@ public class HAUtilities
 	}
 	
 	public static void initFrame(HAFrame frame, int width, int height)
-	{		
-
+	{
 		setResizeListener(frame);
 		
 		frame.setSize(width, height);
 		frame.setLocation(200, 200);
 		frame.setLayout(null);
 		frame.setUndecorated(true);
-		frame.setVisible(true);
 	}
 	
 	private static void setResizeListener(HAFrame frame)
@@ -94,11 +92,12 @@ public class HAUtilities
 	
 	private static Font initFont(String name)
 	{
+		String path = FONT_PATH + name;
+		
 		Font font = null;
-		File file = new File(name);
 		
 		try {
-		     font = Font.createFont(Font.TRUETYPE_FONT, file);
+		     font = Font.createFont(Font.TRUETYPE_FONT, HAUtilities.class.getResourceAsStream(path));
 		     
 		     GraphicsEnvironment ge = 
 		             GraphicsEnvironment.getLocalGraphicsEnvironment();
