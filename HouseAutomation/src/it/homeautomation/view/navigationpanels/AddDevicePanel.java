@@ -109,6 +109,33 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		updateContent();
 	}
 	
+	@Override
+	public void updateContent()
+	{
+		newRoomName.setText("");
+		deviceNameField.setText("");
+		error.setText("");
+		
+		// making isAGroup match the text field size so 
+		// that its column does not get tightened
+		isAGroup.setPreferredSize(deviceNameField.getSize());
+		
+		
+		deviceGroupModel.removeAllElements();
+		deviceGroupModel.addAll(houseController.getAllDeviceGroup());
+		
+		featuresListModel.removeAllElements();
+		
+		AvailableFeature
+		.getList()
+		.stream()
+		.forEach(f -> featuresListModel
+				.addElement(new DeviceFeatureCard.CardStatus(f)));
+		
+		roomListModel.removeAllElements();
+		roomListModel.addAll(houseController.getRoomsList());
+	}
+	
 	private void initConfirmButton()
 	{
 		confirm = new HAButton("Confirm");
@@ -137,7 +164,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	
 	private void initRoomField()
 	{
-		newRoomName = new HATextField(50);
+		
 		newRoomName.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e)
@@ -165,20 +192,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		});
 	}
 	
-	@Override
-	public void updateContent()
-	{
-		newRoomName.setText("");
-		deviceNameField.setText("");
-		
-		deviceGroupModel.removeAllElements();
-		deviceGroupModel.addAll(houseController.getAllDeviceGroup());
-		
-		featuresListModel.removeAllElements();
-		AvailableFeature.getList().stream().forEach(f -> featuresListModel.addElement(new DeviceFeatureCard.CardStatus(f)));
-		roomListModel.removeAllElements();
-		roomListModel.addAll(houseController.getRoomsList());
-	}
+
 	
 	private void initGroupListListener()
 	{
@@ -211,7 +225,9 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 
 	private void initComponents()
 	{	
-		deviceNameField = new HATextField(50);	
+		deviceNameField = new HATextField(50);
+		newRoomName = new HATextField(50);
+
 		error = new HALabel("", SwingConstants.RIGHT);
 		error.setForeground(Color.red);
 		
@@ -301,7 +317,6 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.gridy ++;
 		constraints.fill = GridBagConstraints.BOTH;
 		// adding field description rooms list		
-		
 		roomsList.setLayoutOrientation(JList.VERTICAL);		
 		getContent().add(roomsListPane, constraints);
 
@@ -310,8 +325,8 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.weighty = 0.1f;
 		constraints.fill = GridBagConstraints.BOTH;
 		getContent().add(isAGroup, constraints);
-		constraints.gridy ++;
 		
+		constraints.gridy ++;		
 		constraints.insets.right = 0;
 		constraints.insets.bottom = 0;
 		constraints.weighty = 0.1f;
@@ -325,7 +340,6 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		deviceGroupList.setLayoutOrientation(JList.VERTICAL);	
 		getContent().add(deviceGroupListPane, constraints);
 		
-
 		
 		reloadColors();
 	}
@@ -335,6 +349,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	@Override
 	public void reloadColors()
 	{
+		
 		getContent().setBackground(HAUtilities.getBackgroundColor());
 		setBackground(HAUtilities.getBackgroundColor());
 		featuresListPane.reloadColors();

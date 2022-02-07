@@ -28,14 +28,12 @@ public class HAUtilities
 	private static final String LIGHT_FONT_NAME = "light.ttf";
 	
 	private static final int LIGHT_BACKGROUND_COLOR_OFFSET = 10;
-	private static final int DARK_BACKGROUND_COLOR_OFFSET = -11;
-	
-	
-	private static final Color SHADOW_COLOR = new Color(0x202020);
-	
-	private static final Color BACKGROUND_COLOR_DEFAULT = new Color(0x424242);
+	private static final int DARK_BACKGROUND_COLOR_OFFSET = -10;
+	private static final int SHADOW_COLOR_OFFSET = -20;
+		
+	private static final Color BACKGROUND_COLOR_DEFAULT = new Color(0x353d44);
 	private static final Color FOREGROUND_COLOR_DEFAULT = new Color(0xeeeeee);
-	private static final Color PRIMARY_COLOR_DEFAULT = new Color(0x742896/*0x353535*/);
+	private static final Color PRIMARY_COLOR_DEFAULT = new Color(0x742896);
 	private static final Color PRIMARY_FOREGROUND_COLOR_DEFAULT = new Color(0xefefef);
 	private static final Color SECONDARY_COLOR_DEFAULT = new Color(0x742896);
 	
@@ -137,7 +135,7 @@ public class HAUtilities
 		
 	public static Color changeColorBrightness(Color color, int offset)
 	{
-		Color darken = null;
+		Color newColor = null;
 		
 		if(color != null)
 		{
@@ -151,10 +149,10 @@ public class HAUtilities
 			green = (newGreen > 255)?  255 : (newGreen < 0)? 0 : newGreen;
 			blue  = (newBlue > 255)?  255 : (newBlue < 0)? 0 : newBlue;
 		
-			darken = new Color(red, green, blue);
+			newColor = new Color(red, green, blue);
 		}
 		
-		return darken;
+		return newColor;
 	}
 	
 	
@@ -191,7 +189,7 @@ public class HAUtilities
 	
 	public static Color getShadowColor()
 	{
-		return SHADOW_COLOR;
+		return changeColorBrightness(getBackgroundColor(), SHADOW_COLOR_OFFSET);
 	}
 	
 

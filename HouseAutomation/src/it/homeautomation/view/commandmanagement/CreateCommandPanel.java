@@ -30,7 +30,6 @@ public class CreateCommandPanel extends HAPanel
 	private static final long serialVersionUID = 1L;
 	private static final String PROTOTYPE_TEXT = "wwwwwwwwww";
 	
-	private HALabel subtitleDevice = HAUtilities.newTitle("Select Device, a room or a category", HAUtilities.MIDDLE_TITLE);
 	private HALabel tutorial = HAUtilities.newTitle("Selecting a room will filter devices and categories.", HAUtilities.LAST_TITLE);
 	
 	
@@ -334,9 +333,8 @@ public class CreateCommandPanel extends HAPanel
 		constraints.weighty = 1f;
 		constraints.weightx = 1f;
 		constraints.gridwidth = 3;
-		add(subtitleDevice, constraints);
 		
-		constraints.gridy ++;
+		//constraints.gridy ++;
 		add(tutorial, constraints);
 		
 		constraints.insets = new Insets(20,0,0,20);

@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
+//import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 /**
@@ -136,14 +136,14 @@ public class HANavigationDrawer extends HAPanel
 		reloadColors();
 	}
 		
-	private void addNavigationPanelSeparator(GridBagConstraints constrains)
-	{
-		constrains.weighty = 0f;
-		constrains.fill = GridBagConstraints.HORIZONTAL;
-		navigationButtonsPanel.add(new HASeparator(JSeparator.HORIZONTAL, 2), constrains);
-		constrains.gridy ++;
-	}
-	
+//	private void addNavigationPanelSeparator(GridBagConstraints constrains)
+//	{
+//		constrains.weighty = 0f;
+//		constrains.fill = GridBagConstraints.HORIZONTAL;
+//		navigationButtonsPanel.add(new HASeparator(JSeparator.HORIZONTAL, 1), constrains);
+//		constrains.gridy ++;
+//	}
+//	
 	private void addNavigationPanelButton(HAButton button, GridBagConstraints constrains)
 	{
 		constrains.weighty = 1f;
@@ -163,11 +163,11 @@ public class HANavigationDrawer extends HAPanel
 
 		for(HAButton button : buttonsPanels.keySet())
 		{
-			addNavigationPanelSeparator(constrains);	
+			//addNavigationPanelSeparator(constrains);	
 			addNavigationPanelButton(button, constrains);
 		}
 		
-		addNavigationPanelSeparator(constrains);
+		//addNavigationPanelSeparator(constrains);
 
 		navigationButtonsPanel.updateUI();
 	}

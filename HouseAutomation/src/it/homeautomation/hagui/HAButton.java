@@ -36,6 +36,13 @@ public class HAButton extends JButton implements HAThemeListener
 		        
 		        return foreground;
 		    }
+		    
+		    
+		    @Override
+		    protected Color getSelectColor()
+		    {
+		    	return HAUtilities.changeColorBrightness(getBackground(), -30);
+		    }
 		});
 		
 		setBorder(null);
@@ -67,7 +74,7 @@ public class HAButton extends JButton implements HAThemeListener
 				}
 			}
 		});				
-	
+//	
 	}
 	
 	@Override
