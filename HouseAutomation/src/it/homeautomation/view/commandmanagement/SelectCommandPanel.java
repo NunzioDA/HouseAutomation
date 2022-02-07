@@ -213,6 +213,9 @@ public class SelectCommandPanel extends HAPanel
 		
 		constraints.insets.right = 0;
 		constraints.gridx ++;
+		// making isAGroup match the text field size so 
+		// that its column does not get tightened
+		inputAndConfirmPanel.setPreferredSize(commandListScrollPane.getPreferredSize());
 		add(inputAndConfirmPanel, constraints);
 		
 		reloadColors();

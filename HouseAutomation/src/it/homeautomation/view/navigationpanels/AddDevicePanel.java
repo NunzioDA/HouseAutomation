@@ -114,13 +114,8 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	{
 		newRoomName.setText("");
 		deviceNameField.setText("");
-		error.setText("");
-		
-		// making isAGroup match the text field size so 
-		// that its column does not get tightened
-		isAGroup.setPreferredSize(deviceNameField.getSize());
-		
-		
+		error.setText("");	
+
 		deviceGroupModel.removeAllElements();
 		deviceGroupModel.addAll(houseController.getAllDeviceGroup());
 		
@@ -280,6 +275,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		getContent().add(featuresListPane, constraints);		
 
 		constraints.gridy ++;
+		constraints.insets.bottom = 30;
 		constraints.weighty = 0.2f;
 		getContent().add(confirm, constraints);		
 		
@@ -323,7 +319,10 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		constraints.gridy = 1;
 		constraints.gridx ++;		
 		constraints.weighty = 0.1f;
-		constraints.fill = GridBagConstraints.BOTH;
+		constraints.fill = GridBagConstraints.BOTH;	
+		// making isAGroup match the text field size so 
+		// that its column does not get tightened
+		isAGroup.setPreferredSize(deviceNameField.getPreferredSize());
 		getContent().add(isAGroup, constraints);
 		
 		constraints.gridy ++;		

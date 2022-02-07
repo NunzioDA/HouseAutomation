@@ -10,7 +10,7 @@ import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.commandmanagement.CreateCommandPanel;
+import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 import it.homeautomation.view.navigationpanels.ManageRoutinePanel;
@@ -21,7 +21,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 	private static final long serialVersionUID = 1L;
 	
 	private HouseAutomationController controller;
-	private CreateCommandPanel createCommand ;
+	private FilterCommandPanel createCommand ;
 	private SelectCommandPanel selectCommandPanel;
 	private Routine routine;
 	private ManageRoutinePanel manageRoutine;
@@ -36,7 +36,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 	private void init()
 	{
 		selectCommandPanel = new SelectCommandPanel(controller);
-		createCommand = new CreateCommandPanel(controller, selectCommandPanel);
+		createCommand = new FilterCommandPanel(controller, selectCommandPanel);
 		selectCommandPanel.addCommandListener(this);
 		createCommand.refreshRooms();
 		

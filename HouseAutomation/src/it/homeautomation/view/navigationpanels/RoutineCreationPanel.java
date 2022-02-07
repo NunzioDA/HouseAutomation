@@ -27,7 +27,7 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.commandmanagement.CreateCommandPanel;
+import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
@@ -39,7 +39,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	private static final String EXISTING_ROUTINE = "A Routine with this name already exists...";
 	
 	private HouseAutomationController controller;
-	private CreateCommandPanel createCommand ;
+	private FilterCommandPanel filterCommandsPanel;
 	private SelectCommandPanel selectCommandPanel;
 	private HATextField routineName = new HATextField(20);
 	private JPanel routinePanel = new JPanel();
@@ -162,7 +162,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	private  void initComponents()
 	{
 		selectCommandPanel = new SelectCommandPanel(controller);
-		createCommand = new CreateCommandPanel(controller, selectCommandPanel);
+		filterCommandsPanel = new FilterCommandPanel(controller, selectCommandPanel);
 		selectCommandPanel.addCommandListener(this);
 		
 		initRoutineListManagement();
@@ -200,7 +200,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		constraints.insets.top = 20;
 		constraints.insets.bottom = 20;
 		constraints.fill = GridBagConstraints.BOTH;	
-		getContent().add(createCommand, constraints);
+		getContent().add(filterCommandsPanel, constraints);
 		
 		constraints.gridy ++;
 		constraints.insets.bottom = 0;
@@ -215,7 +215,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		constraints.gridy ++;
 		constraints.weighty = 0.5f;
 		constraints.insets.top = 0;
-		constraints.insets.bottom = 20;
+		constraints.insets.bottom = 30;
 		constraints.fill = GridBagConstraints.BOTH;
 		getContent().add(commandsManagementPanel, constraints);
 		
@@ -228,8 +228,8 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	@Override
 	public void reloadColors()
 	{
-		if(createCommand != null)
-			createCommand.reloadColors();
+		if(filterCommandsPanel != null)
+			filterCommandsPanel.reloadColors();
 		
 		routineName.reloadColors();
 		getContent().setBackground(HAUtilities.getBackgroundColor());
@@ -241,15 +241,15 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	@Override
 	public void updateContent()
 	{
-		createCommand.refreshRooms();
+		filterCommandsPanel.refreshRooms();
 	}
 
 	@Override
 	public void commandListCreated(String description, List<Command<?>> commands, List<Object> valuesList)
 	{
-		Object device = createCommand.getSelectedDevice();
-		Object room = createCommand.getSelectedRoom();
-		Object category = createCommand.getSelectedCategory();	
+		Object device = filterCommandsPanel.getSelectedDevice();
+		Object room = filterCommandsPanel.getSelectedRoom();
+		Object category = filterCommandsPanel.getSelectedCategory();	
 		
 		if(device!= null && room != null && category != null)
 		{

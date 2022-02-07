@@ -9,7 +9,7 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.commandmanagement.CreateCommandPanel;
+import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
@@ -17,7 +17,7 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 {
 	private static final long serialVersionUID = 1L;
 	private HouseAutomationController controller;
-	private CreateCommandPanel createCommand ;
+	private FilterCommandPanel filterCommandsPanel ;
 	private SelectCommandPanel selectCommandPanel;
 	
 	
@@ -33,7 +33,7 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	private void init()
 	{
 		selectCommandPanel = new SelectCommandPanel(controller);
-		createCommand = new CreateCommandPanel(controller, selectCommandPanel);
+		filterCommandsPanel = new FilterCommandPanel(controller, selectCommandPanel);
 		selectCommandPanel.addCommandListener(this);
 		
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -43,11 +43,10 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weighty = 1f;
 		constraints.weightx = 1f;
-		
-		getContent().add(createCommand, constraints);
+		getContent().add(filterCommandsPanel, constraints);
 		
 		constraints.gridy ++;
-		constraints.insets = new Insets(0, 0, 30, 0);
+		constraints.insets = new Insets(40, 0, 30, 0);
 		getContent().add(selectCommandPanel, constraints); 
 		
 		updateContent();
@@ -58,8 +57,8 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	@Override
 	public void reloadColors()
 	{
-		if(createCommand != null)
-			createCommand.reloadColors();
+		if(filterCommandsPanel != null)
+			filterCommandsPanel.reloadColors();
 		getContent().setBackground(HAUtilities.getBackgroundColor());
 		setBackground(HAUtilities.getBackgroundColor());
 	}
@@ -67,7 +66,7 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	@Override
 	public void updateContent()
 	{
-		createCommand.refreshRooms();
+		filterCommandsPanel.refreshRooms();
 	}
 
 	@Override

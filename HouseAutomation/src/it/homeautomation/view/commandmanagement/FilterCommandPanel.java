@@ -25,7 +25,7 @@ import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.implementation.StateFeature;
 
-public class CreateCommandPanel extends HAPanel
+public class FilterCommandPanel extends HAPanel
 {
 	private static final long serialVersionUID = 1L;
 	private static final String PROTOTYPE_TEXT = "wwwwwwwwww";
@@ -49,7 +49,7 @@ public class CreateCommandPanel extends HAPanel
 
 	private Device singleDevice = null;
 	
-	public CreateCommandPanel(HouseAutomationController controller, SelectCommandPanel selectCommand)
+	public FilterCommandPanel(HouseAutomationController controller, SelectCommandPanel selectCommand)
 	{
 		this.controller = controller;
 		this.selectCommand = selectCommand;
@@ -330,16 +330,18 @@ public class CreateCommandPanel extends HAPanel
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weighty = 1f;
+		constraints.weighty = 0.1f;
 		constraints.weightx = 1f;
 		constraints.gridwidth = 3;
-		
+		constraints.anchor = GridBagConstraints.SOUTH;
 		//constraints.gridy ++;
 		add(tutorial, constraints);
 		
 		constraints.insets = new Insets(20,0,0,20);
 		constraints.gridy ++;
 		constraints.gridwidth = 1;
+		constraints.weighty = 0.1f;
+		
 		add(HAUtilities.newDescription("Select room"), constraints);
 		
 		constraints.gridx ++;
@@ -349,7 +351,11 @@ public class CreateCommandPanel extends HAPanel
 		add(HAUtilities.newDescription("Select category"), constraints);
 		
 		
-		constraints.gridx = 0;		
+		constraints.gridx = 0;
+		constraints.weighty = 0.1f;
+		constraints.insets.top = 0;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		roomsBox.setPrototypeDisplayValue(PROTOTYPE_TEXT);
 		devicesBox.setPrototypeDisplayValue(PROTOTYPE_TEXT);
 		categoryBox.setPrototypeDisplayValue(PROTOTYPE_TEXT);
