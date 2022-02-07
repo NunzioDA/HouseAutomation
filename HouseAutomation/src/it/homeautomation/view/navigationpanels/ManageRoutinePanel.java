@@ -22,6 +22,7 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.view.AddRoutineCommandFrame;
+import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
 
 public class ManageRoutinePanel extends HANavigationDrawerPanel
 {
@@ -43,9 +44,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	private JPanel leftButtonsContainer = new JPanel();
 	private JPanel rightButtonsContainer = new JPanel();
 	
-	private DefaultListModel<String> commandsLogModel = new DefaultListModel<>();
-	private HAList<String> commandsLog = new HAList<>(commandsLogModel);
-	private HAScrollPane commandsLogScrollPane = new HAScrollPane(commandsLog);
+	private CommandsExecutionLog commandsLog = new CommandsExecutionLog();
 	
 	public ManageRoutinePanel(HouseAutomationController controller)
 	{
@@ -77,7 +76,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 				Routine selectedRoutine = getSelectedRoutine();
 				if(selectedRoutine != null)
 				{
-					commandsLogModel.addElement("---------> Executing [ "+ selectedRoutine.getName() + " ] routine");
+					commandsLog.startRoutineExecution( selectedRoutine.getName());
 					
 					selectedRoutine.execute();					
 					
@@ -85,11 +84,11 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 					selectedRoutine
 					.getCommands()
 					.stream()
-					.forEach(c->commandsLogModel
-							.addElement(c
+					.forEach(c->commandsLog
+							.executeCommand(c
 									.getDescription()));
 					
-					commandsLogModel.addElement("---------> Done.");
+					commandsLog.endExecution();
 					
 				}
 			}
@@ -268,7 +267,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.top = 0;
 		constraints.insets.bottom = 30;
-		getContent().add(commandsLogScrollPane, constraints);
+		getContent().add(commandsLog, constraints);
 
 		reloadColors();
 	}

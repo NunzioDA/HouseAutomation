@@ -157,7 +157,6 @@ public class HouseMap{
 		List<Device> devicesInRoom = roomsMap.get(room);
 		Map<String,List<Device>> returnMap = new HashMap<>();
 		
-		System.out.println(room);
 		for(Device device : devicesInRoom)
 		{
 			HouseMaps.splitDeviceIntoCategoryMap(returnMap, device);

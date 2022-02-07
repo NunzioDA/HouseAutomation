@@ -57,7 +57,6 @@ public class SelectCommandPanel extends HAPanel
 	
 	private List<CommandCreationListener> listeners = new ArrayList<>();
 	private String filteredCommandDescription;
-	private Command<?> selectedCommand = null;
 	private List<Device> devicesAffected;
 
 	public SelectCommandPanel(HouseAutomationController controller)
@@ -71,14 +70,37 @@ public class SelectCommandPanel extends HAPanel
 		listeners.add(listener);
 	}
 	
+	private Command<?> getSelectedCommand()
+	{
+		return commandsList.getSelectedValue();
+	}
+	
 	private String getCommandsGroupDescription(Object value)
 	{
-		String description = filteredCommandDescription + " -> " +selectedCommand.toString();
+		String description = filteredCommandDescription + " -> " + getSelectedCommand().toString();
 		
 		if(value != null)
-			description +=  ": " + value.toString();
-		
+		{
+			String valueDescription = value.toString();
+			
+			if(value instanceof Color)
+			{
+				Color color = (Color)value;
+				valueDescription = "[r = " + color.getRed() + ", g = " + color.getGreen() + ", b = "+ color.getBlue() + "]";
+			}
+			
+			description +=  ": " + valueDescription;
+		}
 		return description;
+	}
+	
+	public void resetPanel()
+	{
+		inputArea.removeAll();
+		inputArea.updateUI();
+		error.setText("");
+		commandsList.clearSelection();
+		confirmCommand.setEnabled(false);
 	}
 	
 	private void confirmButtonAction()
@@ -86,6 +108,7 @@ public class SelectCommandPanel extends HAPanel
 		List<Command<?>> confirmedCommands = new ArrayList<>();
 		
 		error.setText("");
+		Command<?> selectedCommand = getSelectedCommand();
 		
 		if(selectedCommand != null)
 		{
@@ -116,10 +139,14 @@ public class SelectCommandPanel extends HAPanel
 							.computeDevices(devicesAffected, valuesList, confirmedCommands, selectedCommand));
 				
 				
-				if(error.getText().isEmpty())
+				if(error.getText().isEmpty()) 
+				{
+					resetPanel();
+					
 					listeners
 					.stream()
 					.forEach(a-> a.commandListCreated(description,confirmedCommands, valuesList));
+				}
 			}			
 		}
 	}
@@ -149,7 +176,7 @@ public class SelectCommandPanel extends HAPanel
 				if(index >= 0)
 				{	
 					confirmCommand.setEnabled(true);
-					selectedCommand = model.getElementAt(index);
+					Command<?> selectedCommand = model.getElementAt(index);
 					inputArea.manageInputPanel(selectedCommand.getValuesTypes());
 				}
 
@@ -188,7 +215,7 @@ public class SelectCommandPanel extends HAPanel
 	private void init()
 	{
 		initValueSelectionPanel();
-		
+		resetPanel();
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 
@@ -226,11 +253,18 @@ public class SelectCommandPanel extends HAPanel
 		initConfirmButtonAction();
 	}
 	
+	public void clearCommandsList()
+	{	
+		commandsList.removeAll();
+	}
+	
 	public void refreshCommands(String groupDescription, Device device, List<Command<?>> commands)
 	{	
 		refreshCommands(groupDescription, commands, "", "");
 		this.deviceFilter = "";
-		this.devicesAffected.add(device);
+		
+		if(device != null)
+			this.devicesAffected.add(device);
 	}
 	
 	public void refreshCommands(String groupDescription, List<Command<?>> commands, String category, String room)
@@ -242,6 +276,10 @@ public class SelectCommandPanel extends HAPanel
 		this.filteredCommandDescription = groupDescription;
 		this.model.removeAllElements();
 		this.model.addAll(commands);
+		
+		// making isAGroup match the text field size so 
+		// that its column does not get tightened
+		inputAndConfirmPanel.setPreferredSize(commandListScrollPane.getPreferredSize());
 		
 		confirmCommand.setEnabled(false);
 		inputArea.removeAll();

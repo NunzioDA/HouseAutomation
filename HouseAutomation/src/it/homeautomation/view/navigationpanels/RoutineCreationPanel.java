@@ -51,7 +51,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	private DefaultListModel<String> commandsDescription = new DefaultListModel<>();
 	private HAList<String> commandsDescriptionList = new HAList<>(commandsDescription);
 	private HAScrollPane commandsDescScroll = new HAScrollPane(commandsDescriptionList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	private HAButton removeCommand = new HAButton("Remove");
+	private HAButton removeCommand = new HAButton("Remove command");
 	
 	private HALabel error = new HALabel("", SwingConstants.RIGHT);
 	
@@ -210,7 +210,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 		constraints.weighty = 0f;
 		constraints.insets.bottom = 5;
 		constraints.fill = GridBagConstraints.HORIZONTAL;		
-		getContent().add(HAUtilities.newDescription("Commands"), constraints);	
+		getContent().add(HAUtilities.newDescription("Confirmed commands"), constraints);	
 		
 		constraints.gridy ++;
 		constraints.weighty = 0.5f;

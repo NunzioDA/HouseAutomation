@@ -116,8 +116,13 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		deviceNameField.setText("");
 		error.setText("");	
 
-		deviceGroupModel.removeAllElements();
-		deviceGroupModel.addAll(houseController.getAllDeviceGroup());
+		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroup();
+		
+		if(deviceGroupModel.getSize() != deviceGroups.size())
+		{
+			deviceGroupModel.removeAllElements();
+			deviceGroupModel.addAll(deviceGroups);
+		}
 		
 		featuresListModel.removeAllElements();
 		
@@ -127,8 +132,15 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		.forEach(f -> featuresListModel
 				.addElement(new DeviceFeatureCard.CardStatus(f)));
 		
-		roomListModel.removeAllElements();
-		roomListModel.addAll(houseController.getRoomsList());
+		
+		List<String> roomsL = houseController.getRoomsList();
+		
+		if(roomListModel.getSize() != roomsL.size())
+		{
+			roomListModel.removeAllElements();
+			roomListModel.addAll(roomsL);
+		}
+		
 	}
 	
 	private void initConfirmButton()

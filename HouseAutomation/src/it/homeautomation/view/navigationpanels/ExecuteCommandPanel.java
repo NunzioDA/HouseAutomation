@@ -5,10 +5,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
 
+
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.command.Command;
+import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
 import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
@@ -20,7 +22,8 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	private FilterCommandPanel filterCommandsPanel ;
 	private SelectCommandPanel selectCommandPanel;
 	
-	
+	private CommandsExecutionLog commandsLog = new CommandsExecutionLog();
+			
 	public ExecuteCommandPanel(HouseAutomationController controller)
 	{
 		super("Execute Command");
@@ -46,8 +49,21 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 		getContent().add(filterCommandsPanel, constraints);
 		
 		constraints.gridy ++;
-		constraints.insets = new Insets(40, 0, 30, 0);
+		constraints.insets = new Insets(20, 0, 0, 0);
 		getContent().add(selectCommandPanel, constraints); 
+		
+		constraints.gridy ++;
+		constraints.weighty = 0.1f;
+		constraints.insets.bottom = 0;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		getContent().add(HAUtilities.newDescription("Execution Log"), constraints);
+		
+		constraints.gridy ++;
+		constraints.weighty = 1f;
+		constraints.insets.top = 0;
+		constraints.insets.bottom = 30;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		getContent().add(commandsLog, constraints); 
 		
 		updateContent();
 		reloadColors();
@@ -72,7 +88,10 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	@Override
 	public void commandListCreated(String description, List<Command<?>> commands, List<Object> valuesList)
 	{
+		commandsLog.startCommandExecution();
 		commands.stream().forEach(Command::execute);
+		commandsLog.executeCommand(description);
+		commandsLog.endExecution();
 	}
 
 }

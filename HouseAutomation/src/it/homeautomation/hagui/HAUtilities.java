@@ -215,7 +215,7 @@ public class HAUtilities
 	
 	public static HALabel newDescription(String description)
 	{
-		return new HALabel(capitalize(description), SwingConstants.LEFT); 
+		return new HALabel(description, SwingConstants.LEFT); 
 	}
 	
 	public static Color getForegroundColor()

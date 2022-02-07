@@ -75,7 +75,7 @@ public class Device {
 		Optional<T> optional = isFeaturePresent(featureClass);
 		
 		if(optional.isEmpty())
-			throw new ClassCastException("Cannot cast device to <"+featureClass.getSimpleName()
+			throw new ClassCastException("Cannot cast [" + getName() + "] to <"+featureClass.getSimpleName()
 			+">. Missing feature in this device.");
 		
 		return (T) optional.get();

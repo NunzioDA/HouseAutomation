@@ -30,7 +30,7 @@ public class FilterCommandPanel extends HAPanel
 	private static final long serialVersionUID = 1L;
 	private static final String PROTOTYPE_TEXT = "wwwwwwwwww";
 	
-	private HALabel tutorial = HAUtilities.newTitle("Selecting a room will filter devices and categories.", HAUtilities.LAST_TITLE);
+	private HALabel tutorial = HAUtilities.newDescription("Selecting a room will filter devices and categories.");
 	
 	
 	private DefaultComboBoxModel<String> roomsModel = new DefaultComboBoxModel<>();
@@ -103,7 +103,8 @@ public class FilterCommandPanel extends HAPanel
 			String description = "";
 			
 			
-			if(roomS.equals(CommandsUtility.ALL_ROOMS) && CommandsUtility.ALL_DEVICES.equals(deviceS)  && categoryS.equals(CommandsUtility.ALL_CATEGORIES))
+			if(roomS.equals(CommandsUtility.ALL_ROOMS) && CommandsUtility.ALL_DEVICES.equals(deviceS)  
+					&& categoryS.equals(CommandsUtility.ALL_CATEGORIES))
 			{
 				// ALL DEVICES SELECTED				
 				description = allDeviceSelected();
@@ -225,8 +226,12 @@ public class FilterCommandPanel extends HAPanel
 			public void itemStateChanged(ItemEvent e)
 			{
 				if(!e.getItem().equals(CommandsUtility.ALL_CATEGORIES))
-					devicesBox.setEnabled(false);	
+				{
+					devicesBox.setEnabled(false);
+					devicesBox.setSelectedIndex(0);
+				}
 				else devicesBox.setEnabled(true);
+				
 				filterCommands();
 			}
 		});
@@ -240,8 +245,7 @@ public class FilterCommandPanel extends HAPanel
 			public void itemStateChanged(ItemEvent e)
 			{
 				filterDevices();
-				filterCategory();
-				
+				filterCategory();				
 			}
 		});
 	}
@@ -315,6 +319,7 @@ public class FilterCommandPanel extends HAPanel
 			devicesBox.setEnabled(false);
 			categoryBox.setEnabled(false);
 			roomsBox.setEnabled(false);
+			selectCommand.clearCommandsList();
 		}
 	}
 	
@@ -334,7 +339,7 @@ public class FilterCommandPanel extends HAPanel
 		constraints.weightx = 1f;
 		constraints.gridwidth = 3;
 		constraints.anchor = GridBagConstraints.SOUTH;
-		//constraints.gridy ++;
+		tutorial.setFontSize(20f);
 		add(tutorial, constraints);
 		
 		constraints.insets = new Insets(20,0,0,20);
