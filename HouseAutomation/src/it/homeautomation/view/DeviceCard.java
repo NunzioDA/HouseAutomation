@@ -13,7 +13,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -29,8 +28,6 @@ import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
-import it.homeautomation.model.features.DeviceCategory;
-import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -64,6 +61,23 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		this.listener = listener;
 	}
 	
+	public static URL getFirstFeatureImagePath(Device device)
+	{
+		// visualizing main icon
+		// get the first feature excluding StatusFeature (always at index 0)
+		
+		String iconID = device.getFeatures().get(1).getIconID();
+		URL imagePath = null;
+		
+		if(iconID != null)
+		{
+			imagePath = HAUtilities.getIconPath(iconID);
+			
+		}
+		
+		return imagePath;
+	}
+	
 	@Override
 	public Component getListCardRendererComponent(Device device)
 	{
@@ -74,27 +88,10 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		
 		init();
 		reloadColors();
-		// visualizing main icon
-		Optional<DeviceFeature> firstCategoryOpt = device
-				.getFeatures()
-				.stream()
-				.filter(f -> (f instanceof DeviceCategory))
-				.findFirst();
 		
-		if(!firstCategoryOpt.isEmpty())
-		{
-			DeviceCategory firstCategory = (DeviceCategory)firstCategoryOpt.get();
-			String iconID = firstCategory.getIconID();
-			URL imagePath;
-			
-			if(iconID != null)
-			{
-				imagePath = HAUtilities.getIconPath(iconID);
-				image.loadImage(imagePath);
-			}
-			
-		}
-
+		URL imagePath = getFirstFeatureImagePath(device);
+		image.loadImage(imagePath);
+		
 		return this;
 	}
 

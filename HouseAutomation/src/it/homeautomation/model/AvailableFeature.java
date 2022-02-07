@@ -44,11 +44,13 @@ public class AvailableFeature
 	 */	
 	private static void initSingleton()
 	{
+		//CATEGORIES
 		availableFeatures.add(new Television());
 		availableFeatures.add(new Audio());
 		availableFeatures.add(new Light());
 		availableFeatures.add(new SmartPlug());		
 		availableFeatures.add(new ColorBased());
+		//FEATURES
 		availableFeatures.add(new Dimmable());		
 	}		
 	

@@ -1,19 +1,14 @@
 package it.homeautomation.view;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -26,8 +21,6 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
-import it.homeautomation.model.features.DeviceCategory;
-import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class DeviceManagementFrame extends HAFrame
@@ -60,6 +53,20 @@ public class DeviceManagementFrame extends HAFrame
 			public void mouseClicked(MouseEvent e)
 			{
 				new DeviceManagementFrame(d, controller, listener);
+				setVisible(false);
+				dispose();
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				childPanel.setBackground(HAUtilities.changeColorBrightness(childPanel.getBackground(), -10));
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				childPanel.setBackground(HAUtilities.changeColorBrightness(childPanel.getBackground(), 10));
 			}
 		});
 	}
@@ -68,28 +75,14 @@ public class DeviceManagementFrame extends HAFrame
 	{
 		HAImageView image = new HAImageView();
 		
-		Optional<DeviceFeature> firstCategoryOpt = ch
-				.getFeatures()
-				.stream()
-				.filter(f -> (f instanceof DeviceCategory))
-				.findFirst();
-		
-		if(!firstCategoryOpt.isEmpty())
-		{
-			DeviceCategory firstCategory = (DeviceCategory)firstCategoryOpt.get();
-			String iconID = firstCategory.getIconID();
-			URL imagePath;
-			
-			if(iconID != null)
-			{
-				imagePath = HAUtilities.getIconPath(iconID);
-				image.loadImage(imagePath);
-			}
-			
-		}
+		image.loadImage(DeviceCard.getFirstFeatureImagePath(ch));
 		
 		image.setLayout(new GridLayout());
-		image.add(new HATextCenter(ch.getName()));
+		HATextCenter text = new HATextCenter(ch.getName(), 20);
+		text.setBackground(HAUtilities.getDarkBackgroundColor());
+		image.add(text);
+		image.setBackground(HAUtilities.getDarkBackgroundColor());
+		
 		initChildMouseListener(image, ch);
 		
 		return image;
@@ -113,7 +106,6 @@ public class DeviceManagementFrame extends HAFrame
 		initDeleteButton();
 		featuresVisualizer = new DeviceStateVisualizer(device);
 		setContentLayout(new GridBagLayout());
-		deleteDevice.setFocusable(false);
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
@@ -144,8 +136,7 @@ public class DeviceManagementFrame extends HAFrame
 		}
 		
 		addComponent(deleteDevice, constraints);
-		
-		initFocusListener();
+
 		reloadColors();
 		setVisible(true);
 	}
@@ -163,28 +154,6 @@ public class DeviceManagementFrame extends HAFrame
 				dispose();
 			}
 		});
-	}
-	
-	private void initFocusListener()
-	{
-		for(Component com : getComponents())
-		{
-			com.setFocusable(false);
-		}
-		
-		addFocusListener(new FocusAdapter() 
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-
-				setVisible(false);
-				dispose();
-			}
-			 
-		});
-		
-		requestFocus();
 	}
 
 	@Override
