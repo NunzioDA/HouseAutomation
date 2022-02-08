@@ -59,7 +59,6 @@ public class DeviceStateVisualizer extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				System.out.print("embe");
 				new DeviceCommandExecutonFrame(500, 300, feature, listener);
 				actListeners.stream().forEach(l -> l.actionPerformed(new ActionEvent(feature, 0, "")));
 			}
