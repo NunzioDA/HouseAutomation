@@ -15,6 +15,7 @@ import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class RoomList extends HAPanel
@@ -24,12 +25,13 @@ public class RoomList extends HAPanel
 	private GridBagConstraints constraints = new GridBagConstraints();
 	private int maxWidth = Integer.MAX_VALUE;
 	private HouseAutomationController controller;
-	private DeviceDeletedListener listener;
-	
-	public RoomList(HouseAutomationController controller, DeviceDeletedListener listener)
+	private DeviceDeletedListener deletedListener;
+	private DeviceCommandExecutedListener commandListener;
+	public RoomList(HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
 	{		
 		this.controller = controller;
-		this.listener = listener;
+		this.deletedListener = deletedListener;
+		this.commandListener = commandListener;
 		
 		setLayout(new GridBagLayout());
         constraints.gridx = 0;
@@ -51,7 +53,7 @@ public class RoomList extends HAPanel
 	private void addComponent(Map.Entry<String, List<Device>> m)
 	{			
 		constraints.gridy ++;
-		RoomCard r = (RoomCard) new RoomCard(controller, listener)
+		RoomCard r = (RoomCard) new RoomCard(controller, deletedListener, commandListener)
 				.getListCardRendererComponent(m);
 		add(r, constraints);
 	}

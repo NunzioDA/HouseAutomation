@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -46,18 +45,14 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	private HATextField deviceNameField;
 	private HATextField newRoomName;
 	
-	
-	private DefaultListModel<DeviceFeatureCard.CardStatus> featuresListModel = new DefaultListModel<>();
-	private FeatureList features = new FeatureList(featuresListModel);	
+	private FeatureList features = new FeatureList();	
 	private HAScrollPane featuresListPane = new HAScrollPane(features);
 	
-	
-	private DefaultListModel<String> roomListModel = new DefaultListModel<>();
-	private HAList<String> roomsList = new HAList<>(roomListModel);	
+
+	private HAList<String> roomsList = new HAList<>();	
 	private HAScrollPane roomsListPane = new HAScrollPane(roomsList);
 	
-	private DefaultListModel<DeviceGroup> deviceGroupModel = new DefaultListModel<>();
-	private HAList<DeviceGroup> deviceGroupList = new HAList<>(deviceGroupModel);	
+	private HAList<DeviceGroup> deviceGroupList = new HAList<>();	
 	private HAScrollPane deviceGroupListPane = new HAScrollPane(deviceGroupList);
 	
 	private JCheckBox isAGroup = new JCheckBox("it is a group");
@@ -76,7 +71,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	{
 		List<DeviceFeature> selectedFeatures = new ArrayList<>();
 		
-		for(Enumeration<DeviceFeatureCard.CardStatus> e = featuresListModel.elements(); e.hasMoreElements();)
+		for(Enumeration<DeviceFeatureCard.CardStatus> e = features.getDefaultModel().elements(); e.hasMoreElements();)
 		{
 			DeviceFeatureCard.CardStatus element = e.nextElement();
 			
@@ -117,21 +112,21 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		error.setText("");	
 
 		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroup();		
-		deviceGroupModel.removeAllElements();
-		deviceGroupModel.addAll(deviceGroups);
+		deviceGroupList.getDefaultModel().removeAllElements();
+		deviceGroupList.getDefaultModel().addAll(deviceGroups);
 		
-		featuresListModel.removeAllElements();
+		features.getDefaultModel().removeAllElements();
 		AvailableFeature
 		.getList()
 		.stream()
-		.forEach(f -> featuresListModel
+		.forEach(f -> features.getDefaultModel()
 				.addElement(new DeviceFeatureCard.CardStatus(f)));
 		
 		
 		List<String> roomsL = houseController.getRoomsList();
 		
-		roomListModel.removeAllElements();
-		roomListModel.addAll(roomsL);
+		roomsList.getDefaultModel().removeAllElements();
+		roomsList.getDefaultModel().addAll(roomsL);
 		
 	}
 	

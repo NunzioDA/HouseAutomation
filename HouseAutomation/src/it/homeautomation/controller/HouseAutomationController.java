@@ -66,7 +66,7 @@ public class HouseAutomationController
 	public void addNewDeviceToGroup(DeviceGroup deviceGroup, String name, List<DeviceFeature> features)
 	{
 		int uniqueID = housemap.getUniqueId();
-		String deviceName = HAUtilities.capitalize(name) + " in " + deviceGroup.getName();
+		String deviceName = deviceGroup.getName() +" -> " + HAUtilities.capitalize(name);
 		Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
 		
 		housemap.addNewDeviceGroupChild(deviceGroup, child);
@@ -123,7 +123,19 @@ public class HouseAutomationController
 	}
 	public List<Device> getDevicesByRoom(String room)
 	{
-		return housemap.getDeviceByRoom(room);
+		List<Device> roomDevices = new ArrayList<>();
+		
+		for(Device device : housemap.getDeviceByRoom(room))
+		{
+			roomDevices.add(device);
+			
+			if(device instanceof DeviceGroup)
+			{
+				roomDevices.addAll(((DeviceGroup) device).getChildren());
+			}
+		}
+				
+		return roomDevices;
 	}
 	
 	public List<Device> getDevicesByCategory(String category)

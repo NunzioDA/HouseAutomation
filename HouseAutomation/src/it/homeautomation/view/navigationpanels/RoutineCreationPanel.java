@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -48,8 +47,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	private Routine currentRoutine;
 	private HAButton createRoutineButton = new HAButton("Create routine");
 	
-	private DefaultListModel<String> commandsDescription = new DefaultListModel<>();
-	private HAList<String> commandsDescriptionList = new HAList<>(commandsDescription);
+	private HAList<String> commandsDescriptionList = new HAList<>();
 	private HAScrollPane commandsDescScroll = new HAScrollPane(commandsDescriptionList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private HAButton removeCommand = new HAButton("Remove command");
 	
@@ -65,7 +63,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	
 	private void resetPanel()
 	{
-		commandsDescription.removeAllElements();
+		commandsDescriptionList.getDefaultModel().removeAllElements();
 		currentRoutine = controller.getRoutineInstance();
 		routineName.setText("");
 		error.setText("");
@@ -118,7 +116,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 				
 				if(index >= 0)
 				{
-					String selectedD = commandsDescription.get(index);
+					String selectedD = commandsDescriptionList.getDefaultModel().get(index);
 					
 					Optional<RoutineEntry> entry =
 					currentRoutine
@@ -132,7 +130,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 					if(!entry.isEmpty())
 					{
 						currentRoutine.remove(entry.get());
-						commandsDescription.remove(index);
+						commandsDescriptionList.getDefaultModel().remove(index);
 					}
 				}
 			}
@@ -303,7 +301,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 			String categoryS = category.toString();
 			
 			currentRoutine.addCommands(description, commands, deviceS, categoryS, roomS, valuesList);		
-			commandsDescription.addElement(description);
+			commandsDescriptionList.getDefaultModel().addElement(description);
 		}
 	}
 	

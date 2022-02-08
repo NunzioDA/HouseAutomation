@@ -6,7 +6,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -15,27 +21,56 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 
 public class DeviceStateVisualizer extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints stateConstraint = new GridBagConstraints();
-	
+	private DeviceCommandExecutedListener commandExecutedListener = null;
+	private List<ActionListener> actListeners = new ArrayList<>();
 	public DeviceStateVisualizer(Device device)
 	{
+		this(device, null);
+	}
+	
+	public DeviceStateVisualizer(Device device, DeviceCommandExecutedListener commandExecutedListener)
+	{	
+		this.commandExecutedListener = commandExecutedListener;
 		initStateVisualizer();
 		
 		device.getFeatures().stream().forEach(f -> {
 			HAImageView panel = stateObjectToPanel(f);
 			
 			if(panel != null) 
-				addToStateVisualizer(panel);
+				addToStateVisualizer(panel, f);
 		});
 	
 	}
 	
-	private void addToStateVisualizer(JPanel panel)
+	public void addActionListener(ActionListener actList)
 	{
+		actListeners.add(actList);
+	}
+	
+	private void addFeatureClickListener(JPanel panel, DeviceFeature feature, DeviceCommandExecutedListener listener)
+	{
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				System.out.print("embe");
+				new DeviceCommandExecutonFrame(500, 300, feature, listener);
+				actListeners.stream().forEach(l -> l.actionPerformed(new ActionEvent(feature, 0, "")));
+			}
+		});
+	}
+	
+	private void addToStateVisualizer(JPanel panel, DeviceFeature feature)
+	{
+		if(commandExecutedListener != null)
+			addFeatureClickListener(panel, feature, commandExecutedListener);
+		
 		add(panel, stateConstraint);
 		
 		if(stateConstraint.gridx < 3)

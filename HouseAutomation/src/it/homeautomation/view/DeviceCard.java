@@ -28,6 +28,7 @@ import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -52,13 +53,15 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	
 	private Device myDevice;
 	private HouseAutomationController controller;
-	private DeviceDeletedListener listener;
+	private DeviceDeletedListener deletedListener;
+	private DeviceCommandExecutedListener commandListener;
 	
-	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller, DeviceDeletedListener listener)
+	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
 	{
 		this.myScrollPane = myScrollPane;
 		this.controller = controller;
-		this.listener = listener;
+		this.deletedListener = deletedListener;
+		this.commandListener = commandListener;
 	}
 	
 	public static URL getFirstFeatureImagePath(Device device)
@@ -111,7 +114,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				new DeviceManagementFrame(myDevice, controller, listener);
+				new DeviceManagementFrame(myDevice, controller, deletedListener, commandListener);
 			}
 			
 			@Override

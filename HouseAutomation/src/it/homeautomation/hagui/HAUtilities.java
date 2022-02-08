@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
 
@@ -77,6 +78,7 @@ public class HAUtilities
 		frame.setLocation(200, 200);
 		frame.setLayout(null);
 		frame.setUndecorated(true);
+		frame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getDarkBackgroundColor()));
 	}
 	
 	private static void setResizeListener(HAFrame frame)

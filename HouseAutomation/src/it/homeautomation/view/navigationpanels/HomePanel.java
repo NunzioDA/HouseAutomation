@@ -9,10 +9,12 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.command.Command;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.RoomList;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
-public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedListener
+public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedListener, DeviceCommandExecutedListener
 {
 	private static final long serialVersionUID = 1L;
 	private HouseAutomationController controller;
@@ -24,7 +26,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	{
 		super("Home");
 		this.controller = controller;			
-		listR = new RoomList(controller, this);
+		listR = new RoomList(controller, this, this);
 		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();
@@ -69,6 +71,12 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	public void deviceDeleted(Device device)
 	{
 		updateContent();
+	}
+
+	@Override
+	public void commandExecuted(Command<?> command)
+	{
+		updateContent();		
 	}
 }
  

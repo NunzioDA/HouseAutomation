@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -28,12 +27,10 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private DefaultListModel<Routine> routinesModel = new DefaultListModel<>();
-	private HAList<Routine> routinesList = new HAList<>(routinesModel);
+	private HAList<Routine> routinesList = new HAList<>();
 	private HAScrollPane routinesScroll = new HAScrollPane(routinesList, HAScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, HAScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
-	private DefaultListModel<String> commandsDescription = new DefaultListModel<>();
-	private HAList<String> commandsDescriptionList = new HAList<>(commandsDescription);
+	private HAList<String> commandsDescriptionList = new HAList<>();
 	private HAScrollPane routineCommandsScroll = new HAScrollPane(commandsDescriptionList, HAScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, HAScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	private HouseAutomationController controller;
@@ -57,11 +54,11 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	{
 		Routine routine = null;
 		int index = routinesList.getSelectedIndex();
-		
+
 		if(index >= 0)
 		{
-			routine = routinesModel.get(index);
-		}
+			routine = routinesList.getDefaultModel().get(index);
+		}		
 		
 		return routine;
 	}
@@ -106,7 +103,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 				
 				if(index >= 0)
 				{
-					String selectedD = commandsDescription.get(index);
+					String selectedD = commandsDescriptionList.getDefaultModel().get(index);
 					
 					Routine selectedRoutine = getSelectedRoutine();
 					
@@ -123,7 +120,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 						if(!entry.isEmpty())
 						{
 							selectedRoutine.remove(entry.get());
-							commandsDescription.remove(index);
+							commandsDescriptionList.getDefaultModel().remove(index);
 						}
 					}
 				}
@@ -142,14 +139,14 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 				
 				if(index >= 0)
 				{
-					commandsDescription.removeAllElements();
+					commandsDescriptionList.getDefaultModel().removeAllElements();
 					
-					Routine selectedRoutine = routinesModel.get(index);
+					Routine selectedRoutine = routinesList.getDefaultModel().get(index);
 					
 					selectedRoutine
 					.getCommands()
 					.stream()
-					.forEach(r->commandsDescription
+					.forEach(r->commandsDescriptionList.getDefaultModel()
 							.addElement(r
 									.getDescription()));
 				}
@@ -168,6 +165,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 				
 				if(selectedRoutine != null)
 				{
+					System.out.println(selectedRoutine);
 					new AddRoutineCommandFrame(selectedRoutine, ManageRoutinePanel.this, controller, 500, 500);
 				}
 			}
@@ -284,9 +282,9 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	@Override
 	public void updateContent()
 	{		
-		routinesModel.removeAllElements();
-		routinesModel.addAll(controller.getRoutines());
-		commandsDescription.removeAllElements();
+		routinesList.getDefaultModel().removeAllElements();
+		routinesList.getDefaultModel().addAll(controller.getRoutines());
+		commandsDescriptionList.getDefaultModel().removeAllElements();
 	}
 
 }

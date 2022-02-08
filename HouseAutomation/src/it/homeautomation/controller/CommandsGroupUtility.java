@@ -43,13 +43,13 @@ public class CommandsGroupUtility
 		this.controller = controller;
 	}
 	
-	private boolean isAlphanumeric(Class<?> commandValueClass)
+	public static boolean isAlphanumeric(Class<?> commandValueClass)
 	{
 		return (commandValueClass.equals(Float.class)|| commandValueClass.equals(Integer.class)|| commandValueClass.equals(String.class));
 	}
 	
 	@SuppressWarnings("unchecked")
-	private String manageSingleValueCommands(Command<?> command, Object inputValue)
+	public static String manageSingleValueCommands(Command<?> command, Object inputValue)
 	{
 		String error = "";
 		//SingleValueCommand have only 1 value

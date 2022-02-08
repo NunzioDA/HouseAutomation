@@ -21,6 +21,7 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class DeviceManagementFrame extends HAFrame
@@ -28,21 +29,23 @@ public class DeviceManagementFrame extends HAFrame
 	private static final long serialVersionUID = 1L;
 	
 	private HAButton deleteDevice = new HAButton("Delete");	
-	private JPanel featuresVisualizer = new JPanel();
+	private DeviceStateVisualizer featuresVisualizer;
 	private JPanel childDeviceVisualizer = new JPanel();
 	private Device device;	
 	private HouseAutomationController controller;
-	private DeviceDeletedListener listener;
+	private DeviceDeletedListener deletedListener;
+	private DeviceCommandExecutedListener commandListener;
 	
-	public DeviceManagementFrame(Device device, HouseAutomationController controller, DeviceDeletedListener listener)
+	public DeviceManagementFrame(Device device, HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
 	{
 		super("Device Manager", 500, 500);
 		this.controller = controller;
 		this.device = device;
-		this.listener = listener;
+		this.deletedListener = deletedListener;
+		this.commandListener = commandListener;
 		
 		init();
-		
+		setResizable(false);
 		setVisible(true);
 	}
 	
@@ -52,7 +55,7 @@ public class DeviceManagementFrame extends HAFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				new DeviceManagementFrame(d, controller, listener);
+				new DeviceManagementFrame(d, controller, deletedListener, commandListener);
 				setVisible(false);
 				dispose();
 			}
@@ -104,7 +107,18 @@ public class DeviceManagementFrame extends HAFrame
 	private void init()
 	{		
 		initDeleteButton();
-		featuresVisualizer = new DeviceStateVisualizer(device);
+		featuresVisualizer = new DeviceStateVisualizer(device, commandListener);
+		
+		featuresVisualizer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				setVisible(false);
+				dispose();
+			}
+		});
+		
 		setContentLayout(new GridBagLayout());
 		
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -149,7 +163,7 @@ public class DeviceManagementFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				controller.deleteDevice(device);
-				listener.deviceDeleted(device);
+				deletedListener.deviceDeleted(device);
 				setVisible(false);
 				dispose();
 			}

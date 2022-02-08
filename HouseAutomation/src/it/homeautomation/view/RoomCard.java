@@ -19,6 +19,7 @@ import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
+import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -41,9 +42,9 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	
 	private static final int FACTOR = 30;
 
-	public RoomCard(HouseAutomationController controller, DeviceDeletedListener listener)
+	public RoomCard(HouseAutomationController controller, DeviceDeletedListener listener, DeviceCommandExecutedListener commandListener)
 	{
-		this.deviceList = new DeviceList(controller, listener);
+		this.deviceList = new DeviceList(controller, listener, commandListener);
 		deviceScrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();		

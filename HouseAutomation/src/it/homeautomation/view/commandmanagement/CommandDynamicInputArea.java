@@ -101,7 +101,7 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 		return colorSelected;
 	}
 	
-	public  void manageInputPanel(List<Class<?>> values)
+	public void manageInputPanel(List<Class<?>> values)
 	{
 		if(values.size()>0)
 		{

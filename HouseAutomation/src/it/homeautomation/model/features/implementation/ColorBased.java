@@ -36,7 +36,7 @@ public class ColorBased extends SingleValueFeature<Color> implements DeviceCateg
 	@Override
 	public String toString()
 	{
-		return "Color Based Device";
+		return "Color Based";
 	}
 
 	@Override

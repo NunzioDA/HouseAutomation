@@ -25,6 +25,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 	private SelectCommandPanel selectCommandPanel;
 	private Routine routine;
 	private ManageRoutinePanel manageRoutine;
+	
 	public AddRoutineCommandFrame(Routine routine, ManageRoutinePanel manageRoutine, HouseAutomationController controller, int width, int height)
 	{
 		super("Add command to " + routine.getName(), width, height);
@@ -32,6 +33,8 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 		this.routine = routine;
 		this.manageRoutine = manageRoutine;
 		init();
+		setResizable(false);
+		setVisible(true);
 	}
 	private void init()
 	{
@@ -54,7 +57,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 		addComponent(createCommand, constraints);
 		
 		constraints.gridy ++;
-		//constraints.insets = new Insets(0, 0, 30, 0);
+		constraints.insets.bottom = 30;
 		addComponent(selectCommandPanel, constraints);		
 
 		reloadColors();

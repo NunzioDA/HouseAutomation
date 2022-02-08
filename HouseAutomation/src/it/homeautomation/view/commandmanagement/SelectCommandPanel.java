@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -44,8 +43,7 @@ public class SelectCommandPanel extends HAPanel
 	private String categoryFilter, roomFilter;
 	private Object deviceFilter;
 	
-	private DefaultListModel<Command<?>> commandListModel = new DefaultListModel<>();
-	private HAList<Command<?>> commandsList = new HAList<>(commandListModel);
+	private HAList<Command<?>> commandsList = new HAList<>();
 	private HAScrollPane commandListScrollPane = new HAScrollPane(commandsList);
 	
 	private JPanel inputAndConfirmPanel = new JPanel();	
@@ -170,7 +168,7 @@ public class SelectCommandPanel extends HAPanel
 				if(index >= 0)
 				{	
 					confirmCommand.setEnabled(true);
-					Command<?> selectedCommand = commandListModel.getElementAt(index);
+					Command<?> selectedCommand = commandsList.getDefaultModel().getElementAt(index);
 					inputArea.manageInputPanel(selectedCommand.getValuesTypes());
 				}
 
@@ -249,7 +247,7 @@ public class SelectCommandPanel extends HAPanel
 	
 	public void clearCommandsList()
 	{	
-		commandListModel.removeAllElements();
+		commandsList.getDefaultModel().removeAllElements();
 	}
 
 	
@@ -259,8 +257,8 @@ public class SelectCommandPanel extends HAPanel
 		this.categoryFilter = category;
 		this.roomFilter = room;
 		this.filteredCommandDescription = groupDescription;
-		this.commandListModel.removeAllElements();
-		this.commandListModel.addAll(commands);
+		this.commandsList.getDefaultModel().removeAllElements();
+		this.commandsList.getDefaultModel().addAll(commands);
 		
 		// making isAGroup match the text field size so 
 		// that its column does not get tightened

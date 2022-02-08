@@ -5,19 +5,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 import it.homeautomation.hagui.HAList;
-import it.homeautomation.view.DeviceFeatureCard.CardStatus;
 
 public class FeatureList extends HAList<DeviceFeatureCard.CardStatus>
 {
 	private static final long serialVersionUID = 1L;
 
-	public FeatureList(ListModel<CardStatus> model)
+	public FeatureList()
 	{
-		super(model);
+		super();
 		init();		
 	}
 	
