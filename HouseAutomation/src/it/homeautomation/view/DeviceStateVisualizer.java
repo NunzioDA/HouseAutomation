@@ -40,7 +40,7 @@ public class DeviceStateVisualizer extends JPanel
 		initStateVisualizer();
 		
 		device.getFeatures().stream().forEach(f -> {
-			HAImageView panel = stateObjectToPanel(f);
+			HAImageView panel = featureToPanel(f);
 			
 			if(panel != null) 
 				addToStateVisualizer(panel, f);
@@ -96,7 +96,7 @@ public class DeviceStateVisualizer extends JPanel
 		
 	}
 	
-	private HAImageView stateObjectToPanel(DeviceFeature f)
+	private HAImageView featureToPanel(DeviceFeature f)
 	{
 		HAImageView result = null;		
 		HATextCenter text = null;
@@ -130,7 +130,7 @@ public class DeviceStateVisualizer extends JPanel
 					
 				URL url = HAUtilities.getIconPath(iconID);
 				
-				result.loadImage(url, 10);
+				result.loadImage(url, 5);
 				
 				if(text != null)
 					text.setBackground(HAUtilities.getDarkBackgroundColor());

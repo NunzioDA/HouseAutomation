@@ -33,7 +33,7 @@ public abstract class HANavigationDrawerPanel extends HAPanel
 		{
 			int width = getWidth() - MARGIN * 2;
 			
-			title.setSize(new Dimension(width, (int) HAUtilities.MAIN_TITLE));
+			title.setSize(new Dimension(width, title.getPreferredSize().height));
 			title.setLocation(MARGIN, TOP_MARGIN);
 			
 			int contentHeight = (int) (getHeight() - MARGIN - TOP_MARGIN - HAUtilities.MAIN_TITLE);

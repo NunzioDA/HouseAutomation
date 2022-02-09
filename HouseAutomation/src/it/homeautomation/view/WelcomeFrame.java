@@ -50,7 +50,7 @@ public class WelcomeFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				if(!houseName.getText().isEmpty()) {
-					controller.startMainFrame(HAUtilities.capitalize(houseName.getText()));
+					controller.startMainFrame(houseName.getText());
 					WelcomeFrame.this.setVisible(false); 
 					WelcomeFrame.this.dispose();
 				}

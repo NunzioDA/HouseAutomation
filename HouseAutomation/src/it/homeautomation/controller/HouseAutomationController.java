@@ -23,25 +23,11 @@ public class HouseAutomationController
 	
 	public HouseAutomationController()
 	{
-		startWelcomeFrame();
 		commandsFilterTool = new CommandsFilterTool(this);
 		commandsGroupUtility = new CommandsGroupUtility(this);
 	}
 	
-	public void startMainFrame(String houseName)
-	{
-		housemap = new HouseMap(houseName);
-		new MainFrame("Home Automation", this, 1220, 700);
-	}
-	
-	private void startWelcomeFrame()
-	{
-		new WelcomeFrame("Welcome", 500, 500, this);
-	}
-	public String getHouseName()
-	{
-		return housemap.getName();
-	}
+	// MAIN
 	
 	public CommandsGroupUtility getCommandsGroupUtility()
 	{
@@ -53,33 +39,87 @@ public class HouseAutomationController
 		return commandsFilterTool;
 	}
 	
-	public void addDevice(String name, String room, List<DeviceFeature> features, boolean isAGroup)
+	public void startNewHouse(String houseName)
 	{
-		int uniqueID = housemap.getUniqueId();
-		
-		Device device = DeviceFactory.createDevice(HAUtilities.capitalize(name), uniqueID, features, isAGroup);		
-		housemap.addDevice(HAUtilities.capitalize(room), device);
-		
-		housemap.getRoutines().stream().forEach(r -> r.update(this));
+		houseName = HAUtilities.capitalize(houseName);
+		housemap = new HouseMap(houseName);
 	}
 	
-	public void addNewDeviceToGroup(DeviceGroup deviceGroup, String name, List<DeviceFeature> features)
-	{
-		int uniqueID = housemap.getUniqueId();
-		String deviceName = deviceGroup.getName() +" -> " + HAUtilities.capitalize(name);
-		Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
-		
-		housemap.addNewDeviceGroupChild(deviceGroup, child);
+	public void startMainFrame(String houseName)
+	{		
+		startNewHouse(houseName);
+		new MainFrame("Home Automation", this, 1220, 700);
 	}
 	
-	public void deleteDevice(Device device)
+	public void startWelcomeFrame()
 	{
-		housemap.deleteDevice(device);
+		new WelcomeFrame("Welcome", 500, 500, this);
+	}
+	
+	public String getHouseName()
+	{
+		return housemap.getName();
+	}
+	
+	
+	//DEVICE MANAGEMENT
+	
+	public List<Device> getAllDevices()
+	{
+		return housemap.getDevicesList();
+	}
+	
+	public boolean isDeviceNamePresent(String name)
+	{
+		return getAllDevices()
+				.stream()
+				.anyMatch(d->d.getName().equals(name));
+	}
+	
+	public boolean addDevice(String name, String room, List<DeviceFeature> features, boolean isAGroup)
+	{
+		boolean success = true;
 		
-		List<DeviceGroup> group = getAllDeviceGroup();
-		group.stream().forEach(d -> d.removeChild(device));
+		name = HAUtilities.capitalize(name);
+		if(!isDeviceNamePresent(name) && features != null && !features.isEmpty())
+		{
+			int uniqueID = housemap.getUniqueId();
+			
+			Device device = DeviceFactory.createDevice(name , uniqueID, features, isAGroup);		
+			housemap.addDevice(HAUtilities.capitalize(room), device);
+			
+			housemap.getRoutines().stream().forEach(r -> r.update(this));
+		}
+		else success = false;
 		
-		housemap.getRoutines().stream().forEach(r -> r.update(this));
+		return success;
+	}
+	
+	public boolean addNewDeviceToGroup(DeviceGroup deviceGroup, String name, List<DeviceFeature> features)
+	{
+		boolean success = true;
+		name = HAUtilities.capitalize(name);
+		
+		if(!isDeviceNamePresent(name))
+		{		
+			int uniqueID = housemap.getUniqueId();
+			String deviceName = deviceGroup.getName() +" -> " + name;
+			Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
+			
+			housemap.addNewDeviceGroupChild(deviceGroup, child);
+		}
+		else success = false;
+		
+		return success;
+	}
+	
+	public List<DeviceGroup> getAllDeviceGroups()
+	{
+		return getAllDevices()
+				.stream()
+				.filter(d -> (d instanceof DeviceGroup))
+				.map(d -> (DeviceGroup)d)
+				.toList();
 	}
 	
 	public List<Device> getRoomDevicesByCategory(String room, String category)
@@ -103,24 +143,7 @@ public class HouseAutomationController
 		return devices;
 	}
 	
-	public List<DeviceGroup> getAllDeviceGroup()
-	{
-		return getAllDevices()
-				.stream()
-				.filter(d -> (d instanceof DeviceGroup))
-				.map(d -> (DeviceGroup)d)
-				.toList();
-	}
 	
-	
-	public Set<Map.Entry<String, List<Device>>> getRoomsEntrySet()
-	{
-		return housemap.getRoomsMap().entrySet();
-	}
-	public List<String> getRoomsList()
-	{
-		return housemap.getRoomsList();
-	}
 	public List<Device> getDevicesByRoom(String room)
 	{
 		List<Device> roomDevices = new ArrayList<>();
@@ -137,16 +160,40 @@ public class HouseAutomationController
 				
 		return roomDevices;
 	}
-	
+		
 	public List<Device> getDevicesByCategory(String category)
 	{
 		return housemap.getCategoryMap().get(category);
 	}
-	
-	public List<Device> getAllDevices()
+
+	public boolean isFeatureStillAvailable(DeviceFeature feature)
 	{
-		return housemap.getDevicesList();
+		return housemap.getDevicesList().stream().anyMatch(d -> d.getFeatures().contains(feature));
+	}	
+	
+	public void deleteDevice(Device device)
+	{
+		housemap.deleteDevice(device);
+		
+		List<DeviceGroup> group = getAllDeviceGroups();
+		group.stream().forEach(d -> d.removeChild(device));
+		
+		housemap.getRoutines().stream().forEach(r -> r.update(this));
 	}
+	
+	//ROOMS
+	
+	public List<String> getAllRooms()
+	{
+		return housemap.getRoomsList();
+	}	
+	
+	public Set<Map.Entry<String, List<Device>>> getRoomsMapEntrySet()
+	{
+		return housemap.getRoomsMap().entrySet();
+	}
+	
+	// CATEGORIES
 	
 	public List<String> getAllCategories()
 	{
@@ -157,6 +204,8 @@ public class HouseAutomationController
 		return new ArrayList<>(housemap.getRoomInCategoriesMap(room).keySet());
 	}
 
+	// ROUTINE
+	
 	public Routine getRoutineInstance()
 	{
 		return new Routine("");
@@ -168,13 +217,16 @@ public class HouseAutomationController
 	}
 
 	public boolean addRoutine(Routine currentRoutine)
-	{		
-		return housemap.addRoutine(currentRoutine);		
-	}
-
-	public boolean isFeatureStillAvailable(DeviceFeature feature)
-	{
-		return housemap.getDevicesList().stream().anyMatch(d -> d.getFeatures().contains(feature));
+	{	
+		boolean success = false;
+		
+		if(currentRoutine != null 
+				&& !currentRoutine.getName().isEmpty()
+				&& !currentRoutine.getCommands().isEmpty())
+			
+			success = housemap.addRoutine(currentRoutine);	
+		
+		return success;		
 	}
 
 	public void deleteRoutine(Routine selectedRoutine)

@@ -41,7 +41,7 @@ public class Dimmable extends SingleValueFeature<Integer>{
 	@Override
 	public String toString()
 	{
-		return "Dimmable Device";
+		return "Dimmable";
 	}
 
 	@Override

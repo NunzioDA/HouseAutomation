@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.homeautomation.controller.CommandsGroupUtility;
+import it.homeautomation.controller.CommandsFilterTool;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.model.command.Command;
 
@@ -18,13 +18,8 @@ import it.homeautomation.model.command.Command;
 
 public class Routine
 {
-	private String name;
-	private List<RoutineEntry> commands = new ArrayList<>();
-	
-	public Routine()
-	{
-		name = "";
-	}
+	private String name = "";
+	private List<RoutineEntry> commandsEntry = new ArrayList<>();
 	
 	public Routine(String name)
 	{
@@ -35,33 +30,34 @@ public class Routine
 	{
 		List<RoutineEntry> deletable = new ArrayList<>();
 		
-		commands.forEach(r ->
+		commandsEntry.forEach(r ->
 		{ 
 			if(r.update(controller))
 				deletable.add(r); 
 		});
 		
-		commands.removeAll(deletable);
+		commandsEntry.removeAll(deletable);
 	}
 	
 	public void execute()
 	{
-		commands.forEach(RoutineEntry::execute);
+		commandsEntry.forEach(RoutineEntry::execute);
 	}
 	
-	public void addCommands(String description, List<Command<?>> commands, String device, String room, String category, List<Object> values)
+	public void addCommands(String description, List<Command<?>> commands,
+			String deviceFilter, String roomFilter, String categoryFilter, List<Object> values)
 	{
-		this.commands.add(new RoutineEntry(description, commands, device, room, category, values));
+		this.commandsEntry.add(new RoutineEntry(description, commands, deviceFilter, roomFilter, categoryFilter, values));
 	}
 	
 	public void remove(RoutineEntry routine)
 	{
-		commands.remove(routine);
+		commandsEntry.remove(routine);
 	}
 	
 	public List<RoutineEntry> getCommands()
 	{
-		return Collections.unmodifiableList(commands);
+		return Collections.unmodifiableList(commandsEntry);
 	}
 
 	public String getName()
@@ -105,7 +101,7 @@ public class Routine
 		
  		
  		public RoutineEntry(String description, List<Command<?>> commands, String device, 
- 				String category, String room, List<Object> values)
+ 				String room, String category, List<Object> values)
 		{
  			this.commandsList = commands;
  			this.device = device;
@@ -122,9 +118,9 @@ public class Routine
  		{
  			boolean deletable = false;
  			
- 			if(category.equals(CommandsGroupUtility.ALL_CATEGORIES) // Selected a device
- 					&& room.equals(CommandsGroupUtility.ALL_ROOMS) 
- 					&& !device.equals(CommandsGroupUtility.ALL_DEVICES))
+ 			if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // Selected a device
+ 					&& room.equals(CommandsFilterTool.ALL_ROOMS) 
+ 					&& !device.equals(CommandsFilterTool.ALL_DEVICES))
  			{
  				deletable = !controller.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
@@ -132,6 +128,11 @@ public class Routine
  						valuesList, commandsList, selectedCommand);
  			
  			return deletable;
+ 		}
+ 		
+ 		public List<Command<?>> getCommandList()
+ 		{
+ 			return Collections.unmodifiableList(commandsList);
  		}
  		
 		public void execute()
@@ -148,7 +149,7 @@ public class Routine
 		@Override
 		public String toString()
 		{
-			return description + " " + commands;
+			return description + " " + commandsEntry;
 		}
 	}
 }

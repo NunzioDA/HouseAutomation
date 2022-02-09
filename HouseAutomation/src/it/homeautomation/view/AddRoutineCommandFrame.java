@@ -89,7 +89,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 			String roomS = room.toString();
 			String categoryS = category.toString();
 			
-			routine.addCommands(description, commands, deviceS, categoryS, roomS, values);
+			routine.addCommands(description, commands, deviceS, roomS, categoryS, values);
 			manageRoutine.updateContent();
 		}
 		

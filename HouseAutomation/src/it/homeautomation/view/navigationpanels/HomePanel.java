@@ -28,7 +28,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 		this.controller = controller;			
 		listR = new RoomList(controller, this, this);
 		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+		scrollPane.setWheelScrollingEnabled(false);
 		init();
 
         updateContent();
@@ -55,7 +55,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	@Override
 	public void updateContent()
 	{
-		listR.refreshList(controller.getRoomsEntrySet());
+		listR.refreshList(controller.getRoomsMapEntrySet());
 		listR.updateUI();
 	}
 

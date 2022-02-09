@@ -222,7 +222,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		
 		constraints.gridy ++;
 		constraints.weighty = 0.3f;
-		constraints.insets = new Insets(20, 0, 0, 0);
+		constraints.insets = new Insets(15, 0, 0, 0);
 		initButtonContainer(leftButtonsContainer);
 		leftButtonsContainer.add(execute);
 		leftButtonsContainer.add(deleteRoutine);		
@@ -243,7 +243,7 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		getContent().add(routineCommandsScroll, constraints);		
 		
 		constraints.gridy ++;
-		constraints.insets.top = 20;
+		constraints.insets.top = 15;
 		constraints.weighty = 0.3f;
 		initButtonContainer(rightButtonsContainer);
 		rightButtonsContainer.add(removeCommand);
@@ -254,10 +254,8 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 		constraints.gridx = 0;
 		constraints.gridy ++;
 		constraints.insets.left = 0;
-		constraints.insets.top = 0;
 		constraints.gridwidth = 2;
 		constraints.weighty = 0.3f;
-		constraints.insets.top = 20;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		getContent().add(HAUtilities.newDescription("Execution Log"), constraints);
 		

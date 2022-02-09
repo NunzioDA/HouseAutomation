@@ -300,7 +300,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 			String roomS = room.toString();
 			String categoryS = category.toString();
 			
-			currentRoutine.addCommands(description, commands, deviceS, categoryS, roomS, valuesList);		
+			currentRoutine.addCommands(description, commands, deviceS, roomS, categoryS, valuesList);		
 			commandsDescriptionList.getDefaultModel().addElement(description);
 		}
 	}

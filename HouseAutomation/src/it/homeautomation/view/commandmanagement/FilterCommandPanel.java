@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-import it.homeautomation.controller.CommandsGroupUtility;
+import it.homeautomation.controller.CommandsFilterTool;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HALabel;
@@ -120,7 +120,7 @@ public class FilterCommandPanel extends HAPanel
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				if(!e.getItem().equals(CommandsGroupUtility.ALL_CATEGORIES))
+				if(!e.getItem().equals(CommandsFilterTool.ALL_CATEGORIES))
 				{
 					devicesBox.setEnabled(false);
 					devicesBox.setSelectedIndex(0);
@@ -150,8 +150,8 @@ public class FilterCommandPanel extends HAPanel
 		{
 			categoryBox.setEnabled(true);
 			categoryModel.removeAllElements();
-			categoryModel.addElement(CommandsGroupUtility.ALL_CATEGORIES);
-			if(roomsBox.getSelectedItem().equals(CommandsGroupUtility.ALL_ROOMS))
+			categoryModel.addElement(CommandsFilterTool.ALL_CATEGORIES);
+			if(roomsBox.getSelectedItem().equals(CommandsFilterTool.ALL_ROOMS))
 			{
 				categoryModel.addAll(controller.getAllCategories());
 			}
@@ -170,8 +170,8 @@ public class FilterCommandPanel extends HAPanel
 		{
 			devicesBox.setEnabled(true);
 			deviceModel.removeAllElements();
-			deviceModel.addElement(CommandsGroupUtility.ALL_DEVICES);
-			if(roomsBox.getSelectedItem().equals(CommandsGroupUtility.ALL_ROOMS))
+			deviceModel.addElement(CommandsFilterTool.ALL_DEVICES);
+			if(roomsBox.getSelectedItem().equals(CommandsFilterTool.ALL_ROOMS))
 			{
 				for(Device device : controller.getAllDevices())
 				{
@@ -196,16 +196,16 @@ public class FilterCommandPanel extends HAPanel
 	
 	public void refreshRooms()
 	{
-		List<String> rooms = controller.getRoomsList();
+		List<String> rooms = controller.getAllRooms();
 		
 		if(!rooms.isEmpty())
 		{
 			roomsBox.setEnabled(true);
 			
 			roomsModel.removeAllElements();
-			roomsModel.addElement(CommandsGroupUtility.ALL_ROOMS);
-			roomsModel.addAll(controller.getRoomsList());
-			roomsBox.setSelectedItem(CommandsGroupUtility.ALL_ROOMS);
+			roomsModel.addElement(CommandsFilterTool.ALL_ROOMS);
+			roomsModel.addAll(controller.getAllRooms());
+			roomsBox.setSelectedItem(CommandsFilterTool.ALL_ROOMS);
 			filterDevices();
 			filterCategory();
 		}

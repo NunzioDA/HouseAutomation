@@ -96,12 +96,16 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		DeviceGroup groupDevice = deviceGroupList.getSelectedValue();
 		
+		boolean success = true;
+		
 		if(groupDevice == null)
-			houseController.addDevice(deviceNameField.getText(), room, selectedFeatures, group);
+			success = houseController.addDevice(deviceNameField.getText(), room, selectedFeatures, group);
 		
-		else houseController.addNewDeviceToGroup(groupDevice, deviceNameField.getText(), selectedFeatures);
+		else success = houseController.addNewDeviceToGroup(groupDevice, deviceNameField.getText(), selectedFeatures);
 		
-		updateContent();
+		if(success)
+			updateContent();
+		else error.setText("This name is already used");
 	}
 	
 	@Override
@@ -111,7 +115,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		deviceNameField.setText("");
 		error.setText("");	
 
-		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroup();		
+		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroups();		
 		deviceGroupList.getDefaultModel().removeAllElements();
 		deviceGroupList.getDefaultModel().addAll(deviceGroups);
 		
@@ -123,7 +127,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 				.addElement(new DeviceFeatureCard.CardStatus(f)));
 		
 		
-		List<String> roomsL = houseController.getRoomsList();
+		List<String> roomsL = houseController.getAllRooms();
 		
 		roomsList.getDefaultModel().removeAllElements();
 		roomsList.getDefaultModel().addAll(roomsL);
@@ -219,7 +223,7 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 			}
 		});
 	}
-
+	
 	private void initComponents()
 	{	
 		deviceNameField = new HATextField(50);

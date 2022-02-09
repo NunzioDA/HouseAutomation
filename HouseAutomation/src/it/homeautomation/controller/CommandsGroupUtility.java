@@ -31,11 +31,7 @@ import it.homeautomation.model.features.DeviceFeature;
  */
 
 public class CommandsGroupUtility
-{
-	public static final String ALL_DEVICES = "All devices";
-	public static final String ALL_CATEGORIES = "All categories";
-	public static final String ALL_ROOMS = "All rooms";
-	
+{	
 	public HouseAutomationController controller;
 	
 	public CommandsGroupUtility(HouseAutomationController controller)
@@ -111,29 +107,29 @@ public class CommandsGroupUtility
 		
 		if(device instanceof String)
 		{
-			if(category.equals(ALL_CATEGORIES) // ROOM
-					&& !room.equals(ALL_ROOMS))
+			if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // ROOM
+					&& !room.equals(CommandsFilterTool.ALL_ROOMS))
 			{
 				devicesAffected = controller.getDevicesByRoom(room);
 			}			
-			else if(!category.equals(ALL_CATEGORIES) // CATEGORY
-					&& room.equals(ALL_ROOMS))
+			else if(!category.equals(CommandsFilterTool.ALL_CATEGORIES) // CATEGORY
+					&& room.equals(CommandsFilterTool.ALL_ROOMS))
 			{
 				devicesAffected = controller.getDevicesByCategory(category);
 			}
-			else if(!category.equals(ALL_CATEGORIES) // CATEGORY IN A ROOM
-					&& !room.equals(ALL_ROOMS))
+			else if(!category.equals(CommandsFilterTool.ALL_CATEGORIES) // CATEGORY IN A ROOM
+					&& !room.equals(CommandsFilterTool.ALL_ROOMS))
 			{				
 				devicesAffected = controller.getRoomDevicesByCategory(room, category);
 			}
-			else if(category.equals(ALL_CATEGORIES) // ALL DEVICES
-					&& room.equals(ALL_ROOMS) 
-					&& device.equals(ALL_DEVICES))
+			else if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // ALL DEVICES
+					&& room.equals(CommandsFilterTool.ALL_ROOMS) 
+					&& device.equals(CommandsFilterTool.ALL_DEVICES))
 			{
 				devicesAffected = controller.getAllDevices();
 			}
 		}
-		else {
+		else if(device instanceof Device) {
 			devicesAffected = new ArrayList<>();
 			devicesAffected.add((Device)device);
 		}

@@ -11,6 +11,10 @@ import it.homeautomation.model.features.implementation.StateFeature;
 
 public class CommandsFilterTool
 {
+	public static final String ALL_DEVICES = "All devices";
+	public static final String ALL_CATEGORIES = "All categories";
+	public static final String ALL_ROOMS = "All rooms";
+	
 	private HouseAutomationController controller;
 	
 	public CommandsFilterTool(HouseAutomationController controller)
@@ -86,30 +90,30 @@ public class CommandsFilterTool
 			boolean error = false;	
 			
 			
-			if(roomS.equals(CommandsGroupUtility.ALL_ROOMS) && CommandsGroupUtility.ALL_DEVICES.equals(deviceS)  
-					&& categoryS.equals(CommandsGroupUtility.ALL_CATEGORIES))
+			if(roomS.equals(CommandsFilterTool.ALL_ROOMS) && CommandsFilterTool.ALL_DEVICES.equals(deviceS)  
+					&& categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// ALL DEVICES SELECTED				
 				description = controller.getCommandsFilterTool().allDeviceSelected();
 			}
-			else if(roomS.equals(CommandsGroupUtility.ALL_ROOMS) && !categoryS.equals(CommandsGroupUtility.ALL_CATEGORIES))
+			else if(roomS.equals(CommandsFilterTool.ALL_ROOMS) && !categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED A CATEGORY
 				description = controller.getCommandsFilterTool().selectedACategory(categoryS, commands);				
 			}
-			else if(!CommandsGroupUtility.ALL_DEVICES.equals(deviceS))
+			else if(!CommandsFilterTool.ALL_DEVICES.equals(deviceS))
 			{
 				// SELECTED A DEVICE
 				description = controller.getCommandsFilterTool().selectedADevice((Device)deviceS, commands);
 			}
-			else if(!roomS.equals(CommandsGroupUtility.ALL_ROOMS) && 
-					!categoryS.equals(CommandsGroupUtility.ALL_CATEGORIES))
+			else if(!roomS.equals(CommandsFilterTool.ALL_ROOMS) && 
+					!categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED A CATEGORY IN A ROOM				
 				description = controller.getCommandsFilterTool().selectedACategoryInRoom(categoryS, roomS, commands);	
 			}
-			else if(!roomS.equals(CommandsGroupUtility.ALL_ROOMS) && 
-					categoryS.equals(CommandsGroupUtility.ALL_CATEGORIES))
+			else if(!roomS.equals(CommandsFilterTool.ALL_ROOMS) && 
+					categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED ALL DEVICE IN A ROOM
 				description = controller.getCommandsFilterTool().selectedAllDevicesInRoom(roomS);	

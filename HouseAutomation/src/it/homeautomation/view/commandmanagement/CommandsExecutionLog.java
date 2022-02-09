@@ -1,6 +1,8 @@
 package it.homeautomation.view.commandmanagement;
 
 import java.awt.GridLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.JPanel;
 
@@ -18,6 +20,13 @@ public class CommandsExecutionLog extends JPanel
 	{
 		setLayout(new GridLayout());
 		add(commandsLogScrollPane);
+		
+		//auto scroll
+		commandsLogScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+		    public void adjustmentValueChanged(AdjustmentEvent e) {
+		        e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+		    }
+		});
 	}
 	
 	public void startRoutineExecution(String name)
