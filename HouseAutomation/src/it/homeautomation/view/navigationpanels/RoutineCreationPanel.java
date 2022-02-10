@@ -28,6 +28,7 @@ import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
+import it.homeautomation.view.implementation.HAViewImplementation;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
 public class RoutineCreationPanel extends HANavigationDrawerPanel implements CommandCreationListener
@@ -53,10 +54,10 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	
 	private HALabel error = new HALabel("", SwingConstants.RIGHT);
 	
-	public RoutineCreationPanel(HouseAutomationController controller)
+	public RoutineCreationPanel()
 	{
 		super("Create routine");
-		this.controller = controller;
+		this.controller = HAViewImplementation.getSingleton().getController();
 		currentRoutine = controller.getRoutineInstance();
 		init();
 	}

@@ -20,8 +20,9 @@ import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
-import it.homeautomation.view.AddRoutineCommandFrame;
 import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
+import it.homeautomation.view.implementation.AddRoutineCommandFrame;
+import it.homeautomation.view.implementation.HAViewImplementation;
 
 public class ManageRoutinePanel extends HANavigationDrawerPanel
 {
@@ -43,10 +44,10 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 	
 	private CommandsExecutionLog commandsLog = new CommandsExecutionLog();
 	
-	public ManageRoutinePanel(HouseAutomationController controller)
+	public ManageRoutinePanel()
 	{
 		super("Manage Routines");
-		this.controller = controller;
+		this.controller = HAViewImplementation.getSingleton().getController();
 		init();
 	}
 	

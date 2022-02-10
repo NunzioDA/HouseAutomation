@@ -17,7 +17,7 @@ import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HATextField;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.view.ColorChooseDialog;
+import it.homeautomation.view.implementation.ColorChooseDialog;
 import it.homeautomation.view.interfaces.ColorSelectionListener;
 
 public class CommandDynamicInputArea extends HAPanel implements ColorSelectionListener

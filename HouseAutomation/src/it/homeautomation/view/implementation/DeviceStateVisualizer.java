@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,7 +21,7 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
+import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 
 public class DeviceStateVisualizer extends JPanel
 {

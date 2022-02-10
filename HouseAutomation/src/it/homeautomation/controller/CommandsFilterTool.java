@@ -94,29 +94,29 @@ public class CommandsFilterTool
 					&& categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// ALL DEVICES SELECTED				
-				description = controller.getCommandsFilterTool().allDeviceSelected();
+				description = allDeviceSelected();
 			}
 			else if(roomS.equals(CommandsFilterTool.ALL_ROOMS) && !categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED A CATEGORY
-				description = controller.getCommandsFilterTool().selectedACategory(categoryS, commands);				
+				description = selectedACategory(categoryS, commands);				
 			}
 			else if(!CommandsFilterTool.ALL_DEVICES.equals(deviceS))
 			{
 				// SELECTED A DEVICE
-				description = controller.getCommandsFilterTool().selectedADevice((Device)deviceS, commands);
+				description = selectedADevice((Device)deviceS, commands);
 			}
 			else if(!roomS.equals(CommandsFilterTool.ALL_ROOMS) && 
 					!categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED A CATEGORY IN A ROOM				
-				description = controller.getCommandsFilterTool().selectedACategoryInRoom(categoryS, roomS, commands);	
+				description = selectedACategoryInRoom(categoryS, roomS, commands);	
 			}
 			else if(!roomS.equals(CommandsFilterTool.ALL_ROOMS) && 
 					categoryS.equals(CommandsFilterTool.ALL_CATEGORIES))
 			{
 				// SELECTED ALL DEVICE IN A ROOM
-				description = controller.getCommandsFilterTool().selectedAllDevicesInRoom(roomS);	
+				description = selectedAllDevicesInRoom(roomS);	
 			}
 			else error = true;
 			

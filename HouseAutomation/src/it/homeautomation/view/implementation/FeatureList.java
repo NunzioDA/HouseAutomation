@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 
 import java.awt.event.MouseAdapter;

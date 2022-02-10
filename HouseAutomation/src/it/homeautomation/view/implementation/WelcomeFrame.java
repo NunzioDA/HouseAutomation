@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -34,12 +34,12 @@ public class WelcomeFrame extends HAFrame
 	private HAButton confirm = new HAButton("Confirm");
 	private HouseAutomationController controller;
 	
-	public WelcomeFrame(String title, int width, int height, HouseAutomationController controller)
+	public WelcomeFrame(String title, int width, int height)
 	{
 		super(title, width, height);
 		init();
 		setVisible(true);
-		this.controller = controller;
+		controller = HAViewImplementation.getSingleton().getController();
 	}
 	
 	private void initConfirmButton()
@@ -50,7 +50,7 @@ public class WelcomeFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				if(!houseName.getText().isEmpty()) {
-					controller.startMainFrame(houseName.getText());
+					controller.startMainScreen(houseName.getText());
 					WelcomeFrame.this.setVisible(false); 
 					WelcomeFrame.this.dispose();
 				}

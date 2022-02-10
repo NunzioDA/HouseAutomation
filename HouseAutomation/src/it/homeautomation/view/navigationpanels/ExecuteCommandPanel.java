@@ -13,6 +13,7 @@ import it.homeautomation.model.command.Command;
 import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
 import it.homeautomation.view.commandmanagement.FilterCommandPanel;
 import it.homeautomation.view.commandmanagement.SelectCommandPanel;
+import it.homeautomation.view.implementation.HAViewImplementation;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
 public class ExecuteCommandPanel extends HANavigationDrawerPanel implements CommandCreationListener
@@ -24,10 +25,10 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	
 	private CommandsExecutionLog commandsLog = new CommandsExecutionLog();
 			
-	public ExecuteCommandPanel(HouseAutomationController controller)
+	public ExecuteCommandPanel()
 	{
 		super("Execute Command");
-		this.controller = controller;
+		this.controller = HAViewImplementation.getSingleton().getController();
 		
 		init();		
 		

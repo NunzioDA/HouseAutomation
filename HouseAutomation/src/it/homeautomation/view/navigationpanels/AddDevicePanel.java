@@ -30,8 +30,9 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.DeviceFeatureCard;
-import it.homeautomation.view.FeatureList;
+import it.homeautomation.view.implementation.DeviceFeatureCard;
+import it.homeautomation.view.implementation.FeatureList;
+import it.homeautomation.view.implementation.HAViewImplementation;
 
 public class AddDevicePanel extends HANavigationDrawerPanel
 {
@@ -59,10 +60,10 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 	private HAButton confirm;	
 	private HALabel error;
 	
-	public AddDevicePanel(HouseAutomationController houseController)
+	public AddDevicePanel()
 	{
 		super("Add new device");
-		this.houseController = houseController;
+		this.houseController = HAViewImplementation.getSingleton().getController();
 		getContent().setLayout(new GridBagLayout());
 		init();
 	}

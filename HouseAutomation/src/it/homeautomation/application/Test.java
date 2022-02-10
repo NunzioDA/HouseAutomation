@@ -9,6 +9,7 @@ import java.util.List;
 import it.homeautomation.controller.CommandsFilterTool;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.HouseMap;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.implementation.ChangeColorCommand;
@@ -27,8 +28,8 @@ class Test
 	@org.junit.jupiter.api.Test
 	void houseMapCreation()
 	{
-		controller = new HouseAutomationController();
-		controller.startNewHouse("test house");
+		controller = new HouseAutomationController(new HouseMap());
+		controller.setHouseName("test house");
 	}
 	
 	@org.junit.jupiter.api.Test

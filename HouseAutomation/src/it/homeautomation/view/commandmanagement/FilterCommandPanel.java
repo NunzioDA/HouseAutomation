@@ -17,8 +17,6 @@ import it.homeautomation.hagui.HAComboBox;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.Device;
-import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.command.Command;
 
 public class FilterCommandPanel extends HAPanel
@@ -171,19 +169,10 @@ public class FilterCommandPanel extends HAPanel
 			devicesBox.setEnabled(true);
 			deviceModel.removeAllElements();
 			deviceModel.addElement(CommandsFilterTool.ALL_DEVICES);
+			
 			if(roomsBox.getSelectedItem().equals(CommandsFilterTool.ALL_ROOMS))
 			{
-				for(Device device : controller.getAllDevices())
-				{
-					deviceModel.addElement(device);
-					
-					if(device instanceof DeviceGroup)
-					{
-						deviceModel.addAll(((DeviceGroup)device).getChildren());
-					}
-				}
-				
-				
+				deviceModel.addAll(controller.getAllDevices());				
 			}
 			else
 				deviceModel.addAll(controller

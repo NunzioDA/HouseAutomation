@@ -1,34 +1,43 @@
 package it.homeautomation.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceFactory;
 import it.homeautomation.model.DeviceGroup;
-import it.homeautomation.model.HouseMap;
+import it.homeautomation.model.HouseMaps;
+import it.homeautomation.model.Model;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.MainFrame;
-import it.homeautomation.view.WelcomeFrame;
+import it.homeautomation.view.View;
+import it.homeautomation.view.implementation.HAViewImplementation;
 
 public class HouseAutomationController
-{
-	private HouseMap housemap;	
+{	
 	private CommandsFilterTool commandsFilterTool;
 	private CommandsGroupUtility commandsGroupUtility;
+	private Model model;	
+	private View view;
 	
-	public HouseAutomationController()
+	public HouseAutomationController(Model model)
 	{
 		commandsFilterTool = new CommandsFilterTool(this);
 		commandsGroupUtility = new CommandsGroupUtility(this);
+		
+		this.model = model;
+		view = HAViewImplementation.getSingleton();
+		view.setController(this);
 	}
 	
 	// MAIN
-	
+		
 	public CommandsGroupUtility getCommandsGroupUtility()
 	{
 		return commandsGroupUtility;
@@ -39,34 +48,81 @@ public class HouseAutomationController
 		return commandsFilterTool;
 	}
 	
-	public void startNewHouse(String houseName)
-	{
-		houseName = HAUtilities.capitalize(houseName);
-		housemap = new HouseMap(houseName);
-	}
-	
-	public void startMainFrame(String houseName)
+	public void setHouseName(String houseName)
 	{		
-		startNewHouse(houseName);
-		new MainFrame("Home Automation", this, 1220, 700);
+		houseName = HAUtilities.capitalize(houseName);
+		model.setName(houseName);
 	}
 	
-	public void startWelcomeFrame()
-	{
-		new WelcomeFrame("Welcome", 500, 500, this);
+	public void startMainScreen(String houseName)
+	{		
+		setHouseName(houseName);
+		view.mainScreen(model.getName());
 	}
+	
+	public void startWelcomeScreen()
+	{
+		view.welcomeScreen();
+	}
+	
+	private boolean isIdPresent(int id)
+	{
+		return model
+			.getRoomsMap()		
+			.values()
+			.stream()
+			.anyMatch(l -> l
+					.stream()
+					.anyMatch(d -> d
+							.getId() == id) );
+	}
+	
+	private boolean isDevicePresent(Device device)
+	{
+		return isIdPresent(device.getId());
+	}
+	
+	/**
+	 * Generate a random id not used in the room map.
+	 * 
+	 * @return unique id
+	 */
+	public int getUniqueId()
+	{
+		Random random = new Random();
+		int id;
+		
+		do {
+			id = random.nextInt();
+		}while(isIdPresent(id));
+		
+		return id;
+	}
+	
+
 	
 	public String getHouseName()
 	{
-		return housemap.getName();
-	}
-	
+		return model.getName();
+	}	
 	
 	//DEVICE MANAGEMENT
 	
 	public List<Device> getAllDevices()
 	{
-		return housemap.getDevicesList();
+		List<Device> allDevices = new ArrayList<>();
+		
+		for(Device device : model.getDevicesList())
+		{
+			allDevices.add(device);
+			
+			if(device instanceof DeviceGroup)
+			{
+				allDevices.addAll(((DeviceGroup)device).getChildren());
+			}
+		}		
+		
+		return allDevices;
 	}
 	
 	public boolean isDeviceNamePresent(String name)
@@ -83,12 +139,12 @@ public class HouseAutomationController
 		name = HAUtilities.capitalize(name);
 		if(!isDeviceNamePresent(name) && features != null && !features.isEmpty())
 		{
-			int uniqueID = housemap.getUniqueId();
+			int uniqueID = getUniqueId();
 			
 			Device device = DeviceFactory.createDevice(name , uniqueID, features, isAGroup);		
-			housemap.addDevice(HAUtilities.capitalize(room), device);
+			model.addDevice(HAUtilities.capitalize(room), device);
 			
-			housemap.getRoutines().stream().forEach(r -> r.update(this));
+			model.getRoutines().stream().forEach(r -> r.update(this));
 		}
 		else success = false;
 		
@@ -100,13 +156,15 @@ public class HouseAutomationController
 		boolean success = true;
 		name = HAUtilities.capitalize(name);
 		
-		if(!isDeviceNamePresent(name))
+		if(!isDeviceNamePresent(name) && isDevicePresent(deviceGroup))
 		{		
-			int uniqueID = housemap.getUniqueId();
+			int uniqueID = getUniqueId();
 			String deviceName = deviceGroup.getName() +" -> " + name;
 			Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
 			
-			housemap.addNewDeviceGroupChild(deviceGroup, child);
+			
+			deviceGroup.add(child);
+			model.addDeviceIntoCategoryMap(child);
 		}
 		else success = false;
 		
@@ -122,9 +180,31 @@ public class HouseAutomationController
 				.toList();
 	}
 	
+	/**
+	 * Maps the devices contained in a specified room into a category map.
+	 * @param room name
+	 * @return category map
+	 */
+	private Map<String,List<Device>> getRoomInCategoriesMap(String room)
+	{
+		List<Device> devicesInRoom = model.getRoomsMap().get(room);
+		Map<String,List<Device>> returnMap = new HashMap<>();
+		
+		for(Device device : devicesInRoom)
+		{
+			HouseMaps.splitDeviceIntoCategoryMap(returnMap, device);
+			
+			if(device instanceof DeviceGroup)
+				for(Device child : ((DeviceGroup)device).getChildren() )
+					HouseMaps.splitDeviceIntoCategoryMap(returnMap, child);
+		}
+		
+		return returnMap;
+	}
+	
 	public List<Device> getRoomDevicesByCategory(String room, String category)
 	{
-		List<Device> devices = housemap.getRoomInCategoriesMap(room).get(category);
+		List<Device> devices = getRoomInCategoriesMap(room).get(category);
 		
 		List<Device> categoryDevices = getDevicesByCategory(category);
 		
@@ -148,7 +228,7 @@ public class HouseAutomationController
 	{
 		List<Device> roomDevices = new ArrayList<>();
 		
-		for(Device device : housemap.getDeviceByRoom(room))
+		for(Device device : model.getRoomsMap().get(room))
 		{
 			roomDevices.add(device);
 			
@@ -163,45 +243,56 @@ public class HouseAutomationController
 		
 	public List<Device> getDevicesByCategory(String category)
 	{
-		return housemap.getCategoryMap().get(category);
+		return model.getCategoryMap().get(category);
 	}
 
 	public boolean isFeatureStillAvailable(DeviceFeature feature)
 	{
-		return housemap.getDevicesList().stream().anyMatch(d -> d.getFeatures().contains(feature));
+		return getAllDevices()
+				.stream()
+				.anyMatch(d -> d.getFeatures().contains(feature));
 	}	
 	
 	public void deleteDevice(Device device)
 	{
-		housemap.deleteDevice(device);
+		model.deleteDevice(device);
 		
 		List<DeviceGroup> group = getAllDeviceGroups();
 		group.stream().forEach(d -> d.removeChild(device));
 		
-		housemap.getRoutines().stream().forEach(r -> r.update(this));
+		if(device instanceof DeviceGroup)
+		{
+			((DeviceGroup)device)
+			.getChildren()
+			.stream()
+			.forEach(model::deleteDevice);
+		}
+		
+		model.getRoutines().stream().forEach(r -> r.update(this));
 	}
 	
 	//ROOMS
 	
 	public List<String> getAllRooms()
 	{
-		return housemap.getRoomsList();
+		return Collections
+				.unmodifiableList(new ArrayList<>(model.getRoomsMap().keySet()));
 	}	
 	
-	public Set<Map.Entry<String, List<Device>>> getRoomsMapEntrySet()
+	public Set<Map.Entry<String, List<Device>>> getGroupedRoomsMapEntrySet()
 	{
-		return housemap.getRoomsMap().entrySet();
+		return model.getRoomsMap().entrySet();
 	}
 	
 	// CATEGORIES
 	
 	public List<String> getAllCategories()
 	{
-		return new ArrayList<>(housemap.getCategoryMap().keySet());
+		return new ArrayList<>(model.getCategoryMap().keySet());
 	}
 	public List<String> getCategoriesByRoom(String room)
 	{
-		return new ArrayList<>(housemap.getRoomInCategoriesMap(room).keySet());
+		return new ArrayList<>(getRoomInCategoriesMap(room).keySet());
 	}
 
 	// ROUTINE
@@ -213,7 +304,7 @@ public class HouseAutomationController
 	
 	public List<Routine> getRoutines()
 	{
-		return housemap.getRoutines();
+		return model.getRoutines();
 	}
 
 	public boolean addRoutine(Routine currentRoutine)
@@ -224,14 +315,14 @@ public class HouseAutomationController
 				&& !currentRoutine.getName().isEmpty()
 				&& !currentRoutine.getCommands().isEmpty())
 			
-			success = housemap.addRoutine(currentRoutine);	
+			success = model.addRoutine(currentRoutine);	
 		
 		return success;		
 	}
 
 	public void deleteRoutine(Routine selectedRoutine)
 	{
-		housemap.deleteRoutine(selectedRoutine);		
+		model.deleteRoutine(selectedRoutine);		
 	}
 
 }

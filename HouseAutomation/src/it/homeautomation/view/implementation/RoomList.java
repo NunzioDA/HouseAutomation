@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -10,12 +10,11 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
-import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
+import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class RoomList extends HAPanel
@@ -24,12 +23,10 @@ public class RoomList extends HAPanel
 	
 	private GridBagConstraints constraints = new GridBagConstraints();
 	private int maxWidth = Integer.MAX_VALUE;
-	private HouseAutomationController controller;
 	private DeviceDeletedListener deletedListener;
 	private DeviceCommandExecutedListener commandListener;
-	public RoomList(HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
+	public RoomList(DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
 	{		
-		this.controller = controller;
 		this.deletedListener = deletedListener;
 		this.commandListener = commandListener;
 		
@@ -53,7 +50,7 @@ public class RoomList extends HAPanel
 	private void addComponent(Map.Entry<String, List<Device>> m)
 	{			
 		constraints.gridy ++;
-		RoomCard r = (RoomCard) new RoomCard(controller, deletedListener, commandListener)
+		RoomCard r = (RoomCard) new RoomCard(deletedListener, commandListener)
 				.getListCardRendererComponent(m);
 		add(r, constraints);
 	}

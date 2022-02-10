@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -28,7 +28,7 @@ import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
-import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
+import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -56,10 +56,10 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 	private DeviceDeletedListener deletedListener;
 	private DeviceCommandExecutedListener commandListener;
 	
-	public DeviceCard(JScrollPane myScrollPane, HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
+	public DeviceCard(JScrollPane myScrollPane, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
 	{
 		this.myScrollPane = myScrollPane;
-		this.controller = controller;
+		this.controller = HAViewImplementation.getSingleton().getController();
 		this.deletedListener = deletedListener;
 		this.commandListener = commandListener;
 	}

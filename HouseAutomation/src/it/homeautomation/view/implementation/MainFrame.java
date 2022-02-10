@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.view.navigationpanels.AddDevicePanel;
@@ -22,18 +21,16 @@ public class MainFrame extends HAFrame
 	private static final long serialVersionUID = 1L;
 	private static final int SIDE_TOOL_PANEL_RATIO = 4;
 	
-	private HouseAutomationController houseController;
 	
 	private JPanel contentPanel;
 	private HANavigationDrawer navigationDrawer;
 
 	
-	public MainFrame(String title, HouseAutomationController houseController, int width, int height)
+	public MainFrame(String houseName, int width, int height)
 	{		
-		super(title, width, height);
-		this.houseController = houseController;	
+		super("Home Automation", width, height);	
 		
-		initComponents(houseController.getHouseName());
+		initComponents(houseName);
 		setMinimumSize(new Dimension(500, 500));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -62,11 +59,11 @@ public class MainFrame extends HAFrame
 		add(navigationDrawer);
 		add(contentPanel);
 		
-		navigationDrawer.addButton("Home", new HomePanel(houseController));
-		navigationDrawer.addButton("Add new Device", new AddDevicePanel(houseController));
-		navigationDrawer.addButton("Execute command", new ExecuteCommandPanel(houseController));
-		navigationDrawer.addButton("Create new routine", new RoutineCreationPanel(houseController));	
-		navigationDrawer.addButton("Manage routines", new ManageRoutinePanel(houseController));
+		navigationDrawer.addButton("Home", new HomePanel());
+		navigationDrawer.addButton("Add new Device", new AddDevicePanel());
+		navigationDrawer.addButton("Execute command", new ExecuteCommandPanel());
+		navigationDrawer.addButton("Create new routine", new RoutineCreationPanel());	
+		navigationDrawer.addButton("Manage routines", new ManageRoutinePanel());
 	}
 
 	@Override

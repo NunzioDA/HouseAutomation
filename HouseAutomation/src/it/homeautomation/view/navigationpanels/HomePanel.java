@@ -10,8 +10,9 @@ import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
-import it.homeautomation.view.RoomList;
+import it.homeautomation.view.implementation.HAViewImplementation;
+import it.homeautomation.view.implementation.RoomList;
+import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedListener, DeviceCommandExecutedListener
@@ -22,11 +23,11 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	private RoomList listR;
 	private JScrollPane scrollPane;
 	
-	public HomePanel(HouseAutomationController controller)
+	public HomePanel()
 	{
 		super("Home");
-		this.controller = controller;			
-		listR = new RoomList(controller, this, this);
+		this.controller = HAViewImplementation.getSingleton().getController();		
+		listR = new RoomList(this, this);
 		scrollPane = new JScrollPane(listR,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setWheelScrollingEnabled(false);
 		init();
@@ -55,7 +56,7 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 	@Override
 	public void updateContent()
 	{
-		listR.refreshList(controller.getRoomsMapEntrySet());
+		listR.refreshList(controller.getGroupedRoomsMapEntrySet());
 		listR.updateUI();
 	}
 

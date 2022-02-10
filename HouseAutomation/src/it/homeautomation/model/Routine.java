@@ -81,7 +81,10 @@ public class Routine
 	 * A RoutineEntry is a pair String, command list.
 	 * It allows to get a description of the command list.
 	 * The command list contains a group of commands of the same
-	 * category.
+	 * type.
+	 * 
+	 * This allows the routine to be up to date when the user adds
+	 * or removes a device.
 	 * 
 	 * @author Nunzio D'Amore
 	 *
@@ -118,9 +121,8 @@ public class Routine
  		{
  			boolean deletable = false;
  			
- 			if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // Selected a device
- 					&& room.equals(CommandsFilterTool.ALL_ROOMS) 
- 					&& !device.equals(CommandsFilterTool.ALL_DEVICES))
+ 			if(!device.equals(CommandsFilterTool.ALL_DEVICES) 
+ 					&& category.equals(CommandsFilterTool.ALL_CATEGORIES)) // Single device selected
  			{
  				deletable = !controller.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			

@@ -43,7 +43,7 @@ public class HAComboBox<E> extends JComboBox<E>
 	
 	private void setNormalColors()
 	{
-		((JTextField) getEditor().getEditorComponent()).setBorder(new MatteBorder(0, 4, 4, 0, HAUtilities.getPrimaryColor()));
+		((JTextField) getEditor().getEditorComponent()).setBorder(new MatteBorder(2, 2, 2, 0, HAUtilities.getPrimaryColor()));
 		getButton().setBackground(HAUtilities.getPrimaryColor());
 		getButton().setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 	}
@@ -51,7 +51,7 @@ public class HAComboBox<E> extends JComboBox<E>
 	private void setDisabledColors()
 	{
 		getButton().setBackground(HAUtilities.getDarkBackgroundColor());	
-		((JTextField) getEditor().getEditorComponent()).setBorder(new MatteBorder(0, 4, 4, 0, HAUtilities.getDarkBackgroundColor()));
+		((JTextField) getEditor().getEditorComponent()).setBorder(new MatteBorder(2, 2, 2, 0, HAUtilities.getDarkBackgroundColor()));
 	}
 	
 	@Override

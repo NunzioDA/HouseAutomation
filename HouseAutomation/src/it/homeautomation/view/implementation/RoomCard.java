@@ -1,4 +1,4 @@
-package it.homeautomation.view;
+package it.homeautomation.view.implementation;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -14,12 +14,11 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
-import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
-import it.homeautomation.view.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
+import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 import it.homeautomation.view.interfaces.DeviceDeletedListener;
 import it.homeautomation.view.interfaces.ListCardRenderer;
 
@@ -42,9 +41,9 @@ public class RoomCard extends HAPanel implements ListCardRenderer<Map.Entry<Stri
 	
 	private static final int FACTOR = 30;
 
-	public RoomCard(HouseAutomationController controller, DeviceDeletedListener listener, DeviceCommandExecutedListener commandListener)
+	public RoomCard(DeviceDeletedListener listener, DeviceCommandExecutedListener commandListener)
 	{
-		this.deviceList = new DeviceList(controller, listener, commandListener);
+		this.deviceList = new DeviceList(listener, commandListener);
 		deviceScrollPane = new JScrollPane(deviceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		init();		
