@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.homeautomation.controller.CommandsFilterTool;
-import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.model.command.Command;
 
 /**
@@ -26,13 +24,13 @@ public class Routine
 		this.setName(name);
 	}	
 	
-	public void update(HouseAutomationController controller)
+	public void update(Model model)
 	{
 		List<RoutineEntry> deletable = new ArrayList<>();
 		
 		commandsEntry.forEach(r ->
 		{ 
-			if(r.update(controller))
+			if(r.update(model))
 				deletable.add(r); 
 		});
 		
@@ -117,16 +115,16 @@ public class Routine
  				selectedCommand = commandsList.get(0);
 		}
 
- 		public boolean update(HouseAutomationController controller)
+ 		public boolean update(Model model)
  		{
  			boolean deletable = false;
  			
- 			if(!device.equals(CommandsFilterTool.ALL_DEVICES) 
- 					&& category.equals(CommandsFilterTool.ALL_CATEGORIES)) // Single device selected
+ 			if(!device.equals(AvailableCommandsFilterTool.ALL_DEVICES) 
+ 					&& category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES)) // Single device selected
  			{
- 				deletable = !controller.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
+ 				deletable = !model.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
- 			else controller.getCommandsGroupUtility().refreshCommands(device, category, room, 
+ 			else model.getCommandsGroupUtility().refreshCommands(device, category, room, 
  						valuesList, commandsList, selectedCommand);
  			
  			return deletable;

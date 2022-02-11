@@ -12,12 +12,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import it.homeautomation.controller.CommandsGroupUtility;
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.CommandsGroupUtility;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.SingleValueCommand;
 import it.homeautomation.model.features.DeviceFeature;
@@ -62,7 +62,7 @@ public class DeviceCommandExecutonFrame extends HAFrame
 			public void valueChanged(ListSelectionEvent e)
 			{
 				Command<?> command = deviceCommandsList.getSelectedValue();
-				
+				error.setText("");
 				if(command != null)
 					inputArea.manageInputPanel(command.getValuesTypes());
 			}
@@ -77,14 +77,15 @@ public class DeviceCommandExecutonFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				Object inputValue = inputArea.getInput();
+				error.setText("");
 				
-				if(inputValue != null)
+				if(deviceCommandsList.getSelectedValue() != null)
 				{
 					if(inputValue instanceof Color && !inputArea.isColorSelected())
 					{
 						error.setText("Select a color.");
 					}
-					else if(inputValue.toString().isEmpty())
+					else if(inputValue != null && inputValue.toString().isEmpty())
 							error.setText("Insert a value");
 					
 					if(error.getText().isEmpty())

@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.features.DeviceFeature;
 
 
 /**
@@ -26,29 +30,169 @@ public class HouseMap implements Model{
 	private Map<String, List<Device>> categoriesMap = new HashMap<>();
 	private List<Routine> routines = new ArrayList<>();
 	
+	private AvailableCommandsFilterTool commandsFilterTool;
+	private CommandsGroupUtility commandsGroupUtility;
+	
+	public HouseMap()
+	{
+		commandsFilterTool = new AvailableCommandsFilterTool(this);
+		commandsGroupUtility = new CommandsGroupUtility(this);
+		
+	}
+	
+	@Override
+	public CommandsGroupUtility getCommandsGroupUtility()
+	{
+		return commandsGroupUtility;
+	}
+	
+	@Override
+	public AvailableCommandsFilterTool getCommandsFilterTool()
+	{
+		return commandsFilterTool;
+	}
+	
+	private boolean isIdPresent(int id)
+	{
+		return this
+			.getRoomsMap()		
+			.values()
+			.stream()
+			.anyMatch(l -> l
+					.stream()
+					.anyMatch(d -> d
+							.getId() == id) );
+	}
+	
+	private boolean isDevicePresent(Device device)
+	{
+		return isIdPresent(device.getId());
+	}
+	
+	public boolean isDeviceNamePresent(String name)
+	{
+		return getAllDevices()
+				.stream()
+				.anyMatch(d->d.getName().equals(name));
+	}	
+	/**
+	 * Generate a random id not used in the room map.
+	 * 
+	 * @return unique id
+	 */
+	private int getUniqueId()
+	{
+		Random random = new Random();
+		int id;
+		
+		do {
+			id = random.nextInt();
+		}while(isIdPresent(id));
+		
+		return id;
+	}
+	
 	/**
 	 * 
 	 * @throws NullPointerException if {@code room} or {@code newDevice} is {@code null}
 	 */
 	@Override
-	public void addDevice(String room, Device newDevice)	
-	{
-		HouseMaps.addToMapList(roomsMap, room, newDevice);
-		addDeviceIntoCategoryMap(newDevice);
+	public boolean addDevice(String name, String room, List<DeviceFeature> features, boolean isAGroup)	
+	{		
+		boolean success = true;
+		
+		name = HAUtilities.capitalize(name);
+		room = HAUtilities.capitalize(room);
+		
+		if(!isDeviceNamePresent(name) && features != null && !features.isEmpty())
+		{
+			Device device = DeviceFactory.createDevice(name , getUniqueId(), features, isAGroup);	
+			
+			HouseMaps.addToMapList(roomsMap, room, device);
+			addDeviceIntoCategoryMap(device);
+			
+			getRoutines().stream().forEach(r -> r.update(this));			
+		}
+		else success = false;
+		
+		return success;
 	}
 	
 	@Override
-	public void addDeviceIntoCategoryMap(Device device)
+	public boolean addNewDeviceToGroup(DeviceGroup deviceGroup, String name, List<DeviceFeature> features)
+	{
+		boolean success = true;
+		name = HAUtilities.capitalize(name);
+		String deviceName = deviceGroup.getName() +" -> " + name;
+		
+		if(!isDeviceNamePresent(deviceName) 
+				&& isDevicePresent(deviceGroup))
+		{		
+			int uniqueID = getUniqueId();
+			
+			Device child = DeviceFactory.createDevice(deviceName, uniqueID, features, false);
+			
+			
+			deviceGroup.add(child);
+			addDeviceIntoCategoryMap(child);			
+		}
+		else success = false;
+		
+		return success;
+	}
+	
+	@Override
+	public List<Device> getAllDevices()
+	{
+		List<Device> allDevices = new ArrayList<>();
+		
+		for(Device device : getDevicesList())
+		{
+			allDevices.add(device);
+			
+			if(device instanceof DeviceGroup)
+			{
+				allDevices.addAll(((DeviceGroup)device).getChildren());
+			}
+		}		
+		
+		return allDevices;
+	}
+
+	private void addDeviceIntoCategoryMap(Device device)
 	{
 		HouseMaps.splitDeviceIntoCategoryMap(categoriesMap, device);
 	}
 	
 	@Override
+	public List<DeviceGroup> getAllDeviceGroups()
+	{
+		return getAllDevices()
+				.stream()
+				.filter(d -> (d instanceof DeviceGroup))
+				.map(d -> (DeviceGroup)d)
+				.toList();
+	}
+	
+	@Override	
 	public void deleteDevice(Device device)
 	{
 		HouseMaps.removeFromMapList(roomsMap, device);
 		HouseMaps.removeFromMapList(categoriesMap, device);	
-
+		
+		List<DeviceGroup> group = getAllDeviceGroups();
+		group.stream().forEach(d -> d.removeChild(device));
+		
+		if(device instanceof DeviceGroup)
+		{
+			((DeviceGroup)device)
+			.getChildren()
+			.stream()
+			.forEach(this::deleteDevice);
+		}
+		
+		getRoutines().stream().forEach(r -> r.update(this));
+		
 	}
 	
 	@Override
@@ -71,6 +215,77 @@ public class HouseMap implements Model{
 	}
 	
 	@Override
+	public List<Device> getDevicesByCategory(String category)
+	{
+		return getCategoryMap().get(category);
+	}	
+	
+	@Override
+	public List<Device> getDevicesByRoom(String room)
+	{
+		List<Device> roomDevices = new ArrayList<>();
+		
+		for(Device device : getRoomsMap().get(room))
+		{
+			roomDevices.add(device);
+			
+			if(device instanceof DeviceGroup)
+			{
+				roomDevices.addAll(((DeviceGroup) device).getChildren());
+			}
+		}
+				
+		return roomDevices;
+	}
+		
+	/**
+	 * Maps the devices contained in a specified room into a category map.
+	 * @param room name
+	 * @return category map
+	 */
+	@Override
+	public Map<String,List<Device>> getRoomInCategoriesMap(String room)
+	{
+		List<Device> devicesInRoom = getRoomsMap().get(room);
+		Map<String,List<Device>> returnMap = new HashMap<>();
+		
+		for(Device device : devicesInRoom)
+		{
+			HouseMaps.splitDeviceIntoCategoryMap(returnMap, device);
+			
+			if(device instanceof DeviceGroup)
+				for(Device child : ((DeviceGroup)device).getChildren() )
+					HouseMaps.splitDeviceIntoCategoryMap(returnMap, child);
+		}
+		
+		return returnMap;
+	}
+	
+
+	@Override
+	public List<Device> getRoomDevicesByCategory(String room, String category)
+	{
+		List<Device> devices = getRoomInCategoriesMap(room).get(category);
+		
+		List<Device> categoryDevices = getDevicesByCategory(category);
+		
+		getDevicesByRoom(room)
+		.stream()
+		.filter(d -> (d instanceof DeviceGroup))
+		.forEach(dg -> devices.addAll(
+				((DeviceGroup)dg)
+				.getChildren()
+				.stream()
+				.filter(categoryDevices::contains)
+				.toList()
+				)
+		);
+		
+		return devices;
+	}
+	
+	
+	@Override
 	public  Map<String, List<Device>> getCategoryMap()
 	{
 		return Collections.unmodifiableMap(categoriesMap);
@@ -91,7 +306,9 @@ public class HouseMap implements Model{
 	{
 		boolean result = false;
 		
-		if(!isRoutinePresent(routine)) 
+		if(!isRoutinePresent(routine) && routine != null 
+				&& !routine.getName().isEmpty()
+				&& !routine.getCommands().isEmpty()) 
 		{
 			routines.add(routine);
 			result = true;
@@ -129,4 +346,13 @@ public class HouseMap implements Model{
 	{
 		routines.remove(selectedRoutine);
 	}
+
+	@Override
+	public boolean isFeatureStillAvailable(DeviceFeature feature)
+	{
+		return getAllDevices()
+				.stream()
+				.anyMatch(d -> d.getFeatures().contains(feature));
+	}
+
 }

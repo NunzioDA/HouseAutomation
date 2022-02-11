@@ -1,11 +1,10 @@
-package it.homeautomation.controller;
+package it.homeautomation.model;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import it.homeautomation.model.Device;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.SingleValueCommand;
 import it.homeautomation.model.features.DeviceFeature;
@@ -32,11 +31,11 @@ import it.homeautomation.model.features.DeviceFeature;
 
 public class CommandsGroupUtility
 {	
-	public HouseAutomationController controller;
+	public Model mdoel;
 	
-	public CommandsGroupUtility(HouseAutomationController controller)
+	public CommandsGroupUtility(Model mdoel)
 	{
-		this.controller = controller;
+		this.mdoel = mdoel;
 	}
 	
 	public static boolean isAlphanumeric(Class<?> commandValueClass)
@@ -107,26 +106,26 @@ public class CommandsGroupUtility
 		
 		if(device instanceof String)
 		{
-			if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // ROOM
-					&& !room.equals(CommandsFilterTool.ALL_ROOMS))
+			if(category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // ROOM
+					&& !room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
 			{
-				devicesAffected = controller.getDevicesByRoom(room);
+				devicesAffected = mdoel.getDevicesByRoom(room);
 			}			
-			else if(!category.equals(CommandsFilterTool.ALL_CATEGORIES) // CATEGORY
-					&& room.equals(CommandsFilterTool.ALL_ROOMS))
+			else if(!category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // CATEGORY
+					&& room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
 			{
-				devicesAffected = controller.getDevicesByCategory(category);
+				devicesAffected = mdoel.getDevicesByCategory(category);
 			}
-			else if(!category.equals(CommandsFilterTool.ALL_CATEGORIES) // CATEGORY IN A ROOM
-					&& !room.equals(CommandsFilterTool.ALL_ROOMS))
+			else if(!category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // CATEGORY IN A ROOM
+					&& !room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
 			{				
-				devicesAffected = controller.getRoomDevicesByCategory(room, category);
+				devicesAffected = mdoel.getRoomDevicesByCategory(room, category);
 			}
-			else if(category.equals(CommandsFilterTool.ALL_CATEGORIES) // ALL DEVICES
-					&& room.equals(CommandsFilterTool.ALL_ROOMS) 
-					&& device.equals(CommandsFilterTool.ALL_DEVICES))
+			else if(category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // ALL DEVICES
+					&& room.equals(AvailableCommandsFilterTool.ALL_ROOMS) 
+					&& device.equals(AvailableCommandsFilterTool.ALL_DEVICES))
 			{
-				devicesAffected = controller.getAllDevices();
+				devicesAffected = mdoel.getAllDevices();
 			}
 		}
 		else if(device instanceof Device) {

@@ -1,6 +1,7 @@
 package it.homeautomation.view.implementation;
 
 import it.homeautomation.controller.HouseAutomationController;
+import it.homeautomation.hagui.HAMessageBox;
 import it.homeautomation.view.View;
 
 public class HAViewImplementation implements View
@@ -40,6 +41,12 @@ public class HAViewImplementation implements View
 	public HouseAutomationController getController()
 	{
 		return controller;
+	}
+
+	@Override
+	public void showMessage(String message)
+	{
+		new HAMessageBox(message);
 	}
 
 }

@@ -6,10 +6,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.homeautomation.controller.CommandsFilterTool;
 import it.homeautomation.controller.HouseAutomationController;
+import it.homeautomation.model.AvailableCommandsFilterTool;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.HouseMap;
+import it.homeautomation.model.Model;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.implementation.ChangeColorCommand;
@@ -24,11 +25,13 @@ import it.homeautomation.model.features.implementation.StateFeature;
 class Test
 {
 	private HouseAutomationController controller;
+	private Model model;
 	
 	@org.junit.jupiter.api.Test
 	void houseMapCreation()
 	{
-		controller = new HouseAutomationController(new HouseMap());
+		model = new HouseMap();
+		controller = new HouseAutomationController(model);
 		controller.setHouseName("test house");
 	}
 	
@@ -68,9 +71,9 @@ class Test
 		commands.add(command);
 		
 		routine.addCommands("Description", commands, 
-				CommandsFilterTool.ALL_DEVICES, CommandsFilterTool.ALL_ROOMS, CommandsFilterTool.ALL_CATEGORIES, null);
+				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, AvailableCommandsFilterTool.ALL_CATEGORIES, null);
 		
-		routine.update(controller);
+		routine.update(model);
 		
 		assertEquals(3, routine.getCommands().get(0).getCommandList().size());		
 	}
@@ -89,9 +92,9 @@ class Test
 		commands.add(command);
 		
 		routine.addCommands("Description", commands, 
-				CommandsFilterTool.ALL_DEVICES, "Room", CommandsFilterTool.ALL_CATEGORIES, null);
+				AvailableCommandsFilterTool.ALL_DEVICES, "Room", AvailableCommandsFilterTool.ALL_CATEGORIES, null);
 		
-		routine.update(controller);
+		routine.update(model);
 		
 		assertEquals(2, routine.getCommands().get(0).getCommandList().size());		
 	}
@@ -110,9 +113,9 @@ class Test
 		commands.add(command);
 		
 		routine.addCommands("Description", commands, 
-				CommandsFilterTool.ALL_DEVICES, CommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
+				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
 		
-		routine.update(controller);
+		routine.update(model);
 		
 		assertEquals(2, routine.getCommands().get(0).getCommandList().size());		
 	}
@@ -133,8 +136,8 @@ class Test
 		// UPDATING THE COMMAND LIST
 		controller
 		.getCommandsGroupUtility()
-		.refreshCommands(CommandsFilterTool.ALL_DEVICES, 
-				 (new ColorBased()).toString(), CommandsFilterTool.ALL_ROOMS, values, commands, changeColor);
+		.refreshCommands(AvailableCommandsFilterTool.ALL_DEVICES, 
+				 (new ColorBased()).toString(), AvailableCommandsFilterTool.ALL_ROOMS, values, commands, changeColor);
 		
 		return commands;
 	}
@@ -172,7 +175,7 @@ class Test
 		values.add(Color.red);
 		
 		routine.addCommands("Description", commands, 
-				CommandsFilterTool.ALL_DEVICES, CommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
+				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
 		
 		commands = new ArrayList<>();
 		
@@ -193,7 +196,7 @@ class Test
 		
 		commands.add(stateFeature);
 		routine.addCommands("Description", commands, 
-				"Device1", CommandsFilterTool.ALL_ROOMS, CommandsFilterTool.ALL_CATEGORIES, null);
+				"Device1", AvailableCommandsFilterTool.ALL_ROOMS, AvailableCommandsFilterTool.ALL_CATEGORIES, null);
 		
 		routine.execute();
 		
