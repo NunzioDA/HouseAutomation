@@ -19,7 +19,7 @@ public abstract class SingleValueCommand <Y extends SingleValueFeature<T>, T> im
 	
 	public void setValue(T value)
 	{
-		this.value = value;
+		this.value = deviceFeature.checkValue(value);
 	}
 	
 	public T getValue()

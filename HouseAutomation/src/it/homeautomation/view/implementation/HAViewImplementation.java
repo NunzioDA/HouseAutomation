@@ -8,7 +8,7 @@ public class HAViewImplementation implements View
 {
 	private static HAViewImplementation singleton;
 	private HouseAutomationController controller;
-	
+	private MainFrame mainFrame;
 	public static HAViewImplementation getSingleton()
 	{
 		if(singleton == null)
@@ -34,7 +34,7 @@ public class HAViewImplementation implements View
 	public void mainScreen(String houseName)
 	{
 		if(controller != null)
-			new MainFrame(houseName, 1220, 700);
+			mainFrame = new MainFrame(houseName, 1220, 700);
 	}
 
 	@Override
@@ -49,4 +49,11 @@ public class HAViewImplementation implements View
 		new HAMessageBox(message);
 	}
 
+	@Override
+	public void deviceStateUpdate()
+	{
+		mainFrame.updateHomePage();
+	}
+	
+	
 }

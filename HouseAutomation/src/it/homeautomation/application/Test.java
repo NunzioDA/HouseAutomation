@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.homeautomation.controller.HouseAutomationController;
-import it.homeautomation.model.AvailableCommandsFilterTool;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.Filter;
 import it.homeautomation.model.HouseMap;
 import it.homeautomation.model.Model;
 import it.homeautomation.model.Routine;
@@ -70,8 +70,7 @@ class Test
 		command.setFeature(new StateFeature());
 		commands.add(command);
 		
-		routine.addCommands("Description", commands, 
-				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, AvailableCommandsFilterTool.ALL_CATEGORIES, null);
+		routine.addCommands("Description", commands, Filter.selectAllFilter() , null);
 		
 		routine.update(model);
 		
@@ -92,7 +91,7 @@ class Test
 		commands.add(command);
 		
 		routine.addCommands("Description", commands, 
-				AvailableCommandsFilterTool.ALL_DEVICES, "Room", AvailableCommandsFilterTool.ALL_CATEGORIES, null);
+				new Filter(Filter.ALL_DEVICES, "Room", Filter.ALL_CATEGORIES), null);
 		
 		routine.update(model);
 		
@@ -113,7 +112,7 @@ class Test
 		commands.add(command);
 		
 		routine.addCommands("Description", commands, 
-				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
+				new Filter(Filter.ALL_DEVICES, Filter.ALL_ROOMS, (new ColorBased()).toString()), null);
 		
 		routine.update(model);
 		
@@ -134,10 +133,7 @@ class Test
 		
 		
 		// UPDATING THE COMMAND LIST
-		controller
-		.getCommandsGroupUtility()
-		.refreshCommands(AvailableCommandsFilterTool.ALL_DEVICES, 
-				 (new ColorBased()).toString(), AvailableCommandsFilterTool.ALL_ROOMS, values, commands, changeColor);
+		controller.refreshCommands(new Filter(Filter.ALL_DEVICES, Filter.ALL_ROOMS, (new ColorBased()).toString()), values, commands, changeColor);
 		
 		return commands;
 	}
@@ -175,7 +171,7 @@ class Test
 		values.add(Color.red);
 		
 		routine.addCommands("Description", commands, 
-				AvailableCommandsFilterTool.ALL_DEVICES, AvailableCommandsFilterTool.ALL_ROOMS, (new ColorBased()).toString(), null);
+				new Filter(Filter.ALL_DEVICES, Filter.ALL_ROOMS, (new ColorBased()).toString()), null);
 		
 		commands = new ArrayList<>();
 		
@@ -196,7 +192,7 @@ class Test
 		
 		commands.add(stateFeature);
 		routine.addCommands("Description", commands, 
-				"Device1", AvailableCommandsFilterTool.ALL_ROOMS, AvailableCommandsFilterTool.ALL_CATEGORIES, null);
+				new Filter("Device1", Filter.ALL_ROOMS, Filter.ALL_CATEGORIES), null);
 		
 		routine.execute();
 		

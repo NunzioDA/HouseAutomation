@@ -31,7 +31,6 @@ public class DeviceFactory
 		features.forEach(newDevice::addFeature);
 		
 		return newDevice;
-	}
-	
+	}	
 	
 }

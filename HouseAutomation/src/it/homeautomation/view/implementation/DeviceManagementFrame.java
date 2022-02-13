@@ -21,8 +21,6 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
-import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
-import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 public class DeviceManagementFrame extends HAFrame
 {
@@ -33,16 +31,12 @@ public class DeviceManagementFrame extends HAFrame
 	private JPanel childDeviceVisualizer = new JPanel();
 	private Device device;	
 	private HouseAutomationController controller;
-	private DeviceDeletedListener deletedListener;
-	private DeviceCommandExecutedListener commandListener;
 	
-	public DeviceManagementFrame(Device device, HouseAutomationController controller, DeviceDeletedListener deletedListener, DeviceCommandExecutedListener commandListener)
+	public DeviceManagementFrame(Device device, HouseAutomationController controller)
 	{
 		super("Device Manager", 500, 500);
 		this.controller = controller;
 		this.device = device;
-		this.deletedListener = deletedListener;
-		this.commandListener = commandListener;
 		
 		init();
 		setResizable(false);
@@ -55,7 +49,7 @@ public class DeviceManagementFrame extends HAFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				new DeviceManagementFrame(d, controller, deletedListener, commandListener);
+				new DeviceManagementFrame(d, controller);
 				setVisible(false);
 				dispose();
 			}
@@ -107,7 +101,7 @@ public class DeviceManagementFrame extends HAFrame
 	private void init()
 	{		
 		initDeleteButton();
-		featuresVisualizer = new DeviceStateVisualizer(device, commandListener);
+		featuresVisualizer = new DeviceStateVisualizer(device, true);
 		
 		featuresVisualizer.addActionListener(new ActionListener() {
 			
@@ -163,7 +157,6 @@ public class DeviceManagementFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				controller.deleteDevice(device);
-				deletedListener.deviceDeleted(device);
 				setVisible(false);
 				dispose();
 			}

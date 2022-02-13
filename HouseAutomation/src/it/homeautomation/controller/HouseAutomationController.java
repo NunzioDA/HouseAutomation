@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.AvailableCommandsFilterTool;
-import it.homeautomation.model.CommandsGroupUtility;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
+import it.homeautomation.model.Filter;
 import it.homeautomation.model.Model;
 import it.homeautomation.model.Routine;
+import it.homeautomation.model.RoutineFactory;
+import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.View;
 import it.homeautomation.view.implementation.HAViewImplementation;
@@ -25,7 +26,6 @@ public class HouseAutomationController
 	
 	public HouseAutomationController(Model model)
 	{
-
 		this.model = model;
 		view = HAViewImplementation.getSingleton();
 		view.setController(this);
@@ -33,14 +33,16 @@ public class HouseAutomationController
 	
 	// MAIN
 		
-	public CommandsGroupUtility getCommandsGroupUtility()
+	public String refreshCommands(Filter filter, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
 	{
-		return model.getCommandsGroupUtility();
+		return model
+				.getCommandsGroupUtility()
+				.refreshCommands(filter, inputValues, commandsList, selectedCommand);
 	}
 	
-	public AvailableCommandsFilterTool getCommandsFilterTool()
+	public String getFilteredCommands(Object roomSelected, Object deviceS, Object categorySelected, List<Command<?>> commands)
 	{
-		return model.getCommandsFilterTool();
+		return model.getCommandsFilterTool().filterCommands(roomSelected, deviceS, categorySelected, commands);
 	}
 	
 	public void setHouseName(String houseName)
@@ -118,7 +120,8 @@ public class HouseAutomationController
 	public void deleteDevice(Device device)
 	{
 		model.deleteDevice(device);
-		view.showMessage("Device Removed");
+		view.deviceStateUpdate();
+		view.showMessage("Device Removed");		
 	}
 	
 	//ROOMS
@@ -150,7 +153,7 @@ public class HouseAutomationController
 	
 	public Routine getRoutineInstance()
 	{
-		return new Routine("");
+		return RoutineFactory.createEmptyRoutine();
 	}
 	
 	public List<Routine> getRoutines()
@@ -170,6 +173,17 @@ public class HouseAutomationController
 	public void deleteRoutine(Routine selectedRoutine)
 	{
 		model.deleteRoutine(selectedRoutine);		
+	}
+
+	public void executeCommand(Command<?> command)
+	{
+		command.execute();
+		view.deviceStateUpdate();
+	}
+	
+	public void executeCommands(List<Command<?>> commands)
+	{
+		commands.stream().forEach(this::executeCommand);
 	}
 
 }

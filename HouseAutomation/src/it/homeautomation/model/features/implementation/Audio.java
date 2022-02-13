@@ -6,9 +6,8 @@ import java.util.List;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.implementation.SetVolumeCommand;
 import it.homeautomation.model.features.DeviceCategory;
-import it.homeautomation.model.features.SingleValueFeature;
 
-public class Audio extends SingleValueFeature<Integer> implements DeviceCategory
+public class Audio extends PercentageFeature implements DeviceCategory
 {
 
 	public Audio()

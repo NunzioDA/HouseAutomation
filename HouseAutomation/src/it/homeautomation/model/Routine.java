@@ -42,10 +42,9 @@ public class Routine
 		commandsEntry.forEach(RoutineEntry::execute);
 	}
 	
-	public void addCommands(String description, List<Command<?>> commands,
-			String deviceFilter, String roomFilter, String categoryFilter, List<Object> values)
+	public void addCommands(String description, List<Command<?>> commands, Filter filter, List<Object> values)
 	{
-		this.commandsEntry.add(new RoutineEntry(description, commands, deviceFilter, roomFilter, categoryFilter, values));
+		this.commandsEntry.add(new RoutineEntry(description, commands, filter, values));
 	}
 	
 	public void remove(RoutineEntry routine)
@@ -82,7 +81,7 @@ public class Routine
 	 * type.
 	 * 
 	 * This allows the routine to be up to date when the user adds
-	 * or removes a device.
+	 * or removes a device .
 	 * 
 	 * @author Nunzio D'Amore
 	 *
@@ -95,21 +94,16 @@ public class Routine
 		
 		Command<?> selectedCommand;
 		
-		String device;
-		String category;
-		String room;
+		Filter filter;
 		List<Object> valuesList;
 		
  		
- 		public RoutineEntry(String description, List<Command<?>> commands, String device, 
- 				String room, String category, List<Object> values)
+ 		public RoutineEntry(String description, List<Command<?>> commands, Filter filter, List<Object> values)
 		{
  			this.commandsList = commands;
- 			this.device = device;
+ 			this.filter = filter;
  			this.valuesList = values;
  			this.description = description;
- 			this.category = category;
- 			this.room = room;
  			
  			if(commandsList != null && commandsList.size() > 0)
  				selectedCommand = commandsList.get(0);
@@ -119,13 +113,12 @@ public class Routine
  		{
  			boolean deletable = false;
  			
- 			if(!device.equals(AvailableCommandsFilterTool.ALL_DEVICES) 
- 					&& category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES)) // Single device selected
+ 			if(!filter.getDevice().equals(Filter.ALL_DEVICES) 
+ 					&& filter.getCategory().equals(Filter.ALL_CATEGORIES)) // Single device selected
  			{
  				deletable = !model.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
- 			else model.getCommandsGroupUtility().refreshCommands(device, category, room, 
- 						valuesList, commandsList, selectedCommand);
+ 			else model.getCommandsGroupUtility().refreshCommands(filter, valuesList, commandsList, selectedCommand);
  			
  			return deletable;
  		}

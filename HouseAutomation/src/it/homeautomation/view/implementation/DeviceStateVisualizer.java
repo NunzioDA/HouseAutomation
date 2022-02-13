@@ -21,22 +21,18 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
 
 public class DeviceStateVisualizer extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints stateConstraint = new GridBagConstraints();
-	private DeviceCommandExecutedListener commandExecutedListener = null;
 	private List<ActionListener> actListeners = new ArrayList<>();
-	public DeviceStateVisualizer(Device device)
-	{
-		this(device, null);
-	}
+	private boolean clickable = false;
 	
-	public DeviceStateVisualizer(Device device, DeviceCommandExecutedListener commandExecutedListener)
+	
+	public DeviceStateVisualizer(Device device, boolean clickable)
 	{	
-		this.commandExecutedListener = commandExecutedListener;
+		this.clickable = clickable;
 		initStateVisualizer();
 		
 		device.getFeatures().stream().forEach(f -> {
@@ -53,13 +49,13 @@ public class DeviceStateVisualizer extends JPanel
 		actListeners.add(actList);
 	}
 	
-	private void addFeatureClickListener(JPanel panel, DeviceFeature feature, DeviceCommandExecutedListener listener)
+	private void addFeatureClickListener(JPanel panel, DeviceFeature feature)
 	{
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
-			{
-				new DeviceCommandExecutonFrame(500, 300, feature, listener);
+			{				
+				new DeviceCommandExecutonFrame(500, 300, feature);
 				actListeners.stream().forEach(l -> l.actionPerformed(new ActionEvent(feature, 0, "")));
 			}
 		});
@@ -67,8 +63,9 @@ public class DeviceStateVisualizer extends JPanel
 	
 	private void addToStateVisualizer(JPanel panel, DeviceFeature feature)
 	{
-		if(commandExecutedListener != null)
-			addFeatureClickListener(panel, feature, commandExecutedListener);
+		if(clickable) {
+			addFeatureClickListener(panel, feature);
+		}
 		
 		add(panel, stateConstraint);
 		

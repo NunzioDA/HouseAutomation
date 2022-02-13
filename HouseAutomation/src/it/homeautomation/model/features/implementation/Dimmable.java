@@ -6,9 +6,8 @@ import java.util.List;
 
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.implementation.DimmableCommand;
-import it.homeautomation.model.features.SingleValueFeature;
 
-public class Dimmable extends SingleValueFeature<Integer>{
+public class Dimmable extends PercentageFeature{
 	
 	private static int DEFAULT = 100;
 	

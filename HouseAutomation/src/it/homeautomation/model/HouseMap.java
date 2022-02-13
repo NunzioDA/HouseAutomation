@@ -20,9 +20,7 @@ import it.homeautomation.model.features.DeviceFeature;
  * It also contains all the routines.
  * 
  * @author Nunzio D'Amore
- *
  */
-
 public class HouseMap implements Model{
 
 	private String name;

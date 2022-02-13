@@ -22,6 +22,7 @@ import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.Filter;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
@@ -125,10 +126,9 @@ public class SelectCommandPanel extends HAPanel
 				
 				String description = getCommandsGroupDescription(inputValue);
 				
+				
 
-				error.setText(controller.getCommandsGroupUtility()
-						.refreshCommands(deviceFilter, categoryFilter, 
-								roomFilter, valuesList, confirmedCommands, selectedCommand));
+				error.setText(controller.refreshCommands(new Filter(deviceFilter, roomFilter, categoryFilter), valuesList, confirmedCommands, selectedCommand));
 				
 				
 				if(error.getText().isEmpty()) 

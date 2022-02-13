@@ -98,32 +98,35 @@ public class CommandsGroupUtility
 		return error;
 	}	
 	
-	public String refreshCommands(Object device, String category, 
-			String room, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
+	public String refreshCommands(Filter filter, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
 	{
 		List<Device> devicesAffected = null;
 		String error = "";
 		
+		Object device = filter.getDevice();
+		String room = filter.getRoom();
+		String category= filter.getCategory();
+		
 		if(device instanceof String)
 		{
-			if(category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // ROOM
-					&& !room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
+			if(category.equals(Filter.ALL_CATEGORIES) // ROOM
+					&& !room.equals(Filter.ALL_ROOMS))
 			{
 				devicesAffected = mdoel.getDevicesByRoom(room);
 			}			
-			else if(!category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // CATEGORY
-					&& room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
+			else if(!category.equals(Filter.ALL_CATEGORIES) // CATEGORY
+					&& room.equals(Filter.ALL_ROOMS))
 			{
 				devicesAffected = mdoel.getDevicesByCategory(category);
 			}
-			else if(!category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // CATEGORY IN A ROOM
-					&& !room.equals(AvailableCommandsFilterTool.ALL_ROOMS))
+			else if(!category.equals(Filter.ALL_CATEGORIES) // CATEGORY IN A ROOM
+					&& !room.equals(Filter.ALL_ROOMS))
 			{				
 				devicesAffected = mdoel.getRoomDevicesByCategory(room, category);
 			}
-			else if(category.equals(AvailableCommandsFilterTool.ALL_CATEGORIES) // ALL DEVICES
-					&& room.equals(AvailableCommandsFilterTool.ALL_ROOMS) 
-					&& device.equals(AvailableCommandsFilterTool.ALL_DEVICES))
+			else if(category.equals(Filter.ALL_CATEGORIES) // ALL DEVICES
+					&& room.equals(Filter.ALL_ROOMS) 
+					&& device.equals(Filter.ALL_DEVICES))
 			{
 				devicesAffected = mdoel.getAllDevices();
 			}

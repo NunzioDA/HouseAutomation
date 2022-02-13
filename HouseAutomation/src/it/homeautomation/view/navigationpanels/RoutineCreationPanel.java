@@ -23,6 +23,7 @@ import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HATextField;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.Filter;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
 import it.homeautomation.model.command.Command;
@@ -301,7 +302,7 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 			String roomS = room.toString();
 			String categoryS = category.toString();
 			
-			currentRoutine.addCommands(description, commands, deviceS, roomS, categoryS, valuesList);		
+			currentRoutine.addCommands(description, commands, new Filter(deviceS, roomS, categoryS), valuesList);		
 			commandsDescriptionList.getDefaultModel().addElement(description);
 		}
 	}

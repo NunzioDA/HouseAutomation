@@ -24,7 +24,7 @@ public class MainFrame extends HAFrame
 	
 	private JPanel contentPanel;
 	private HANavigationDrawer navigationDrawer;
-
+	private HomePanel home = new HomePanel();
 	
 	public MainFrame(String houseName, int width, int height)
 	{		
@@ -59,7 +59,8 @@ public class MainFrame extends HAFrame
 		add(navigationDrawer);
 		add(contentPanel);
 		
-		navigationDrawer.addButton("Home", new HomePanel());
+		
+		navigationDrawer.addButton("Home", home);
 		navigationDrawer.addButton("Add new Device", new AddDevicePanel());
 		navigationDrawer.addButton("Execute command", new ExecuteCommandPanel());
 		navigationDrawer.addButton("Create new routine", new RoutineCreationPanel());	
@@ -90,5 +91,8 @@ public class MainFrame extends HAFrame
 			contentPanel.setBackground(HAUtilities.getBackgroundColor());
 	}
 
-	
+	public void updateHomePage()
+	{
+		home.updateContent();
+	}
 }

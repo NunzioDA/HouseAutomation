@@ -90,7 +90,9 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 	public void commandListCreated(String description, List<Command<?>> commands, List<Object> valuesList)
 	{
 		commandsLog.startCommandExecution();
-		commands.stream().forEach(Command::execute);
+		
+		controller.executeCommands(commands);
+		
 		commandsLog.executeCommand(description);
 		commandsLog.endExecution();
 	}

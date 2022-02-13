@@ -34,14 +34,11 @@ public class DeviceCommandExecutonFrame extends HAFrame
 	
 	private HALabel error = new HALabel("", SwingConstants.RIGHT);
 	private HAButton confirmCommand = new HAButton("Execute command");
-	private DeviceCommandExecutedListener listener;
 	
-	public DeviceCommandExecutonFrame(int width, int height, DeviceFeature deviceFeature, DeviceCommandExecutedListener listener)
+	public DeviceCommandExecutonFrame(int width, int height, DeviceFeature deviceFeature)
 	{
 		super(deviceFeature.toString() +" feature commands", width, height);
-		
-		this.listener = listener;
-		
+				
 		deviceCommandsList
 		.getDefaultModel()
 		.addAll(deviceFeature
@@ -98,8 +95,12 @@ public class DeviceCommandExecutonFrame extends HAFrame
 						
 						if(error.getText().isEmpty()) 
 						{
-							selectedCommand.execute();
-							listener.commandExecuted(selectedCommand);
+							HAViewImplementation
+							.getSingleton()
+							.getController()
+							.executeCommand(selectedCommand);
+							
+							//listener.commandExecuted(selectedCommand);
 							setVisible(false);
 							dispose();
 						}

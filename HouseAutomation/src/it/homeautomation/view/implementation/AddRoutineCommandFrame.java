@@ -8,6 +8,7 @@ import java.util.List;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.Filter;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.view.commandmanagement.FilterCommandPanel;
@@ -89,7 +90,7 @@ public class AddRoutineCommandFrame extends HAFrame implements CommandCreationLi
 			String roomS = room.toString();
 			String categoryS = category.toString();
 			
-			routine.addCommands(description, commands, deviceS, roomS, categoryS, values);
+			routine.addCommands(description, commands, new Filter(deviceS, roomS, categoryS), values);
 			manageRoutine.updateContent();
 		}
 		

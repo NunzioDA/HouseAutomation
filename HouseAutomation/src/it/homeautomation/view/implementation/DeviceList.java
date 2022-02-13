@@ -11,8 +11,6 @@ import javax.swing.JScrollPane;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
-import it.homeautomation.view.implementation.DeviceCommandExecutonFrame.DeviceCommandExecutedListener;
-import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
 
 /**
@@ -30,14 +28,8 @@ public class DeviceList extends HAPanel
 	
 	private static int MARGIN_BETWEEN_CARDS = 30;
 	
-	private DeviceDeletedListener deletedListener;
-	private DeviceCommandExecutedListener commandListener;
-	
-	public DeviceList(DeviceDeletedListener listener, DeviceCommandExecutedListener commandListener)
-	{
-		this.deletedListener = listener;
-		this.commandListener = commandListener;
-		
+	public DeviceList()
+	{		
 		setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -61,7 +53,7 @@ public class DeviceList extends HAPanel
 			constraints.insets.left = MARGIN_BETWEEN_CARDS;
 		else constraints.insets.left = 0;
 		
-		add(new DeviceCard(myScrollPane, deletedListener, commandListener).getListCardRendererComponent(m), constraints);
+		add(new DeviceCard(myScrollPane).getListCardRendererComponent(m), constraints);
 		
 		constraints.gridx ++;
 	}

@@ -9,4 +9,5 @@ public interface View
 	public void setController(HouseAutomationController controller);
 	public HouseAutomationController getController();
 	public void showMessage(String message);
+	public void deviceStateUpdate();
 }
