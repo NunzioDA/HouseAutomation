@@ -20,9 +20,9 @@ import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.Routine.RoutineEntry;
-import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
 import it.homeautomation.view.implementation.AddRoutineCommandFrame;
 import it.homeautomation.view.implementation.HAViewImplementation;
+import it.homeautomation.view.implementation.commandpanels.CommandsExecutionLog;
 
 public class ManageRoutinePanel extends HANavigationDrawerPanel
 {

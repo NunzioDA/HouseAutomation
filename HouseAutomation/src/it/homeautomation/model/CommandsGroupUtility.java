@@ -43,8 +43,31 @@ public class CommandsGroupUtility
 		return (commandValueClass.equals(Float.class)|| commandValueClass.equals(Integer.class)|| commandValueClass.equals(String.class));
 	}
 	
+	public static String getCommandsGroupDescription(String groupDescription, Command<?> command, List<Object> values)
+	{
+		String description = groupDescription + " -> " + command.toString();
+		
+		if(values != null)
+		{
+			for(Object value : values)
+			{
+				String valueDescription = value.toString();
+				
+				if(value instanceof Color)
+				{
+					Color color = (Color)value;
+					valueDescription = "[r = " + color.getRed() + ", g = " + color.getGreen() + ", b = "+ color.getBlue() + "]";
+				}
+				
+				description +=  ": " + valueDescription;
+			}
+		}
+		return description;
+	}
+	
+	
 	@SuppressWarnings("unchecked")
-	public static String manageSingleValueCommands(Command<?> command, Object inputValue)
+	public static String manageSingleValueCommands(SingleValueCommand<?, ?> command, Object inputValue)
 	{
 		String error = "";
 		//SingleValueCommand have only 1 value
@@ -167,7 +190,7 @@ public class CommandsGroupUtility
 				
 				if(command instanceof SingleValueCommand<?, ?>)
 				{
-					error = manageSingleValueCommands(command, inputValues.get(0));						
+					error = manageSingleValueCommands((SingleValueCommand<?, ?>)command, inputValues.get(0));						
 				}
 				
 				if(error.isEmpty())

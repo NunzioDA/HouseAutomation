@@ -11,8 +11,8 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Filter;
 import it.homeautomation.model.Routine;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.commandmanagement.FilterCommandPanel;
-import it.homeautomation.view.commandmanagement.SelectCommandPanel;
+import it.homeautomation.view.implementation.commandpanels.FilterCommandPanel;
+import it.homeautomation.view.implementation.commandpanels.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 import it.homeautomation.view.navigationpanels.ManageRoutinePanel;
 

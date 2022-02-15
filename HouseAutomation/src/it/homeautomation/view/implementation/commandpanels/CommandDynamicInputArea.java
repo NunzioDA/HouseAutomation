@@ -1,4 +1,4 @@
-package it.homeautomation.view.commandmanagement;
+package it.homeautomation.view.implementation.commandpanels;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAComboBox;
@@ -62,8 +60,7 @@ public class CommandDynamicInputArea extends HAPanel implements ColorSelectionLi
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(CommandDynamicInputArea.this);
-				new ColorChooseDialog(frame, CommandDynamicInputArea.this);
+				new ColorChooseDialog(CommandDynamicInputArea.this);
 			}
 		});
 	}

@@ -42,9 +42,11 @@ public class Routine
 		commandsEntry.forEach(RoutineEntry::execute);
 	}
 	
-	public void addCommands(String description, List<Command<?>> commands, Filter filter, List<Object> values)
+	public String addCommands(String description, List<Command<?>> commands, Filter filter, List<Object> values)
 	{
-		this.commandsEntry.add(new RoutineEntry(description, commands, filter, values));
+		RoutineEntry routineEntry = new RoutineEntry(description, commands, filter, values);
+		this.commandsEntry.add(routineEntry);
+		return routineEntry.getDescription();
 	}
 	
 	public void remove(RoutineEntry routine)
@@ -103,12 +105,17 @@ public class Routine
  			this.commandsList = commands;
  			this.filter = filter;
  			this.valuesList = values;
- 			this.description = description;
+ 			
  			
  			if(commandsList != null && commandsList.size() > 0)
+ 			{
  				selectedCommand = commandsList.get(0);
+ 				this.description = CommandsGroupUtility.getCommandsGroupDescription(description, selectedCommand, values);
+ 			}
 		}
-
+ 		
+ 		
+ 		
  		public boolean update(Model model)
  		{
  			boolean deletable = false;
@@ -119,6 +126,8 @@ public class Routine
  				deletable = !model.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
  			else model.getCommandsGroupUtility().refreshCommands(filter, valuesList, commandsList, selectedCommand);
+ 			
+ 			this.description = CommandsGroupUtility.getCommandsGroupDescription(description, selectedCommand, valuesList);
  			
  			return deletable;
  		}

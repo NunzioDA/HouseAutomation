@@ -10,10 +10,11 @@ import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.command.Command;
-import it.homeautomation.view.commandmanagement.CommandsExecutionLog;
-import it.homeautomation.view.commandmanagement.FilterCommandPanel;
-import it.homeautomation.view.commandmanagement.SelectCommandPanel;
+import it.homeautomation.model.command.ValueCommand;
 import it.homeautomation.view.implementation.HAViewImplementation;
+import it.homeautomation.view.implementation.commandpanels.CommandsExecutionLog;
+import it.homeautomation.view.implementation.commandpanels.FilterCommandPanel;
+import it.homeautomation.view.implementation.commandpanels.SelectCommandPanel;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
 public class ExecuteCommandPanel extends HANavigationDrawerPanel implements CommandCreationListener
@@ -93,7 +94,10 @@ public class ExecuteCommandPanel extends HANavigationDrawerPanel implements Comm
 		
 		controller.executeCommands(commands);
 		
-		commandsLog.executeCommand(description);
+		if(commands.get(0) instanceof ValueCommand<?>)
+			valuesList = ((ValueCommand<?>)commands.get(0)).getValues();
+		
+		commandsLog.executeCommand(controller.getCommandsGroupDescription(description, commands.get(0), valuesList));
 		commandsLog.endExecution();
 	}
 

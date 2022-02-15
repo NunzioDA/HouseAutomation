@@ -75,6 +75,12 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		haFrameControlPanel.refreshButtons();
 	}
 	
+	public void centerInScreen()
+	{
+		Point center = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+		setLocation(center.x - (getSize().width / 2), center.y - (getSize().height / 2));
+	}
+	
 	public boolean isMaximized()
 	{
 		return saveWhenMaximized != null;
@@ -87,12 +93,12 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 			saveWhenMaximized = getSize();
 			
 			Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-			Dimension size = new Dimension(rec.width, rec.height);
+			Dimension size = new Dimension(rec.width, rec.height);			
 			
-			Point center = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 			
 			setSize(size);
-			setLocation(center.x - (size.width / 2), center.y - (size.height / 2));
+			
+			centerInScreen();
 		}
 	}
 	

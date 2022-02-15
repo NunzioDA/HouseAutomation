@@ -1,4 +1,4 @@
-package it.homeautomation.view.implementation;
+package it.homeautomation.view.implementation.frame;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -13,17 +13,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import it.homeautomation.hagui.HAButton;
-import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAList;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.CommandsGroupUtility;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.SingleValueCommand;
+import it.homeautomation.model.command.ValueCommand;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.commandmanagement.CommandDynamicInputArea;
+import it.homeautomation.view.implementation.HAViewImplementation;
+import it.homeautomation.view.implementation.commandpanels.CommandDynamicInputArea;
 
-public class DeviceCommandExecutonFrame extends HAFrame
+public class DeviceCommandExecutonFrame extends DisableMainFrame
 {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +38,7 @@ public class DeviceCommandExecutonFrame extends HAFrame
 	
 	public DeviceCommandExecutonFrame(int width, int height, DeviceFeature deviceFeature)
 	{
-		super(deviceFeature.toString() +" feature commands", width, height);
+		super(deviceFeature.toString() + " feature commands", width, height);
 				
 		deviceCommandsList
 		.getDefaultModel()
@@ -60,8 +61,9 @@ public class DeviceCommandExecutonFrame extends HAFrame
 			{
 				Command<?> command = deviceCommandsList.getSelectedValue();
 				error.setText("");
-				if(command != null)
-					inputArea.manageInputPanel(command.getValuesTypes());
+				
+				if(command != null && command instanceof ValueCommand<?>)
+					inputArea.manageInputPanel(((ValueCommand<?>)command).getValuesTypes());
 			}
 		});
 	}

@@ -1,8 +1,5 @@
 package it.homeautomation.model.command.implementation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.SingleValueFeature;
 import it.homeautomation.model.features.implementation.StateFeature;
@@ -23,13 +20,6 @@ public class SwitchStateCommand implements Command<SingleValueFeature<StateFeatu
 	{
 		return "Switch State";
 	}
-	
-	@Override
-	public List<Class<?>> getValuesTypes()
-	{
-		List<Class<?>> values = new ArrayList<>();
-		return values;
-	}
 
 	@Override
 	public void setFeature(SingleValueFeature<State> feature)
@@ -42,4 +32,5 @@ public class SwitchStateCommand implements Command<SingleValueFeature<StateFeatu
 	{
 		return feature;
 	}
+
 }

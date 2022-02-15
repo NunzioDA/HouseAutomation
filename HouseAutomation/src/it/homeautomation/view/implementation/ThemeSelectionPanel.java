@@ -11,6 +11,7 @@ import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.view.implementation.frame.WelcomeFrame;
 
 public class ThemeSelectionPanel extends HAPanel
 {

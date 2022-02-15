@@ -1,4 +1,4 @@
-package it.homeautomation.hagui;
+package it.homeautomation.view.implementation;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -6,26 +6,23 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextArea;
+import it.homeautomation.hagui.HAButton;
+import it.homeautomation.hagui.HATextCenter;
+import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.view.implementation.frame.DisableMainFrame;
 
-public class HAMessageBox extends HAFrame
+public class HAMessageBox extends DisableMainFrame
 {
 	private static final long serialVersionUID = 1L;
 	
-	JTextArea text = new JTextArea();
+	HATextCenter text = new HATextCenter("");
 	HAButton ok = new HAButton("Ok");
 	
 	public HAMessageBox(String message)
 	{
-		super("Message",300, 200);
+		super("Message",400, 300);
 		
-		text.setEditable(false);
-		text.setLineWrap(true);
-		text.setText(message);
-		text.setFont(HAUtilities.getLightFont().deriveFont(25f));
-		
-		
-		
+
 		setContentLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
@@ -45,8 +42,7 @@ public class HAMessageBox extends HAFrame
 		
 		reloadColors();
 		setResizable(false);
-		setVisible(true);
-		requestFocus();
+		
 		
 		ok.addActionListener(new ActionListener() {
 			
@@ -57,6 +53,12 @@ public class HAMessageBox extends HAFrame
 				dispose();
 			}
 		});
+		
+		centerInScreen();
+		setVisible(true);
+		
+		text.setText(message);
+		requestFocus();
 	}
 
 	@Override

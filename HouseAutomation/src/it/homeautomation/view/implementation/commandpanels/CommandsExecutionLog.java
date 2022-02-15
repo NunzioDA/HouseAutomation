@@ -1,4 +1,4 @@
-package it.homeautomation.view.commandmanagement;
+package it.homeautomation.view.implementation.commandpanels;
 
 import java.awt.GridLayout;
 import java.awt.event.AdjustmentEvent;

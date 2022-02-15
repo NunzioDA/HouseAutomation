@@ -56,6 +56,7 @@ class Test
 		features.add(new Light());
 		controller.addDevice("Device3", "Room", features, false);		
 	}
+
 	
 	@org.junit.jupiter.api.Test
 	void routineUpdateTest()

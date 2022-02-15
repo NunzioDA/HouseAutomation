@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.CommandsGroupUtility;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.Filter;
@@ -33,6 +34,11 @@ public class HouseAutomationController
 	
 	// MAIN
 		
+	public String getCommandsGroupDescription(String groupDescription, Command<?> command, List<Object> values)
+	{
+		return CommandsGroupUtility.getCommandsGroupDescription(groupDescription, command, values);
+	}
+	
 	public String refreshCommands(Filter filter, List<Object> inputValues, List<Command<?>> commandsList, Command<?> selectedCommand)
 	{
 		return model
@@ -100,6 +106,10 @@ public class HouseAutomationController
 		
 		success = model.addDevice(name, room, features, isAGroup);	
 
+		if(success)
+			view.showMessage("Device Added");
+		else view.showMessage("Device name already used");
+		
 		return success;
 	}
 	
@@ -110,8 +120,8 @@ public class HouseAutomationController
 		success = model.addNewDeviceToGroup(deviceGroup, name, features);
 		
 		if(success)
-			view.showMessage("Device Added");
-		else view.showMessage("The group is missing or the name is alreafy");
+			view.showMessage("Device added to the group");
+		else view.showMessage("A device in the group has the same name");
 		
 		return success;
 	}

@@ -6,5 +6,5 @@ import it.homeautomation.model.command.Command;
 
 public interface CommandCreationListener
 {
-	public void commandListCreated(String description, List<Command<?>> command, List<Object> values);
+	public void commandListCreated(String groupDescription, List<Command<?>> command, List<Object> values);
 }

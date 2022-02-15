@@ -1,4 +1,4 @@
-package it.homeautomation.view.commandmanagement;
+package it.homeautomation.view.implementation.commandpanels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -24,6 +24,7 @@ import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Filter;
 import it.homeautomation.model.command.Command;
+import it.homeautomation.model.command.ValueCommand;
 import it.homeautomation.view.interfaces.CommandCreationListener;
 
 /**
@@ -72,25 +73,6 @@ public class SelectCommandPanel extends HAPanel
 		return commandsList.getSelectedValue();
 	}
 	
-	private String getCommandsGroupDescription(Object value)
-	{
-		String description = filteredCommandDescription + " -> " + getSelectedCommand().toString();
-		
-		if(value != null)
-		{
-			String valueDescription = value.toString();
-			
-			if(value instanceof Color)
-			{
-				Color color = (Color)value;
-				valueDescription = "[r = " + color.getRed() + ", g = " + color.getGreen() + ", b = "+ color.getBlue() + "]";
-			}
-			
-			description +=  ": " + valueDescription;
-		}
-		return description;
-	}
-	
 	public void resetPanel()
 	{
 		inputArea.removeAll();
@@ -124,10 +106,7 @@ public class SelectCommandPanel extends HAPanel
 				List<Object> valuesList = new ArrayList<>();
 				valuesList.add(inputValue);
 				
-				String description = getCommandsGroupDescription(inputValue);
-				
-				
-
+	
 				error.setText(controller.refreshCommands(new Filter(deviceFilter, roomFilter, categoryFilter), valuesList, confirmedCommands, selectedCommand));
 				
 				
@@ -137,7 +116,7 @@ public class SelectCommandPanel extends HAPanel
 					
 					listeners
 					.stream()
-					.forEach(a-> a.commandListCreated(description,confirmedCommands, valuesList));
+					.forEach(a-> a.commandListCreated(filteredCommandDescription,confirmedCommands, valuesList));
 				}
 			}			
 		}
@@ -169,7 +148,9 @@ public class SelectCommandPanel extends HAPanel
 				{	
 					confirmCommand.setEnabled(true);
 					Command<?> selectedCommand = commandsList.getDefaultModel().getElementAt(index);
-					inputArea.manageInputPanel(selectedCommand.getValuesTypes());
+					
+					if(selectedCommand instanceof ValueCommand<?>)
+						inputArea.manageInputPanel(((ValueCommand<?>)selectedCommand).getValuesTypes());
 				}
 
 			}

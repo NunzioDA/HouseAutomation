@@ -1,4 +1,4 @@
-package it.homeautomation.view.implementation;
+package it.homeautomation.view.implementation.frame;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

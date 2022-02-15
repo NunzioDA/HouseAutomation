@@ -106,7 +106,6 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		
 		if(success)
 			updateContent();
-		else error.setText("This name is already used");
 	}
 	
 	@Override

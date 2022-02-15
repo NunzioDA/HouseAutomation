@@ -8,12 +8,10 @@ import javax.swing.JScrollPane;
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.Device;
 import it.homeautomation.view.implementation.HAViewImplementation;
 import it.homeautomation.view.implementation.RoomList;
-import it.homeautomation.view.interfaces.DeviceDeletedListener;
 
-public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedListener
+public class HomePanel extends HANavigationDrawerPanel 
 {
 	private static final long serialVersionUID = 1L;
 	private HouseAutomationController controller;
@@ -64,12 +62,6 @@ public class HomePanel extends HANavigationDrawerPanel implements DeviceDeletedL
 		getContent().setBackground(HAUtilities.getBackgroundColor());
 		setBackground(HAUtilities.getBackgroundColor());
 		scrollPane.getViewport().setBackground(HAUtilities.getBackgroundColor());
-	}
-
-	@Override
-	public void deviceDeleted(Device device)
-	{
-		updateContent();
 	}
 
 }

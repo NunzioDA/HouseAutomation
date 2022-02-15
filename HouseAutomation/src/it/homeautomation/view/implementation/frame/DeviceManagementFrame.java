@@ -1,4 +1,4 @@
-package it.homeautomation.view.implementation;
+package it.homeautomation.view.implementation.frame;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,14 +15,15 @@ import javax.swing.JPanel;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.hagui.HAButton;
-import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAImageView;
 import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
+import it.homeautomation.view.implementation.DeviceCard;
+import it.homeautomation.view.implementation.DeviceStateVisualizer;
 
-public class DeviceManagementFrame extends HAFrame
+public class DeviceManagementFrame extends DisableMainFrame
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -41,6 +42,13 @@ public class DeviceManagementFrame extends HAFrame
 		init();
 		setResizable(false);
 		setVisible(true);
+		
+	}
+	
+	private void close()
+	{
+		setVisible(false);
+		dispose();
 	}
 	
 	private void initChildMouseListener(JPanel childPanel, Device d)
@@ -49,9 +57,8 @@ public class DeviceManagementFrame extends HAFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				close();
 				new DeviceManagementFrame(d, controller);
-				setVisible(false);
-				dispose();
 			}
 			
 			@Override
@@ -108,8 +115,7 @@ public class DeviceManagementFrame extends HAFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				setVisible(false);
-				dispose();
+				close();
 			}
 		});
 		
@@ -157,8 +163,7 @@ public class DeviceManagementFrame extends HAFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				controller.deleteDevice(device);
-				setVisible(false);
-				dispose();
+				close();
 			}
 		});
 	}

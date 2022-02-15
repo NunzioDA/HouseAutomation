@@ -140,6 +140,7 @@ public class HAFrameControlPanel extends JPanel implements HAThemeListener{
 					{
 					case CLOSE:
 						HAFrameControlPanel.this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+						HAFrameControlPanel.this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSED));
 					break;
 					
 					case HIDE:

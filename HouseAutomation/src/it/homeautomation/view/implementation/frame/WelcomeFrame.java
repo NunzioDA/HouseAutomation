@@ -1,4 +1,4 @@
-package it.homeautomation.view.implementation;
+package it.homeautomation.view.implementation.frame;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -16,6 +16,8 @@ import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HATextField;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.view.implementation.HAViewImplementation;
+import it.homeautomation.view.implementation.ThemeSelectionPanel;
 
 public class WelcomeFrame extends HAFrame
 {

@@ -21,6 +21,7 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.view.implementation.frame.DeviceCommandExecutonFrame;
 
 public class DeviceStateVisualizer extends JPanel
 {

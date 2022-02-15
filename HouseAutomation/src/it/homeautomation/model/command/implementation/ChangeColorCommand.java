@@ -28,5 +28,4 @@ public class ChangeColorCommand extends SingleValueCommand<ColorBased, Color> {
 		return values;
 	}
 
-
 }
