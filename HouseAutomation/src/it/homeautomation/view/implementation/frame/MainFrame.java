@@ -2,6 +2,7 @@ package it.homeautomation.view.implementation.frame;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,6 +26,15 @@ public class MainFrame extends HAFrame
 	private JPanel contentPanel;
 	private HANavigationDrawer navigationDrawer;
 	private HomePanel home = new HomePanel();
+	
+	public static MainFrame getAdaptedMainFrame(String houseName)
+	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) (screenSize.getWidth() * 0.61f);
+		int height = (int) (width * 0.57f);
+		
+		return new MainFrame(houseName, width, height);
+	}
 	
 	public MainFrame(String houseName, int width, int height)
 	{		

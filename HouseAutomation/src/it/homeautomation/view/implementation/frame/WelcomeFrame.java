@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,6 +36,13 @@ public class WelcomeFrame extends HAFrame
 	private HATextField houseName = new HATextField(30);	
 	private HAButton confirm = new HAButton("Confirm");
 	private HouseAutomationController controller;
+	
+	public static WelcomeFrame getAdaptedWelcomFrame(String titleText)
+	{
+		int size = (int)(Toolkit.getDefaultToolkit().getScreenSize().width * 0.2525f);
+		
+		return new WelcomeFrame(titleText, size, size);
+	}
 	
 	public WelcomeFrame(String title, int width, int height)
 	{

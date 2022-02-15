@@ -34,14 +34,14 @@ public class HAViewImplementation implements View
 	public void welcomeScreen()
 	{
 		if(controller != null)
-			new WelcomeFrame("Welcome", 500, 500);
+			WelcomeFrame.getAdaptedWelcomFrame("Welcome");
 	}
 
 	@Override
 	public void mainScreen(String houseName)
 	{
 		if(controller != null)
-			mainFrame = new MainFrame(houseName, 1220, 700);
+			mainFrame = MainFrame.getAdaptedMainFrame(houseName);
 	}
 	
 	public void removeFromDisablerList(Component frame)
