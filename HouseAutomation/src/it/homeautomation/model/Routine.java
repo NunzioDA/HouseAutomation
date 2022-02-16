@@ -126,9 +126,7 @@ public class Routine
  				deletable = !model.isFeatureStillAvailable(selectedCommand.getDeviceFeature());
  			} 			
  			else model.getCommandsGroupUtility().refreshCommands(filter, valuesList, commandsList, selectedCommand);
- 			
- 			this.description = CommandsGroupUtility.getCommandsGroupDescription(description, selectedCommand, valuesList);
- 			
+ 			 			
  			return deletable;
  		}
  		

@@ -79,6 +79,7 @@ public class HAUtilities
 		frame.setLayout(null);
 		frame.setUndecorated(true);
 		frame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getDarkBackgroundColor()));
+		frame.centerInScreen();
 	}
 	
 	private static void setResizeListener(HAFrame frame)

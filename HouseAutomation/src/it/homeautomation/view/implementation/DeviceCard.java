@@ -82,7 +82,7 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		this.myDevice = device;
 		deviceName.setText(device.getName());		
 		
-		stateVisualizer = new DeviceStateVisualizer(device, false);
+		stateVisualizer = new DeviceStateVisualizer(device, false, false);
 		
 		init();
 		reloadColors();
@@ -107,15 +107,9 @@ public class DeviceCard extends HAPanel implements ListCardRenderer<Device>
 		addMouseListener(new MouseAdapter() {
 			
 			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				new DeviceManagementFrame(myDevice, controller);
-			}
-			
-			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				setAllComponentsBackground(HAUtilities.changeColorBrightness(getBackground(), -40));
+				new DeviceManagementFrame(myDevice, controller);
 			}
 			
 			@Override

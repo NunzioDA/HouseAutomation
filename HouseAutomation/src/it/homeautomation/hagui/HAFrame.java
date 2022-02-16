@@ -108,6 +108,7 @@ public abstract class HAFrame extends JFrame implements HAThemeListener
 		{
 			setSize(saveWhenMaximized);
 			saveWhenMaximized = null;
+			centerInScreen();
 		}
 	}
 	

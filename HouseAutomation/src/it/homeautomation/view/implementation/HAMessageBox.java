@@ -1,10 +1,15 @@
 package it.homeautomation.view.implementation;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.MatteBorder;
 
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HATextCenter;
@@ -18,11 +23,34 @@ public class HAMessageBox extends DisableMainFrame
 	HATextCenter text = new HATextCenter("");
 	HAButton ok = new HAButton("Ok");
 	
-	public HAMessageBox(String message)
+	public static HAMessageBox showMessage(String message, boolean error)
 	{
-		super("Message",400, 300);
+		String title = "Message";
+		MatteBorder borders = null;
 		
-
+		if(error) {
+			title = "ERROR!";
+			borders = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.red);
+		}
+		
+		HAMessageBox mexb = new HAMessageBox(title, message, error);
+		
+		if(error)
+			mexb
+			.getRootPane()
+			.setBorder(borders);
+		
+		return mexb;		
+	}
+	
+	
+	public HAMessageBox(String title, String message, boolean error)
+	{
+		super(title,400, 300);
+		
+		if(error)
+			Toolkit.getDefaultToolkit().beep();
+		
 		setContentLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
@@ -54,7 +82,6 @@ public class HAMessageBox extends DisableMainFrame
 			}
 		});
 		
-		centerInScreen();
 		setVisible(true);
 		
 		text.setText(message);

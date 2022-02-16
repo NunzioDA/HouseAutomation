@@ -46,7 +46,7 @@ public class Dimmable extends PercentageFeature{
 	@Override
 	public String getSateRappresentation()
 	{		
-		String value = (getValue() != null)? getValue().toString() + "%" : "none";
+		String value = (getValue() != null)? "Brigh." +  getValue().toString() + "%" : "none";
 		
 		return value;
 	}

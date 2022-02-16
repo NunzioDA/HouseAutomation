@@ -10,7 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import it.homeautomation.controller.HouseAutomationController;
@@ -55,7 +54,7 @@ public class DeviceManagementFrame extends DisableMainFrame
 	{
 		childPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e)
+			public void mousePressed(MouseEvent e)
 			{
 				close();
 				new DeviceManagementFrame(d, controller);
@@ -108,7 +107,7 @@ public class DeviceManagementFrame extends DisableMainFrame
 	private void init()
 	{		
 		initDeleteButton();
-		featuresVisualizer = new DeviceStateVisualizer(device, true);
+		featuresVisualizer = new DeviceStateVisualizer(device, true, true);
 		
 		featuresVisualizer.addActionListener(new ActionListener() {
 			
@@ -174,7 +173,7 @@ public class DeviceManagementFrame extends DisableMainFrame
 		if(featuresVisualizer != null)
 		{
 			featuresVisualizer.setBackground(HAUtilities.getBackgroundColor());
-			featuresVisualizer.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getPrimaryColor()));
+			//featuresVisualizer.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getPrimaryColor()));
 		}
 		
 		if(childDeviceVisualizer != null)

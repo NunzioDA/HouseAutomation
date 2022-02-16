@@ -27,7 +27,6 @@ import it.homeautomation.hagui.HANavigationDrawerPanel;
 import it.homeautomation.hagui.HAScrollPane;
 import it.homeautomation.hagui.HATextField;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.implementation.DeviceFeatureCard;
@@ -114,14 +113,16 @@ public class AddDevicePanel extends HANavigationDrawerPanel
 		newRoomName.setText("");
 		deviceNameField.setText("");
 		error.setText("");	
-
+		isAGroup.setSelected(false);
+		
 		List<DeviceGroup> deviceGroups = houseController.getAllDeviceGroups();		
 		deviceGroupList.getDefaultModel().removeAllElements();
 		deviceGroupList.getDefaultModel().addAll(deviceGroups);
 		
 		features.getDefaultModel().removeAllElements();
-		AvailableFeature
-		.getList()
+		
+		houseController
+		.getAvailableFeatures()
 		.stream()
 		.forEach(f -> features.getDefaultModel()
 				.addElement(new DeviceFeatureCard.CardStatus(f)));

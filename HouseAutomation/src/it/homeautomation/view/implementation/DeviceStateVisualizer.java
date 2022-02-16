@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import it.homeautomation.hagui.HAImageView;
@@ -31,16 +32,31 @@ public class DeviceStateVisualizer extends JPanel
 	private boolean clickable = false;
 	
 	
-	public DeviceStateVisualizer(Device device, boolean clickable)
+	public DeviceStateVisualizer(Device device, boolean clickable, boolean visualizeNonRappresentableFeatures)
 	{	
 		this.clickable = clickable;
+		
 		initStateVisualizer();
 		
 		device.getFeatures().stream().forEach(f -> {
 			HAImageView panel = featureToPanel(f);
 			
 			if(panel != null) 
-				addToStateVisualizer(panel, f);
+				addToStateVisualizer(panel, f, true);
+			else if (visualizeNonRappresentableFeatures){ 
+				
+				String iconID = f.getIconID();
+				
+				if(iconID != null)
+				{						
+					URL url = HAUtilities.getIconPath(iconID);
+					HAImageView featureV = new HAImageView();
+					featureV.loadImage(url);
+					
+					addToStateVisualizer(featureV, f, false);
+				}
+				
+			};
 		});
 	
 	}
@@ -54,17 +70,29 @@ public class DeviceStateVisualizer extends JPanel
 	{
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e)
+			public void mousePressed(MouseEvent e)
 			{				
 				new DeviceCommandExecutonFrame(500, 300, feature);
 				actListeners.stream().forEach(l -> l.actionPerformed(new ActionEvent(feature, 0, "")));
 			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				panel.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, HAUtilities.getPrimaryColor()));
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				panel.setBorder(BorderFactory.createEmptyBorder());
+			}
 		});
 	}
 	
-	private void addToStateVisualizer(JPanel panel, DeviceFeature feature)
+	private void addToStateVisualizer(JPanel panel, DeviceFeature feature, boolean thisFeatureClickable)
 	{
-		if(clickable) {
+		if(clickable && thisFeatureClickable) {
 			addFeatureClickListener(panel, feature);
 		}
 		

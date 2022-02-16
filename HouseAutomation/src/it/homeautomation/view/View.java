@@ -8,6 +8,6 @@ public interface View
 	public void mainScreen(String houseName);	
 	public void setController(HouseAutomationController controller);
 	public HouseAutomationController getController();
-	public void showMessage(String message);
+	public void showMessage(String message, boolean error);
 	public void deviceStateUpdate();
 }

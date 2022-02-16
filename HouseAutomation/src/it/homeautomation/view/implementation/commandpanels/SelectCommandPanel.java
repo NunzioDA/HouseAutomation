@@ -91,7 +91,6 @@ public class SelectCommandPanel extends HAPanel
 		
 		if(selectedCommand != null)
 		{
-			// MANAGE SINGLE VALUE COMMANDS	
 			
 			Object inputValue = inputArea.getInput();
 			
@@ -104,6 +103,7 @@ public class SelectCommandPanel extends HAPanel
 			if(error.getText().isEmpty())
 			{
 				List<Object> valuesList = new ArrayList<>();
+				
 				valuesList.add(inputValue);
 				
 	
@@ -149,8 +149,12 @@ public class SelectCommandPanel extends HAPanel
 					confirmCommand.setEnabled(true);
 					Command<?> selectedCommand = commandsList.getDefaultModel().getElementAt(index);
 					
+					List<Class<?>> values = null;
+					
 					if(selectedCommand instanceof ValueCommand<?>)
-						inputArea.manageInputPanel(((ValueCommand<?>)selectedCommand).getValuesTypes());
+						values = ((ValueCommand<?>)selectedCommand).getValuesTypes();
+					
+					inputArea.manageInputPanel(values);
 				}
 
 			}

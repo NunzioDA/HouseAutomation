@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.model.AvailableFeature;
 import it.homeautomation.model.CommandsGroupUtility;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
@@ -23,17 +24,15 @@ public class HouseAutomationController
 {	
 
 	private Model model;	
-	private View view;
+	private View view = null;
 	
 	public HouseAutomationController(Model model)
 	{
 		this.model = model;
-		view = HAViewImplementation.getSingleton();
-		view.setController(this);
 	}
 	
 	// MAIN
-		
+	
 	public String getCommandsGroupDescription(String groupDescription, Command<?> command, List<Object> values)
 	{
 		return CommandsGroupUtility.getCommandsGroupDescription(groupDescription, command, values);
@@ -57,14 +56,24 @@ public class HouseAutomationController
 		model.setName(houseName);
 	}
 	
+	private void initView()
+	{
+		view = HAViewImplementation.getSingleton();
+		view.setController(this);
+	}
+	
 	public void startMainScreen(String houseName)
 	{		
+		if(view == null)
+			initView();
+		
 		setHouseName(houseName);
 		view.mainScreen(model.getName());
 	}
 	
 	public void startWelcomeScreen()
 	{
+		initView();
 		view.welcomeScreen();
 	}
 	
@@ -72,6 +81,11 @@ public class HouseAutomationController
 	{
 		return model.getName();
 	}	
+	
+	public List<DeviceFeature> getAvailableFeatures()
+	{
+		return AvailableFeature.getList();
+	}
 	
 	//DEVICE MANAGEMENT
 	
@@ -106,9 +120,12 @@ public class HouseAutomationController
 		
 		success = model.addDevice(name, room, features, isAGroup);	
 
-		if(success)
-			view.showMessage("Device Added");
-		else view.showMessage("Device name already used");
+		if(view != null)
+		{
+			if(success)
+				view.showMessage("Device \"" + name + "\" added", false);
+			else view.showMessage("Device name already used", true);
+		}
 		
 		return success;
 	}
@@ -119,9 +136,12 @@ public class HouseAutomationController
 		
 		success = model.addNewDeviceToGroup(deviceGroup, name, features);
 		
-		if(success)
-			view.showMessage("Device added to the group");
-		else view.showMessage("A device in the group has the same name");
+		if(view != null)
+		{
+			if(success)
+				view.showMessage("Device \"" + name + "\" added to " + deviceGroup.getName(), false);
+			else view.showMessage("\"" + name + "\" already exists in \"" + deviceGroup.getName() + "\"", true);
+		}
 		
 		return success;
 	}
@@ -130,8 +150,12 @@ public class HouseAutomationController
 	public void deleteDevice(Device device)
 	{
 		model.deleteDevice(device);
-		view.deviceStateUpdate();
-		view.showMessage("Device Removed");		
+		
+		if(view != null)
+		{
+			view.deviceStateUpdate();
+			view.showMessage("Device Removed", false);
+		}
 	}
 	
 	//ROOMS
@@ -171,11 +195,14 @@ public class HouseAutomationController
 		return model.getRoutines();
 	}
 
-	public boolean addRoutine(Routine currentRoutine)
+	public boolean addRoutine(Routine routine)
 	{	
 		boolean success = false;
 		
-		success = model.addRoutine(currentRoutine);	
+		success = model.addRoutine(routine);	
+		
+		if(!success && view != null)
+			view.showMessage("The routine \"" + routine.getName() + "\" already exists.", true);
 		
 		return success;		
 	}
@@ -188,7 +215,8 @@ public class HouseAutomationController
 	public void executeCommand(Command<?> command)
 	{
 		command.execute();
-		view.deviceStateUpdate();
+		if(view != null)
+			view.deviceStateUpdate();
 	}
 	
 	public void executeCommands(List<Command<?>> commands)

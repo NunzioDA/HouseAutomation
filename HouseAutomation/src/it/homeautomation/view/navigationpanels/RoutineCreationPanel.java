@@ -37,7 +37,6 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 	private static final long serialVersionUID = 1L;
 	private static final String MISSING_NAME = "<html>Routine name required...</html>";
 	private static final String MISSING_COMMANDS = "<html>No commands have been added...</html>";
-	private static final String EXISTING_ROUTINE = "<html>A Routine with this name already exists...</html>";
 	
 	private HouseAutomationController controller;
 	private FilterCommandPanel filterCommandsPanel;
@@ -92,7 +91,6 @@ public class RoutineCreationPanel extends HANavigationDrawerPanel implements Com
 						{
 							resetPanel();
 						}
-						else error.setText(EXISTING_ROUTINE);
 					}
 					else error.setText(MISSING_COMMANDS);
 				}

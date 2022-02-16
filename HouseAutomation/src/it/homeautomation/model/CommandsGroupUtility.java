@@ -51,15 +51,18 @@ public class CommandsGroupUtility
 		{
 			for(Object value : values)
 			{
-				String valueDescription = value.toString();
-				
-				if(value instanceof Color)
+				if(value != null)
 				{
-					Color color = (Color)value;
-					valueDescription = "[r = " + color.getRed() + ", g = " + color.getGreen() + ", b = "+ color.getBlue() + "]";
+					String valueDescription = value.toString();
+					
+					if(value instanceof Color)
+					{
+						Color color = (Color)value;
+						valueDescription = "[r = " + color.getRed() + ", g = " + color.getGreen() + ", b = "+ color.getBlue() + "]";
+					}
+					
+					description +=  ": " + valueDescription;
 				}
-				
-				description +=  ": " + valueDescription;
 			}
 		}
 		return description;

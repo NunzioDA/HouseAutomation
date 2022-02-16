@@ -8,6 +8,7 @@ import java.util.List;
 
 import it.homeautomation.controller.HouseAutomationController;
 import it.homeautomation.model.Device;
+import it.homeautomation.model.DeviceGroup;
 import it.homeautomation.model.Filter;
 import it.homeautomation.model.HouseMap;
 import it.homeautomation.model.Model;
@@ -33,6 +34,36 @@ class Test
 		model = new HouseMap();
 		controller = new HouseAutomationController(model);
 		controller.setHouseName("test house");
+	}
+	
+	@org.junit.jupiter.api.Test
+	void existingDeviceName()
+	{
+		houseMapCreation();
+	
+		
+		List<DeviceFeature> features = new ArrayList<>();
+		features.add(new ColorBased());
+		
+		controller.addDevice("Device1", "Room", features, false);
+		
+		assertFalse(controller.addDevice("Device1", "Room", features, false), "Can not add two device with same name");
+	}
+	
+	@org.junit.jupiter.api.Test
+	void existingDeviceNameInGroup()
+	{		
+		houseMapCreation();
+		
+		List<DeviceFeature> features = new ArrayList<>();
+		features.add(new ColorBased());
+		
+		controller.addDevice("Device1", "Room", features, true);
+		
+		DeviceGroup d = controller.getAllDeviceGroups().get(0);
+		
+		assertTrue(controller.addNewDeviceToGroup(d, "Device1", features), "Device1 is added to the group, it should be possible");
+		assertFalse(controller.addNewDeviceToGroup(d, "Device1", features), "Cant add a device with the same name in a group");
 	}
 	
 	@org.junit.jupiter.api.Test

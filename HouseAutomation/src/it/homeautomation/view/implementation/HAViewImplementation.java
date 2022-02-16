@@ -67,9 +67,9 @@ public class HAViewImplementation implements View
 	}
 
 	@Override
-	public void showMessage(String message)
+	public void showMessage(String message, boolean error)
 	{
-		new HAMessageBox(message);
+		HAMessageBox.showMessage(message, error);
 	}
 
 	@Override
