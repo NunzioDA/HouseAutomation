@@ -11,9 +11,9 @@ import it.homeautomation.model.Device;
 import it.homeautomation.model.Filter;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.view.CommandCreationListener;
 import it.homeautomation.view.implementation.HAViewImplementation;
 import it.homeautomation.view.implementation.commandpanels.SelectCommandPanel;
-import it.homeautomation.view.interfaces.CommandCreationListener;
 
 public class DeviceCommandExecutionFrame extends DisableMainFrame implements CommandCreationListener
 {

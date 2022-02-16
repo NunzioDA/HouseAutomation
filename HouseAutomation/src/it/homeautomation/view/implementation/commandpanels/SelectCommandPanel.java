@@ -25,7 +25,7 @@ import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Filter;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.ValueCommand;
-import it.homeautomation.view.interfaces.CommandCreationListener;
+import it.homeautomation.view.CommandCreationListener;
 
 /**
  * This panel allow the user to select the command.

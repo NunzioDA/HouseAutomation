@@ -18,7 +18,7 @@ import it.homeautomation.hagui.HALabel;
 import it.homeautomation.hagui.HAPanel;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
-import it.homeautomation.view.interfaces.ListCardRenderer;
+import it.homeautomation.view.ListCardRenderer;
 
 /**
  * This class is the room visualization template.

@@ -22,6 +22,7 @@ import it.homeautomation.model.features.SingleValueFeature;
 import it.homeautomation.model.features.implementation.ColorBased;
 import it.homeautomation.model.features.implementation.Light;
 import it.homeautomation.model.features.implementation.StateFeature;
+import it.homeautomation.view.implementation.HAViewImplementation;
 
 class Test
 {
@@ -32,7 +33,7 @@ class Test
 	void houseMapCreation()
 	{
 		model = new HouseMap();
-		controller = new HouseAutomationController(model);
+		controller = new HouseAutomationController(model, HAViewImplementation.getSingleton());
 		controller.setHouseName("test house");
 	}
 	

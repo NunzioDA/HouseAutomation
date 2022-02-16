@@ -18,7 +18,6 @@ import it.homeautomation.model.RoutineFactory;
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.view.View;
-import it.homeautomation.view.implementation.HAViewImplementation;
 
 public class HouseAutomationController
 {	
@@ -26,9 +25,11 @@ public class HouseAutomationController
 	private Model model;	
 	private View view = null;
 	
-	public HouseAutomationController(Model model)
+	public HouseAutomationController(Model model, View view)
 	{
 		this.model = model;
+		this.view = view;
+		view.setController(this);
 	}
 	
 	// MAIN
@@ -56,24 +57,15 @@ public class HouseAutomationController
 		model.setName(houseName);
 	}
 	
-	private void initView()
-	{
-		view = HAViewImplementation.getSingleton();
-		view.setController(this);
-	}
 	
 	public void startMainScreen(String houseName)
-	{		
-		if(view == null)
-			initView();
-		
+	{
 		setHouseName(houseName);
 		view.mainScreen(model.getName());
 	}
 	
 	public void startWelcomeScreen()
 	{
-		initView();
 		view.welcomeScreen();
 	}
 	

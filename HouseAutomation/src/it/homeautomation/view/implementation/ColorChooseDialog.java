@@ -10,8 +10,8 @@ import javax.swing.JColorChooser;
 
 import it.homeautomation.hagui.HAButton;
 import it.homeautomation.hagui.HAUtilities;
+import it.homeautomation.view.ColorSelectionListener;
 import it.homeautomation.view.implementation.frame.DisableMainFrame;
-import it.homeautomation.view.interfaces.ColorSelectionListener;
 
 public class ColorChooseDialog extends DisableMainFrame
 {

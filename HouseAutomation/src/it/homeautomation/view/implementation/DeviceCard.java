@@ -28,8 +28,8 @@ import it.homeautomation.hagui.HAThemeListener;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.DeviceGroup;
+import it.homeautomation.view.ListCardRenderer;
 import it.homeautomation.view.implementation.frame.DeviceManagementFrame;
-import it.homeautomation.view.interfaces.ListCardRenderer;
 
 /**
  * This class is the device visualization template.

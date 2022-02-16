@@ -1,4 +1,4 @@
-package it.homeautomation.view.interfaces;
+package it.homeautomation.view;
 
 import java.awt.Color;
 
