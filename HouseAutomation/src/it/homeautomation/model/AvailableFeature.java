@@ -50,8 +50,7 @@ public class AvailableFeature
 	private static void initSingleton()
 	{
 		//CATEGORIES
-		availableFeatures.add(new Television());
-		availableFeatures.add(new Fridge());
+		availableFeatures.add(new Television());		
 		availableFeatures.add(new Audio());
 		availableFeatures.add(new Light());
 		availableFeatures.add(new SmartPlug());
@@ -61,6 +60,7 @@ public class AvailableFeature
 		//FEATURES
 		availableFeatures.add(new Dimmable());
 		availableFeatures.add(new Thermostat());
+		availableFeatures.add(new Fridge());
 		availableFeatures.add(new Freezer());
 	}		
 	

@@ -33,7 +33,7 @@ public class HANavigationDrawer extends HAPanel
 	// navigation button container
 	private JPanel navigationButtonsPanel;	
 	private JPanel contentPanel;
-	private HALabel houseNameLabel;
+	private HALabel titleLabel;
 	private HAFrame frame = null;
 	private Map<HAButton, HANavigationDrawerPanel> buttonsPanels = new LinkedHashMap<>();
 	
@@ -41,6 +41,7 @@ public class HANavigationDrawer extends HAPanel
 	{
 		this.frame = frame;
 		init(houseName, width, height);
+		
 	}
 	
 	public void showPanel(int index)
@@ -128,16 +129,16 @@ public class HANavigationDrawer extends HAPanel
 		this.setLocation(0,0);		
 
 		
-		houseNameLabel = new HALabel(houseName, SwingConstants.CENTER);
-		houseNameLabel.setOpaque(true);		
-		houseNameLabel.setSize(width, 100);
-		houseNameLabel.setLocation(0, 100);
-		houseNameLabel.setFontSize(TEXT_FONT_SIZE);
+		titleLabel = new HALabel(houseName, SwingConstants.CENTER);
+		titleLabel.setOpaque(true);		
+		titleLabel.setSize(width, 100);
+		titleLabel.setLocation(0, 100);
+		titleLabel.setFontSize(TEXT_FONT_SIZE);
 		
 
 		initToolButtonsPanel();
 		
-		this.add(houseNameLabel);
+		this.add(titleLabel);
 		this.add(navigationButtonsPanel);	
 		reloadColors();
 	}
@@ -180,9 +181,19 @@ public class HANavigationDrawer extends HAPanel
 	
 	private void resizeButtonsPanel()
 	{
-		int navigationButtonsPanelHeight = getHeight()/2 - navigationButtonsPanel.getHeight()/2;
-		navigationButtonsPanel.setSize(new Dimension(getWidth(), toolButtonsPanelHeight));
-		navigationButtonsPanel.setLocation(0,navigationButtonsPanelHeight);
+		int effectiveButtHeight = (int)(getHeight() * 0.357f);
+		
+		if(toolButtonsPanelHeight < effectiveButtHeight)
+		{
+			effectiveButtHeight = toolButtonsPanelHeight;
+		}
+			
+		int navigationButtonsPanelY = getHeight()/2 - effectiveButtHeight/2;
+		
+		
+		navigationButtonsPanel.setSize(new Dimension(getWidth(), effectiveButtHeight));
+		navigationButtonsPanel.setLocation(0,navigationButtonsPanelY);
+		navigationButtonsPanel.updateUI();
 	}
 	
 	@Override
@@ -190,7 +201,8 @@ public class HANavigationDrawer extends HAPanel
 	{
 		super.setSize(d);
 		resizeButtonsPanel();
-		houseNameLabel.setSize(d.width, 100);
+		titleLabel.setSize(d.width, (int)(getHeight() * 0.14f));
+		titleLabel.setLocation(0, titleLabel.getHeight());
 	}
 
 	@Override
@@ -201,9 +213,9 @@ public class HANavigationDrawer extends HAPanel
 											.getDarkBackgroundColor(),-10);
 		
 		setBackground(HAUtilities.getDarkBackgroundColor());
-		houseNameLabel.setBackground(nameLabelColor);
-		houseNameLabel.setForeground(HAUtilities.getForegroundColor());		
-		navigationButtonsPanel.setBackground(HAUtilities.getBackgroundColor());
+		titleLabel.setBackground(nameLabelColor);
+		titleLabel.setForeground(HAUtilities.getForegroundColor());		
+		navigationButtonsPanel.setBackground(getBackground());
 		
 		buttonsPanels.values().stream().forEach(HANavigationDrawerPanel::reloadColors);
 	}

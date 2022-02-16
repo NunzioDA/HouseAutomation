@@ -21,11 +21,15 @@ public class SetTemperature extends SingleValueCommand<TemperatureBasedFeature, 
 	@Override
 	public String toString()
 	{
-		String returnV = "Set temperature";
+		String returnV = "Set ";
 		
-		if(getDeviceFeature() != null)
-			returnV += "[" + getDeviceFeature().getMinTemperature() + "-" + getDeviceFeature().getMaxTemperature() + "°]";
+		TemperatureBasedFeature feature = getDeviceFeature();
 		
+		if(feature != null) {
+			returnV += feature.toString() + " temperature";			
+			returnV += "[" + feature.getMinTemperature() + "-" + feature.getMaxTemperature() + "°]";
+			
+		}else returnV += "temperature";
 		
 		return returnV;
 	}

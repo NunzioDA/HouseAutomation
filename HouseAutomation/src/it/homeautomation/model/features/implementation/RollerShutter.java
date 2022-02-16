@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.homeautomation.model.command.Command;
+import it.homeautomation.model.command.implementation.SetOpeningRollerShutter;
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
 
@@ -20,7 +21,7 @@ public class RollerShutter extends PercentageFeature implements DeviceCategory
 	{
 		RollerShutter roller = new RollerShutter();
 		roller.setValue(getValue());
-		return null;
+		return roller;
 	}
 
 	@Override
@@ -28,6 +29,10 @@ public class RollerShutter extends PercentageFeature implements DeviceCategory
 	{
 		List<Command<?>> commands = new ArrayList<>();
 		
+		SetOpeningRollerShutter openingRollerShutter = new SetOpeningRollerShutter();
+		openingRollerShutter.setFeature(this);
+		
+		commands.add(openingRollerShutter);
  		return commands;
 	}
 

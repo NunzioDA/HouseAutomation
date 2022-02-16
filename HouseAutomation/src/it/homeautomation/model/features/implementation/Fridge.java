@@ -1,10 +1,8 @@
 package it.homeautomation.model.features.implementation;
 
-
-import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
 
-public class Fridge extends TemperatureBasedFeature implements DeviceCategory
+public class Fridge extends TemperatureBasedFeature
 {
 
 	public Fridge()
@@ -34,9 +32,4 @@ public class Fridge extends TemperatureBasedFeature implements DeviceCategory
 		return "Fridge";
 	}
 
-	@Override
-	public String getCategoryName()
-	{
-		return "Fridge";
-	}
 }

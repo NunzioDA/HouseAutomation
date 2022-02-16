@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import it.homeautomation.model.command.Command;
+import it.homeautomation.model.command.ValueCommand;
 
 /**
  * 
@@ -110,7 +111,13 @@ public class Routine
  			if(commandsList != null && commandsList.size() > 0)
  			{
  				selectedCommand = commandsList.get(0);
- 				this.description = CommandsGroupUtility.getCommandsGroupDescription(description, selectedCommand, values);
+ 				
+ 				List<Object> checkedValues = values;
+ 				
+ 				if(selectedCommand instanceof ValueCommand<?>)
+ 					checkedValues = ((ValueCommand<?>) selectedCommand).getValues();
+ 				
+ 				this.description = CommandsGroupUtility.getCommandsGroupDescription(description, selectedCommand, checkedValues);
  			}
 		}
  		
