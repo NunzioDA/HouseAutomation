@@ -26,4 +26,10 @@ public class SetVolumeCommand extends SingleValueCommand<SingleValueFeature<Inte
 	{
 		return "Set Volume [0-100%]";
 	}
+	
+	@Override
+	public Class<Integer> valueType()
+	{
+		return Integer.class;
+	}
 }

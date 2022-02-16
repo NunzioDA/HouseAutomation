@@ -10,6 +10,11 @@ import it.homeautomation.model.features.SingleValueFeature;
 
 public class Television extends SingleValueFeature<Integer> implements DeviceCategory
 {
+	public Television()
+	{
+		setValue(1);
+	}
+	
 	@Override
 	public Television getClone()
 	{

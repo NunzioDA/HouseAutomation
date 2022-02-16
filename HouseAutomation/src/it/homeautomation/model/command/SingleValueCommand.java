@@ -15,6 +15,15 @@ public abstract class SingleValueCommand <Y extends SingleValueFeature<T>, T> im
 	{
 		this.deviceFeature = deviceFeature;
 	}
+	public abstract Class<T> valueType();
+	
+	@Override
+	public List<Class<?>> getValuesTypes()
+	{
+		List<Class<?>> values = new ArrayList<>();
+		values.add(valueType());
+		return values;
+	}
 	
 	@Override
 	public Y getDeviceFeature()

@@ -10,10 +10,15 @@ import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.model.features.implementation.Audio;
 import it.homeautomation.model.features.implementation.ColorBased;
 import it.homeautomation.model.features.implementation.Dimmable;
+import it.homeautomation.model.features.implementation.Freezer;
+import it.homeautomation.model.features.implementation.Fridge;
 import it.homeautomation.model.features.implementation.Light;
+import it.homeautomation.model.features.implementation.Oven;
+import it.homeautomation.model.features.implementation.RollerShutter;
 import it.homeautomation.model.features.implementation.SmartPlug;
 import it.homeautomation.model.features.implementation.StateFeature;
 import it.homeautomation.model.features.implementation.Television;
+import it.homeautomation.model.features.implementation.Thermostat;
 
 /**
  * <p>When a device is created, it requires the features of which it is composed. 
@@ -46,12 +51,17 @@ public class AvailableFeature
 	{
 		//CATEGORIES
 		availableFeatures.add(new Television());
+		availableFeatures.add(new Fridge());
 		availableFeatures.add(new Audio());
 		availableFeatures.add(new Light());
-		availableFeatures.add(new SmartPlug());		
+		availableFeatures.add(new SmartPlug());
 		availableFeatures.add(new ColorBased());
+		availableFeatures.add(new Oven());
+		availableFeatures.add(new RollerShutter());
 		//FEATURES
-		availableFeatures.add(new Dimmable());		
+		availableFeatures.add(new Dimmable());
+		availableFeatures.add(new Thermostat());
+		availableFeatures.add(new Freezer());
 	}		
 	
 	/**

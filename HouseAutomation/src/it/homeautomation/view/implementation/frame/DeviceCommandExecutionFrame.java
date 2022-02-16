@@ -68,16 +68,12 @@ public class DeviceCommandExecutionFrame extends DisableMainFrame implements Com
 	
 	@Override
 	public void reloadColors()
-	{
-
-	}
+	{}
 
 
 	@Override
 	public void resizeContent()
-	{
-		
-	}
+	{}
 
 	@Override
 	public void commandListCreated(String groupDescription, List<Command<?>> command, List<Object> values)

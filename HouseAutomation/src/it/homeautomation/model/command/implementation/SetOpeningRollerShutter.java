@@ -1,10 +1,11 @@
 package it.homeautomation.model.command.implementation;
+
+
 import it.homeautomation.model.command.SingleValueCommand;
-import it.homeautomation.model.features.SingleValueFeature;
+import it.homeautomation.model.features.implementation.RollerShutter;
 
-public class ChangeChannel extends SingleValueCommand<SingleValueFeature<Integer>, Integer>
+public class SetOpeningRollerShutter extends SingleValueCommand<RollerShutter, Integer>
 {
-
 	@Override
 	public void execute()
 	{
@@ -14,7 +15,7 @@ public class ChangeChannel extends SingleValueCommand<SingleValueFeature<Integer
 	@Override
 	public String toString()
 	{
-		return "Change Channel";
+		return "Set opening percentage";
 	}
 	
 	@Override

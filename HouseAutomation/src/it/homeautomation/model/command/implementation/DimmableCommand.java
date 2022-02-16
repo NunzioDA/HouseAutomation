@@ -1,7 +1,5 @@
 package it.homeautomation.model.command.implementation;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import it.homeautomation.model.command.SingleValueCommand;
 import it.homeautomation.model.features.SingleValueFeature;
@@ -14,11 +12,9 @@ public class DimmableCommand extends SingleValueCommand<SingleValueFeature<Integ
 	}
 	
 	@Override
-	public List<Class<?>> getValuesTypes()
+	public Class<Integer> valueType()
 	{
-		List<Class<?>> values = new ArrayList<>();
-		values.add(Integer.class);
-		return values;
+		return Integer.class;
 	}
 	
 	@Override

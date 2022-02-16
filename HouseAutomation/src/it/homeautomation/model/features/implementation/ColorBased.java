@@ -11,6 +11,11 @@ import it.homeautomation.model.features.SingleValueFeature;
 
 public class ColorBased extends SingleValueFeature<Color> implements DeviceCategory{
 
+	public ColorBased()
+	{
+		setValue(Color.black);
+	}
+	
 	@Override
 	public ColorBased getClone()
 	{		
