@@ -223,13 +223,17 @@ public class HouseMap implements Model{
 	{
 		List<Device> roomDevices = new ArrayList<>();
 		
-		for(Device device : getRoomsMap().get(room))
+		List<Device> groupped = getRoomsMap().get(room);
+		if(groupped != null)
 		{
-			roomDevices.add(device);
-			
-			if(device instanceof DeviceGroup)
+			for(Device device : getRoomsMap().get(room))
 			{
-				roomDevices.addAll(((DeviceGroup) device).getChildren());
+				roomDevices.add(device);
+				
+				if(device instanceof DeviceGroup)
+				{
+					roomDevices.addAll(((DeviceGroup) device).getChildren());
+				}
 			}
 		}
 				

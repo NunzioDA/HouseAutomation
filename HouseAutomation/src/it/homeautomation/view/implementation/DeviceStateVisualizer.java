@@ -22,7 +22,7 @@ import it.homeautomation.hagui.HATextCenter;
 import it.homeautomation.hagui.HAUtilities;
 import it.homeautomation.model.Device;
 import it.homeautomation.model.features.DeviceFeature;
-import it.homeautomation.view.implementation.frame.DeviceCommandExecutonFrame;
+import it.homeautomation.view.implementation.frame.DeviceCommandExecutionFrame;
 
 public class DeviceStateVisualizer extends JPanel
 {
@@ -42,7 +42,7 @@ public class DeviceStateVisualizer extends JPanel
 			HAImageView panel = featureToPanel(f);
 			
 			if(panel != null) 
-				addToStateVisualizer(panel, f, true);
+				addToStateVisualizer(panel, device, f, true);
 			else if (visualizeNonRappresentableFeatures){ 
 				
 				String iconID = f.getIconID();
@@ -53,7 +53,7 @@ public class DeviceStateVisualizer extends JPanel
 					HAImageView featureV = new HAImageView();
 					featureV.loadImage(url);
 					
-					addToStateVisualizer(featureV, f, false);
+					addToStateVisualizer(featureV, device, f, false);
 				}
 				
 			};
@@ -66,13 +66,13 @@ public class DeviceStateVisualizer extends JPanel
 		actListeners.add(actList);
 	}
 	
-	private void addFeatureClickListener(JPanel panel, DeviceFeature feature)
+	private void addFeatureClickListener(JPanel panel, Device device, DeviceFeature feature)
 	{
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{				
-				new DeviceCommandExecutonFrame(500, 300, feature);
+				new DeviceCommandExecutionFrame(500, 300, device, feature);
 				actListeners.stream().forEach(l -> l.actionPerformed(new ActionEvent(feature, 0, "")));
 			}
 			
@@ -90,10 +90,10 @@ public class DeviceStateVisualizer extends JPanel
 		});
 	}
 	
-	private void addToStateVisualizer(JPanel panel, DeviceFeature feature, boolean thisFeatureClickable)
+	private void addToStateVisualizer(JPanel panel, Device device, DeviceFeature feature, boolean thisFeatureClickable)
 	{
 		if(clickable && thisFeatureClickable) {
-			addFeatureClickListener(panel, feature);
+			addFeatureClickListener(panel, device, feature);
 		}
 		
 		add(panel, stateConstraint);

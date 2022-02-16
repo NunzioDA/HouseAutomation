@@ -42,8 +42,6 @@ public class SelectCommandPanel extends HAPanel
 	private static final long serialVersionUID = 1L;
 	
 	private HouseAutomationController controller;
-	private String categoryFilter, roomFilter;
-	private Object deviceFilter;
 	
 	private HAList<Command<?>> commandsList = new HAList<>();
 	private HAScrollPane commandListScrollPane = new HAScrollPane(commandsList);
@@ -56,6 +54,8 @@ public class SelectCommandPanel extends HAPanel
 	
 	private List<CommandCreationListener> listeners = new ArrayList<>();
 	private String filteredCommandDescription;
+	
+	private Filter currentFilter;
 
 	public SelectCommandPanel(HouseAutomationController controller)
 	{
@@ -107,7 +107,7 @@ public class SelectCommandPanel extends HAPanel
 				valuesList.add(inputValue);
 				
 	
-				error.setText(controller.refreshCommands(new Filter(deviceFilter, roomFilter, categoryFilter), valuesList, confirmedCommands, selectedCommand));
+				error.setText(controller.refreshCommands(currentFilter, valuesList, confirmedCommands, selectedCommand));
 				
 				
 				if(error.getText().isEmpty()) 
@@ -235,15 +235,20 @@ public class SelectCommandPanel extends HAPanel
 		commandsList.getDefaultModel().removeAllElements();
 	}
 
+	public void refreshCommands(String groupDescription, List<Command<?>> commands, Filter filter)
+	{
+		refreshCommands(groupDescription,  commands, filter.getCategory(), filter.getRoom(), filter.getDevice());
+	}
+	
 	
 	public void refreshCommands(String groupDescription, List<Command<?>> commands, String category, String room, Object device)
 	{
-		this.deviceFilter = device;
-		this.categoryFilter = category;
-		this.roomFilter = room;
+
 		this.filteredCommandDescription = groupDescription;
 		this.commandsList.getDefaultModel().removeAllElements();
 		this.commandsList.getDefaultModel().addAll(commands);
+		
+		currentFilter = new Filter(device, room, category);
 		
 		// making isAGroup match the text field size so 
 		// that its column does not get tightened
