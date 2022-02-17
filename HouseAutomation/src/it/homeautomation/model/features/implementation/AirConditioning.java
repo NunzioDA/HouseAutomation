@@ -5,10 +5,11 @@ import java.util.List;
 
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.command.implementation.SetAirConditionerMode;
+import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
 import it.homeautomation.model.features.SingleValueFeature;
 
-public class AirConditioning extends TemperatureBasedFeature
+public class AirConditioning extends TemperatureBasedFeature implements DeviceCategory
 {
 	private ModeFeature modeFeature = new ModeFeature();
 	
@@ -62,6 +63,12 @@ public class AirConditioning extends TemperatureBasedFeature
 	{
 		return "Air Conditioning";
 	}
+	
+	@Override
+	public String getCategoryName()
+	{
+		return "AirConditioning";
+	}
 
 	public enum Mode
 	{
@@ -111,4 +118,6 @@ public class AirConditioning extends TemperatureBasedFeature
 		}
 		
 	}
+
+
 }

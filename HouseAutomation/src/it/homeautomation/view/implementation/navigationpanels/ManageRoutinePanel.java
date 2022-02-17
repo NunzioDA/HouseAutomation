@@ -166,7 +166,6 @@ public class ManageRoutinePanel extends HANavigationDrawerPanel
 				
 				if(selectedRoutine != null)
 				{
-					System.out.println(selectedRoutine);
 					new AddRoutineCommandFrame(selectedRoutine, ManageRoutinePanel.this, controller, 500, 500);
 				}
 			}
