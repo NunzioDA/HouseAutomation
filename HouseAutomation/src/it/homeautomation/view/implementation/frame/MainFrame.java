@@ -38,7 +38,7 @@ public class MainFrame extends HAFrame
 	
 	public MainFrame(String houseName, int width, int height)
 	{		
-		super("Home Automation", width, height);	
+		super("House Automation", width, height);	
 		
 		initComponents(houseName);
 		setMinimumSize(new Dimension(500, 500));
