@@ -58,7 +58,7 @@ public class RollerShutter extends PercentageFeature implements DeviceCategory
 	@Override
 	public String getCategoryName()
 	{
-		return "Roller";
+		return "Roller shutter";
 	}
 
 }
