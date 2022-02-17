@@ -22,7 +22,7 @@ import it.homeautomation.view.View;
 public class HouseAutomationController
 {	
 
-	private Model model;	
+	private Model model = null;	
 	private View view = null;
 	
 	public HouseAutomationController(Model model, View view)
@@ -30,6 +30,12 @@ public class HouseAutomationController
 		this.model = model;
 		this.view = view;
 		view.setController(this);
+	}
+	
+	public HouseAutomationController(Model model)
+	{
+		// TEST PURPOSE
+		this.model = model;
 	}
 	
 	// MAIN

@@ -43,7 +43,11 @@ public class Device {
 	@SuppressWarnings("unchecked")
 	public <T extends DeviceFeature> Optional<T> isFeaturePresent(Class<T> featureClass)
 	{
-		return (Optional<T>) features
+		List<DeviceFeature> allFeatures = new ArrayList<>();
+		allFeatures.addAll(features);
+		features.stream().forEach(f -> allFeatures.addAll(f.getSubFeatures()));
+		
+		return (Optional<T>) allFeatures
 		.stream()
 		.filter(f -> featureClass.isInstance(f))
 		.findAny();

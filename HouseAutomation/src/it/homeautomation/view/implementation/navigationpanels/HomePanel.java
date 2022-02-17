@@ -1,4 +1,4 @@
-package it.homeautomation.view.navigationpanels;
+package it.homeautomation.view.implementation.navigationpanels;
 
 import java.awt.GridLayout;
 

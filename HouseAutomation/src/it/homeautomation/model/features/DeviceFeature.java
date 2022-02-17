@@ -11,4 +11,5 @@ public interface DeviceFeature
 	public List<Command<?>> getCommands();
 	public Object getSateRappresentation();
 	public String getIconID();
+	public List<DeviceFeature> getSubFeatures();
 }

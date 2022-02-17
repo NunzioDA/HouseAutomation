@@ -1,9 +1,11 @@
 package it.homeautomation.model.features.implementation;
 
+import java.util.Collections;
 import java.util.List;
 
 import it.homeautomation.model.command.Command;
 import it.homeautomation.model.features.DeviceCategory;
+import it.homeautomation.model.features.DeviceFeature;
 
 public class SmartPlug implements DeviceCategory
 {
@@ -43,6 +45,12 @@ public class SmartPlug implements DeviceCategory
 	public String toString()
 	{
 		return "Smart Plug";
+	}
+
+	@Override
+	public List<DeviceFeature> getSubFeatures()
+	{
+		return Collections.emptyList();
 	}
 
 }

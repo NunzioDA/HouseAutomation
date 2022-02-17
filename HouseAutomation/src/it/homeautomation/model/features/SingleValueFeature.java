@@ -1,5 +1,7 @@
 package it.homeautomation.model.features;
 
+import java.util.Collections;
+import java.util.List;
 
 public abstract class SingleValueFeature<T>  implements DeviceFeature
 {	
@@ -12,6 +14,12 @@ public abstract class SingleValueFeature<T>  implements DeviceFeature
 
 	public T getValue() {
 		return value;
+	}
+	
+	@Override
+	public List<DeviceFeature> getSubFeatures()
+	{
+		return Collections.emptyList();
 	}
 	
 	/**

@@ -22,7 +22,6 @@ import it.homeautomation.model.features.SingleValueFeature;
 import it.homeautomation.model.features.implementation.ColorBased;
 import it.homeautomation.model.features.implementation.Light;
 import it.homeautomation.model.features.implementation.StateFeature;
-import it.homeautomation.view.implementation.HAViewImplementation;
 
 class Test
 {
@@ -33,7 +32,7 @@ class Test
 	void houseMapCreation()
 	{
 		model = new HouseMap();
-		controller = new HouseAutomationController(model, HAViewImplementation.getSingleton());
+		controller = new HouseAutomationController(model);
 		controller.setHouseName("test house");
 	}
 	
@@ -49,7 +48,8 @@ class Test
 		controller.addDevice("Device1", "Room", features, false);
 		
 		assertFalse(controller.addDevice("Device1", "Room", features, false), "Can not add two device with same name");
-	}
+	}	
+	
 	
 	@org.junit.jupiter.api.Test
 	void existingDeviceNameInGroup()
@@ -89,6 +89,21 @@ class Test
 		controller.addDevice("Device3", "Room", features, false);		
 	}
 
+	@org.junit.jupiter.api.Test
+	void routineWithSameName()
+	{
+		initCommandsDeviceTest();
+		
+		Routine routine = controller.getRoutineInstance();
+		routine.setName("Routine");
+		
+		Routine routine1 = controller.getRoutineInstance();
+		routine.setName("Routine");
+		
+		controller.addRoutine(routine);
+		assertFalse(controller.addRoutine(routine1),"Cant add two routines with the same name");
+	}
+	
 	
 	@org.junit.jupiter.api.Test
 	void routineUpdateTest()

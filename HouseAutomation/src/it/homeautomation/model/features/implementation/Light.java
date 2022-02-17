@@ -45,4 +45,10 @@ public class Light implements DeviceCategory
 	{
 		return "light";
 	}
+
+	@Override
+	public List<DeviceFeature> getSubFeatures()
+	{
+		return Collections.emptyList();
+	}
 }

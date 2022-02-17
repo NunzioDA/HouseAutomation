@@ -13,7 +13,7 @@ import it.homeautomation.model.command.Command;
 import it.homeautomation.view.CommandCreationListener;
 import it.homeautomation.view.implementation.commandpanels.FilterCommandPanel;
 import it.homeautomation.view.implementation.commandpanels.SelectCommandPanel;
-import it.homeautomation.view.navigationpanels.ManageRoutinePanel;
+import it.homeautomation.view.implementation.navigationpanels.ManageRoutinePanel;
 
 public class AddRoutineCommandFrame extends DisableMainFrame implements CommandCreationListener
 {

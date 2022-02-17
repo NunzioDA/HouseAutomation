@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import it.homeautomation.model.features.DeviceCategory;
 import it.homeautomation.model.features.DeviceFeature;
+import it.homeautomation.model.features.implementation.AirConditioning;
 import it.homeautomation.model.features.implementation.Audio;
 import it.homeautomation.model.features.implementation.ColorBased;
 import it.homeautomation.model.features.implementation.Dimmable;
@@ -57,6 +58,7 @@ public class AvailableFeature
 		availableFeatures.add(new ColorBased());
 		availableFeatures.add(new Oven());
 		availableFeatures.add(new RollerShutter());
+		availableFeatures.add(new AirConditioning());
 		//FEATURES
 		availableFeatures.add(new Dimmable());
 		availableFeatures.add(new Thermostat());

@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 
 import it.homeautomation.hagui.HAFrame;
 import it.homeautomation.hagui.HAUtilities;
-import it.homeautomation.view.navigationpanels.AddDevicePanel;
-import it.homeautomation.view.navigationpanels.ExecuteCommandPanel;
-import it.homeautomation.view.navigationpanels.ManageRoutinePanel;
-import it.homeautomation.view.navigationpanels.HomePanel;
-import it.homeautomation.view.navigationpanels.RoutineCreationPanel;
+import it.homeautomation.view.implementation.navigationpanels.AddDevicePanel;
+import it.homeautomation.view.implementation.navigationpanels.ExecuteCommandPanel;
+import it.homeautomation.view.implementation.navigationpanels.HomePanel;
+import it.homeautomation.view.implementation.navigationpanels.ManageRoutinePanel;
+import it.homeautomation.view.implementation.navigationpanels.RoutineCreationPanel;
 import it.homeautomation.hagui.HANavigationDrawer;
 
 
