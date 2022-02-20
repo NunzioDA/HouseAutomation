@@ -24,7 +24,7 @@ public class HAUtilities
 	public static final String DEFAULT_ICONS_EXTENSION = ".png";
 	
 	private static final String FONT_PATH = "/fonts/";
-	private static final String THIN_FONT_NAME = "thin.ttf";
+	private static final String THIN_FONT_NAME = "regular.ttf";//"thin.ttf";
 	private static final String REGULAR_FONT_NAME = "regular.ttf";
 	private static final String LIGHT_FONT_NAME = "light.ttf";
 	
